@@ -1,5 +1,64 @@
 <!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 6.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_6_2_0.dtd">
 
-<service-builder package-path="com.sohlman.liferay.bffs">
-	<namespace>bffs</namespace>
+<service-builder package-path="com.sohlman.liferay.bffss">
+	<namespace>bffss</namespace>
+	<entity name="FileInfo" local-service="true" remote-service="false">
+		<!-- PK fields -->
+
+		<column name="fileInfoId" type="long" primary="true" />
+
+		<!-- Other fields -->
+
+		<column name="companyId" type="long" />
+		<column name="repositoryId" type="long" />
+		<column name="path" type="String" />
+		<column name="version" type="String" />
+		<column name="fileDataId" type="long" />
+
+		<!-- Order -->
+
+		<order by="desc">
+			<order-column name="version" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="C_R" return-type="Collection">
+			<finder-column name="companyId" />
+			<finder-column name="repositoryId" />
+		</finder>
+		<finder name="C_R_P" return-type="Collection">
+			<finder-column name="companyId" />
+			<finder-column name="repositoryId" />
+			<finder-column name="path" />
+		</finder>
+		<finder name="C_R_LikeP" return-type="Collection">
+			<finder-column name="companyId" />
+			<finder-column name="repositoryId" />
+			<finder-column name="path" comparator="LIKE" />
+		</finder>
+		<finder name="C_R_P_V" return-type="FileInfo" unique="true">
+			<finder-column name="companyId" />
+			<finder-column name="repositoryId" />
+			<finder-column name="path" />
+			<finder-column name="version" />
+		</finder>
+		<finder name="FileData" return-type="Collection">
+			<finder-column name="fileDataId" />
+		</finder>
+
+	</entity>
+
+	<entity name="FileData" local-service="true" remote-service="false">
+		<column name="fileDataId" type="long" primary="true" />
+		<column name="companyId" type="long" />
+		<column name="createDate" type="Date" />
+		<column name="name" type="String" />
+		<column name="size" type="long" />
+		<column name="deletedTimestamp" type="long" />
+		<column name="fingerprint" type="String" />
+		<finder name="FingerPrint" return-type="Collection" unique="false">
+			<finder-column name="fingerprint" />
+		</finder>
+	</entity>
 </service-builder>
