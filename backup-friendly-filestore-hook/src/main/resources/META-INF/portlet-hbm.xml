@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="false" auto-import="false">
+	<import class="com.sohlman.liferay.bffss.model.FileData" />
+	<import class="com.sohlman.liferay.bffss.model.FileInfo" />
+	<class name="com.sohlman.liferay.bffss.model.impl.FileDataImpl" table="bffss_FileData">
+		<cache usage="read-write" />
+		<id name="fileDataId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="size" type="com.liferay.portal.dao.orm.hibernate.LongType" column="size_" />
+		<property name="deletedTimestamp" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="fingerprint" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.sohlman.liferay.bffss.model.impl.FileInfoImpl" table="bffss_FileInfo">
+		<cache usage="read-write" />
+		<id name="fileInfoId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="repositoryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="path" type="com.liferay.portal.dao.orm.hibernate.StringType" column="path_" />
+		<property name="version" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="fileDataId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+	</class>
+</hibernate-mapping>
