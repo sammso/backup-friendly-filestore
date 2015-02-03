@@ -145,9 +145,7 @@ public class FileDataLocalServiceClpInvoker {
 
         _methodName42 = "addFileData";
 
-        _methodParameterTypes42 = new String[] {
-                "long", "long", "java.io.InputStream"
-            };
+        _methodParameterTypes42 = new String[] { "long", "java.io.InputStream" };
 
         _methodName43 = "getFileInputStream";
 
@@ -264,8 +262,7 @@ public class FileDataLocalServiceClpInvoker {
         if (_methodName42.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes42, parameterTypes)) {
             return FileDataLocalServiceUtil.addFileData(((Long) arguments[0]).longValue(),
-                ((Long) arguments[1]).longValue(),
-                (java.io.InputStream) arguments[2]);
+                (java.io.InputStream) arguments[1]);
         }
 
         if (_methodName43.equals(name) &&

@@ -289,7 +289,7 @@ public class FileInfoWrapper implements FileInfo, ModelWrapper<FileInfo> {
     }
 
     @Override
-    public int compareTo(FileInfo fileInfo) {
+    public int compareTo(com.sohlman.liferay.bffss.model.FileInfo fileInfo) {
         return _fileInfo.compareTo(fileInfo);
     }
 
@@ -299,17 +299,17 @@ public class FileInfoWrapper implements FileInfo, ModelWrapper<FileInfo> {
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<FileInfo> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.sohlman.liferay.bffss.model.FileInfo> toCacheModel() {
         return _fileInfo.toCacheModel();
     }
 
     @Override
-    public FileInfo toEscapedModel() {
+    public com.sohlman.liferay.bffss.model.FileInfo toEscapedModel() {
         return new FileInfoWrapper(_fileInfo.toEscapedModel());
     }
 
     @Override
-    public FileInfo toUnescapedModel() {
+    public com.sohlman.liferay.bffss.model.FileInfo toUnescapedModel() {
         return new FileInfoWrapper(_fileInfo.toUnescapedModel());
     }
 

@@ -242,12 +242,7 @@ public interface FileInfoLocalService extends BaseLocalService,
 
     public com.sohlman.liferay.bffss.model.FileInfo addFileInfo(
         long companyId, long repositoryId, java.lang.String path,
-        java.lang.String version, byte[] bytes)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    public com.sohlman.liferay.bffss.model.FileInfo addFileInfo(
-        long companyId, long repositoryId, java.lang.String path,
-        java.lang.String version, java.io.InputStream inputStream, long size)
+        java.lang.String version, java.io.InputStream inputStream)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     public void deleteFileInfo(long companyId, long repositoryId,

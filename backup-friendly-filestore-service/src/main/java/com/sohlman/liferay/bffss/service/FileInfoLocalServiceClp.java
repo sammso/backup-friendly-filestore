@@ -70,8 +70,6 @@ public class FileInfoLocalServiceClp implements FileInfoLocalService {
     private String[] _methodParameterTypes30;
     private String _methodName31;
     private String[] _methodParameterTypes31;
-    private String _methodName32;
-    private String[] _methodParameterTypes32;
 
     public FileInfoLocalServiceClp(InvokableLocalService invokableLocalService) {
         _invokableLocalService = invokableLocalService;
@@ -170,29 +168,28 @@ public class FileInfoLocalServiceClp implements FileInfoLocalService {
 
         _methodParameterTypes19 = new String[] {
                 "long", "long", "java.lang.String", "java.lang.String",
-                "byte[][]"
+                "java.io.InputStream"
             };
 
-        _methodName20 = "addFileInfo";
+        _methodName20 = "deleteFileInfo";
 
         _methodParameterTypes20 = new String[] {
-                "long", "long", "java.lang.String", "java.lang.String",
-                "java.io.InputStream", "long"
-            };
-
-        _methodName21 = "deleteFileInfo";
-
-        _methodParameterTypes21 = new String[] {
                 "long", "long", "java.lang.String", "java.lang.String"
             };
 
-        _methodName22 = "deleteFileInfos";
+        _methodName21 = "deleteFileInfos";
+
+        _methodParameterTypes21 = new String[] {
+                "long", "long", "java.lang.String"
+            };
+
+        _methodName22 = "deleteFileInfosByDirectory";
 
         _methodParameterTypes22 = new String[] {
                 "long", "long", "java.lang.String"
             };
 
-        _methodName23 = "deleteFileInfosByDirectory";
+        _methodName23 = "getFileInfo";
 
         _methodParameterTypes23 = new String[] {
                 "long", "long", "java.lang.String"
@@ -201,26 +198,26 @@ public class FileInfoLocalServiceClp implements FileInfoLocalService {
         _methodName24 = "getFileInfo";
 
         _methodParameterTypes24 = new String[] {
-                "long", "long", "java.lang.String"
-            };
-
-        _methodName25 = "getFileInfo";
-
-        _methodParameterTypes25 = new String[] {
                 "long", "long", "java.lang.String", "java.lang.String"
             };
 
+        _methodName25 = "getFileInfos";
+
+        _methodParameterTypes25 = new String[] { "long", "long" };
+
         _methodName26 = "getFileInfos";
 
-        _methodParameterTypes26 = new String[] { "long", "long" };
+        _methodParameterTypes26 = new String[] {
+                "long", "long", "java.lang.String"
+            };
 
-        _methodName27 = "getFileInfos";
+        _methodName27 = "getFileInfosByDirectory";
 
         _methodParameterTypes27 = new String[] {
                 "long", "long", "java.lang.String"
             };
 
-        _methodName28 = "getFileInfosByDirectory";
+        _methodName28 = "getFileAsStream";
 
         _methodParameterTypes28 = new String[] {
                 "long", "long", "java.lang.String"
@@ -229,24 +226,18 @@ public class FileInfoLocalServiceClp implements FileInfoLocalService {
         _methodName29 = "getFileAsStream";
 
         _methodParameterTypes29 = new String[] {
-                "long", "long", "java.lang.String"
+                "long", "long", "java.lang.String", "java.lang.String"
             };
 
-        _methodName30 = "getFileAsStream";
+        _methodName30 = "hasFileInfo";
 
         _methodParameterTypes30 = new String[] {
                 "long", "long", "java.lang.String", "java.lang.String"
             };
 
-        _methodName31 = "hasFileInfo";
+        _methodName31 = "updateFileInfo";
 
         _methodParameterTypes31 = new String[] {
-                "long", "long", "java.lang.String", "java.lang.String"
-            };
-
-        _methodName32 = "updateFileInfo";
-
-        _methodParameterTypes32 = new String[] {
                 "long", "long", "long", "java.lang.String", "java.lang.String"
             };
     }
@@ -767,7 +758,7 @@ public class FileInfoLocalServiceClp implements FileInfoLocalService {
     @Override
     public com.sohlman.liferay.bffss.model.FileInfo addFileInfo(
         long companyId, long repositoryId, java.lang.String path,
-        java.lang.String version, byte[] bytes)
+        java.lang.String version, java.io.InputStream inputStream)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
@@ -783,48 +774,7 @@ public class FileInfoLocalServiceClp implements FileInfoLocalService {
                         
                     ClpSerializer.translateInput(version),
                         
-                    ClpSerializer.translateInput(bytes)
-                    });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (com.sohlman.liferay.bffss.model.FileInfo) ClpSerializer.translateOutput(returnObj);
-    }
-
-    @Override
-    public com.sohlman.liferay.bffss.model.FileInfo addFileInfo(
-        long companyId, long repositoryId, java.lang.String path,
-        java.lang.String version, java.io.InputStream inputStream, long size)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        Object returnObj = null;
-
-        try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName20,
-                    _methodParameterTypes20,
-                    new Object[] {
-                        companyId,
-                        
-                    repositoryId,
-                        
-                    ClpSerializer.translateInput(path),
-                        
-                    ClpSerializer.translateInput(version),
-                        
-                    ClpSerializer.translateInput(inputStream),
-                        
-                    size
+                    ClpSerializer.translateInput(inputStream)
                     });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
@@ -850,8 +800,8 @@ public class FileInfoLocalServiceClp implements FileInfoLocalService {
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         try {
-            _invokableLocalService.invokeMethod(_methodName21,
-                _methodParameterTypes21,
+            _invokableLocalService.invokeMethod(_methodName20,
+                _methodParameterTypes20,
                 new Object[] {
                     companyId,
                     
@@ -887,8 +837,8 @@ public class FileInfoLocalServiceClp implements FileInfoLocalService {
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         try {
-            _invokableLocalService.invokeMethod(_methodName22,
-                _methodParameterTypes22,
+            _invokableLocalService.invokeMethod(_methodName21,
+                _methodParameterTypes21,
                 new Object[] {
                     companyId,
                     
@@ -922,8 +872,8 @@ public class FileInfoLocalServiceClp implements FileInfoLocalService {
         throws com.liferay.portal.kernel.exception.PortalException,
             com.liferay.portal.kernel.exception.SystemException {
         try {
-            _invokableLocalService.invokeMethod(_methodName23,
-                _methodParameterTypes23,
+            _invokableLocalService.invokeMethod(_methodName22,
+                _methodParameterTypes22,
                 new Object[] {
                     companyId,
                     
@@ -959,8 +909,8 @@ public class FileInfoLocalServiceClp implements FileInfoLocalService {
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName24,
-                    _methodParameterTypes24,
+            returnObj = _invokableLocalService.invokeMethod(_methodName23,
+                    _methodParameterTypes23,
                     new Object[] {
                         companyId,
                         
@@ -999,8 +949,8 @@ public class FileInfoLocalServiceClp implements FileInfoLocalService {
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName25,
-                    _methodParameterTypes25,
+            returnObj = _invokableLocalService.invokeMethod(_methodName24,
+                    _methodParameterTypes24,
                     new Object[] {
                         companyId,
                         
@@ -1039,8 +989,8 @@ public class FileInfoLocalServiceClp implements FileInfoLocalService {
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName26,
-                    _methodParameterTypes26,
+            returnObj = _invokableLocalService.invokeMethod(_methodName25,
+                    _methodParameterTypes25,
                     new Object[] { companyId, repositoryId });
         } catch (Throwable t) {
             t = ClpSerializer.translateThrowable(t);
@@ -1067,8 +1017,8 @@ public class FileInfoLocalServiceClp implements FileInfoLocalService {
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName27,
-                    _methodParameterTypes27,
+            returnObj = _invokableLocalService.invokeMethod(_methodName26,
+                    _methodParameterTypes26,
                     new Object[] {
                         companyId,
                         
@@ -1101,8 +1051,8 @@ public class FileInfoLocalServiceClp implements FileInfoLocalService {
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName28,
-                    _methodParameterTypes28,
+            returnObj = _invokableLocalService.invokeMethod(_methodName27,
+                    _methodParameterTypes27,
                     new Object[] {
                         companyId,
                         
@@ -1136,8 +1086,8 @@ public class FileInfoLocalServiceClp implements FileInfoLocalService {
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName29,
-                    _methodParameterTypes29,
+            returnObj = _invokableLocalService.invokeMethod(_methodName28,
+                    _methodParameterTypes28,
                     new Object[] {
                         companyId,
                         
@@ -1175,8 +1125,8 @@ public class FileInfoLocalServiceClp implements FileInfoLocalService {
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName30,
-                    _methodParameterTypes30,
+            returnObj = _invokableLocalService.invokeMethod(_methodName29,
+                    _methodParameterTypes29,
                     new Object[] {
                         companyId,
                         
@@ -1215,8 +1165,8 @@ public class FileInfoLocalServiceClp implements FileInfoLocalService {
         Object returnObj = null;
 
         try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName31,
-                    _methodParameterTypes31,
+            returnObj = _invokableLocalService.invokeMethod(_methodName30,
+                    _methodParameterTypes30,
                     new Object[] {
                         companyId,
                         
@@ -1249,8 +1199,8 @@ public class FileInfoLocalServiceClp implements FileInfoLocalService {
         long newRepositoryId, java.lang.String oldPath, java.lang.String newPath)
         throws com.liferay.portal.kernel.exception.SystemException {
         try {
-            _invokableLocalService.invokeMethod(_methodName32,
-                _methodParameterTypes32,
+            _invokableLocalService.invokeMethod(_methodName31,
+                _methodParameterTypes31,
                 new Object[] {
                     companyId,
                     

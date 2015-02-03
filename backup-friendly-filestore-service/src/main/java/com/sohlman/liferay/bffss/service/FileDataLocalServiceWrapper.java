@@ -275,9 +275,9 @@ public class FileDataLocalServiceWrapper implements FileDataLocalService,
 
     @Override
     public com.sohlman.liferay.bffss.model.FileData addFileData(
-        long companyId, long size, java.io.InputStream inputStream)
+        long companyId, java.io.InputStream inputStream)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return _fileDataLocalService.addFileData(companyId, size, inputStream);
+        return _fileDataLocalService.addFileData(companyId, inputStream);
     }
 
     @Override

@@ -276,19 +276,10 @@ public class FileInfoLocalServiceWrapper implements FileInfoLocalService,
     @Override
     public com.sohlman.liferay.bffss.model.FileInfo addFileInfo(
         long companyId, long repositoryId, java.lang.String path,
-        java.lang.String version, byte[] bytes)
+        java.lang.String version, java.io.InputStream inputStream)
         throws com.liferay.portal.kernel.exception.SystemException {
         return _fileInfoLocalService.addFileInfo(companyId, repositoryId, path,
-            version, bytes);
-    }
-
-    @Override
-    public com.sohlman.liferay.bffss.model.FileInfo addFileInfo(
-        long companyId, long repositoryId, java.lang.String path,
-        java.lang.String version, java.io.InputStream inputStream, long size)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _fileInfoLocalService.addFileInfo(companyId, repositoryId, path,
-            version, inputStream, size);
+            version, inputStream);
     }
 
     @Override

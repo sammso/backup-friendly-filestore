@@ -146,9 +146,7 @@ public class FileDataLocalServiceClp implements FileDataLocalService {
 
         _methodName19 = "addFileData";
 
-        _methodParameterTypes19 = new String[] {
-                "long", "long", "java.io.InputStream"
-            };
+        _methodParameterTypes19 = new String[] { "long", "java.io.InputStream" };
 
         _methodName20 = "getFileInputStream";
 
@@ -676,7 +674,7 @@ public class FileDataLocalServiceClp implements FileDataLocalService {
 
     @Override
     public com.sohlman.liferay.bffss.model.FileData addFileData(
-        long companyId, long size, java.io.InputStream inputStream)
+        long companyId, java.io.InputStream inputStream)
         throws com.liferay.portal.kernel.exception.SystemException {
         Object returnObj = null;
 
@@ -685,8 +683,6 @@ public class FileDataLocalServiceClp implements FileDataLocalService {
                     _methodParameterTypes19,
                     new Object[] {
                         companyId,
-                        
-                    size,
                         
                     ClpSerializer.translateInput(inputStream)
                     });

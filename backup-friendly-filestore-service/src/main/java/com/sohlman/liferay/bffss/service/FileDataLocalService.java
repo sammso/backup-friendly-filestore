@@ -241,7 +241,7 @@ public interface FileDataLocalService extends BaseLocalService,
         throws java.lang.Throwable;
 
     public com.sohlman.liferay.bffss.model.FileData addFileData(
-        long companyId, long size, java.io.InputStream inputStream)
+        long companyId, java.io.InputStream inputStream)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

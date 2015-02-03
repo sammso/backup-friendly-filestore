@@ -317,7 +317,7 @@ public class FileDataWrapper implements FileData, ModelWrapper<FileData> {
     }
 
     @Override
-    public int compareTo(FileData fileData) {
+    public int compareTo(com.sohlman.liferay.bffss.model.FileData fileData) {
         return _fileData.compareTo(fileData);
     }
 
@@ -327,17 +327,17 @@ public class FileDataWrapper implements FileData, ModelWrapper<FileData> {
     }
 
     @Override
-    public com.liferay.portal.model.CacheModel<FileData> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.sohlman.liferay.bffss.model.FileData> toCacheModel() {
         return _fileData.toCacheModel();
     }
 
     @Override
-    public FileData toEscapedModel() {
+    public com.sohlman.liferay.bffss.model.FileData toEscapedModel() {
         return new FileDataWrapper(_fileData.toEscapedModel());
     }
 
     @Override
-    public FileData toUnescapedModel() {
+    public com.sohlman.liferay.bffss.model.FileData toUnescapedModel() {
         return new FileDataWrapper(_fileData.toUnescapedModel());
     }
 

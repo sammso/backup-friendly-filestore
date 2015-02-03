@@ -264,9 +264,9 @@ public class FileDataLocalServiceUtil {
     }
 
     public static com.sohlman.liferay.bffss.model.FileData addFileData(
-        long companyId, long size, java.io.InputStream inputStream)
+        long companyId, java.io.InputStream inputStream)
         throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().addFileData(companyId, size, inputStream);
+        return getService().addFileData(companyId, inputStream);
     }
 
     public static java.io.InputStream getFileInputStream(long fileDataId)
