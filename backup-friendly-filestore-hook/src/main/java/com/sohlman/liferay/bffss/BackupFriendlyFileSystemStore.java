@@ -20,7 +20,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portlet.documentlibrary.DuplicateFileException;
 import com.liferay.portlet.documentlibrary.store.BaseStore;
 import com.liferay.portlet.documentlibrary.store.Store;
@@ -29,13 +28,10 @@ import com.sohlman.liferay.bffss.model.FileInfo;
 import com.sohlman.liferay.bffss.service.FileDataLocalServiceUtil;
 import com.sohlman.liferay.bffss.service.FileInfoLocalServiceUtil;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
-import java.nio.channels.FileChannel;
 import java.util.List;
 
 /**
@@ -244,7 +240,8 @@ public class BackupFriendlyFileSystemStore extends BaseStore {
 		}
 
 		FileInfoLocalServiceUtil.addFileInfo(
-			companyId, repositoryId, fileName, versionLabel, bytes);
+			companyId, repositoryId, fileName, versionLabel, 
+			new UnsyncByteArrayInputStream(bytes));
 	}
 
 	@Override
@@ -269,8 +266,7 @@ public class BackupFriendlyFileSystemStore extends BaseStore {
 		}
 
 		FileInfoLocalServiceUtil.addFileInfo(
-			companyId, repositoryId, fileName, versionLabel, inputStream,
-			file.length());
+			companyId, repositoryId, fileName, versionLabel, inputStream);
 	}
 
 	@Override
@@ -285,60 +281,8 @@ public class BackupFriendlyFileSystemStore extends BaseStore {
 			throw new DuplicateFileException(fileName);
 		}
 
-		long length = -1;
-
-		if (inputStream instanceof ByteArrayInputStream) {
-			ByteArrayInputStream byteArrayInputStream =
-				(ByteArrayInputStream)inputStream;
-
-			length = byteArrayInputStream.available();
-		}
-		else if (inputStream instanceof FileInputStream) {
-			FileInputStream fileInputStream = (FileInputStream)inputStream;
-
-			FileChannel fileChannel = fileInputStream.getChannel();
-
-			try {
-				length = fileChannel.size();
-			}
-			catch (IOException ioe) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(
-						"Unable to detect file size from file channel", ioe);
-				}
-			}
-		}
-		else if (inputStream instanceof UnsyncByteArrayInputStream) {
-			UnsyncByteArrayInputStream unsyncByteArrayInputStream =
-				(UnsyncByteArrayInputStream)inputStream;
-
-			length = unsyncByteArrayInputStream.available();
-		}
-
-		if (length >= 0) {
-			FileInfoLocalServiceUtil.addFileInfo(
-				companyId, repositoryId, fileName, versionLabel, inputStream,
-				length);
-		}
-		else {
-			if (_log.isWarnEnabled()) {
-				_log.warn(
-					"Unable to detect length from input stream. Reading " +
-						"entire input stream into memory as a last resort.");
-			}
-
-			byte[] bytes = null;
-
-			try {
-				bytes = FileUtil.getBytes(inputStream);
-			}
-			catch (IOException ioe) {
-				throw new SystemException(ioe);
-			}
-
-			FileInfoLocalServiceUtil.addFileInfo(
-				companyId, repositoryId, fileName, versionLabel, bytes);
-		}
+		FileInfoLocalServiceUtil.addFileInfo(
+				companyId, repositoryId, fileName, versionLabel, inputStream);
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(BackupFriendlyFileSystemStore.class);
