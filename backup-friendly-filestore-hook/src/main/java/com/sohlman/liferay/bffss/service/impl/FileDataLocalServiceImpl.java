@@ -106,8 +106,8 @@ public class FileDataLocalServiceImpl extends FileDataLocalServiceBaseImpl {
 			StringBundler sb = new StringBundler(3);
 			
 			String fingerprint = "MD5.".concat(
-					Util.bytesToHexString(messageDigest.digest())).
-					concat(".").concat(String.valueOf(size));
+				Util.bytesToHexString(messageDigest.digest())).concat(".")
+					.concat(String.valueOf(size));
 			
 			// There is always a change that same file is added twice same time
 			// and two fingerprints exists. It is allowed condition. It is
@@ -119,12 +119,16 @@ public class FileDataLocalServiceImpl extends FileDataLocalServiceBaseImpl {
 				fingerprint);
 
 			if (list.size()==0) {
-				long fileDataId = counterLocalService.increment(FileData.class
-						.getName());
+				long fileDataId = counterLocalService.increment(
+					FileData.class.getName());
+				
 				fileData.setFileDataId(fileDataId);
 				fileData.setFingerprint(fingerprint);
 				fileData = updateFileData(fileData);
+				
+				// When this is null then file won't be deleted
 				file = null;
+				
 				return fileData;
 			}
 			else {

@@ -16,9 +16,7 @@ package com.sohlman.liferay.bffss.service.impl;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.sohlman.liferay.bffss.NoSuchFileInfoException;
 import com.sohlman.liferay.bffss.model.FileData;
@@ -60,9 +58,10 @@ public class FileInfoLocalServiceImpl extends FileInfoLocalServiceBaseImpl {
 	 */
 	
 	@Override
-	public FileInfo addFileInfo(long companyId, long repositoryId, String path,
-			String version, InputStream inputStream)
-			throws SystemException {
+	public FileInfo addFileInfo(
+			long companyId, long repositoryId, String path, String version, 
+			InputStream inputStream)
+		throws SystemException {
 
 		long fileId = counterLocalService.increment(FileInfo.class.getName());
 
@@ -85,15 +84,17 @@ public class FileInfoLocalServiceImpl extends FileInfoLocalServiceBaseImpl {
 
 		FileData fileData = fileDataLocalService.addFileData(
 			fileInfo.getCompanyId(), inputStream);
+
 		fileInfo.setFileDataId(fileData.getFileDataId());
 	}
 
 	@Override
-	public void deleteFileInfo(long companyId, long repositoryId, String path,
-			String version) throws PortalException, SystemException {
+	public void deleteFileInfo(
+			long companyId, long repositoryId, String path, String version) 
+		throws PortalException, SystemException {
 
-		FileInfo fileInfo = fileInfoPersistence.findByC_R_P_V(companyId,
-				repositoryId, path, version);
+		FileInfo fileInfo = fileInfoPersistence.findByC_R_P_V(
+			companyId, repositoryId, path, version);
 
 		fileInfoPersistence.update(fileInfo);
 	}
@@ -102,8 +103,8 @@ public class FileInfoLocalServiceImpl extends FileInfoLocalServiceBaseImpl {
 	public void deleteFileInfos(long companyId, long repositoryId, String path)
 			throws SystemException, PortalException {
 
-		List<FileInfo> fileInfos = fileInfoPersistence.findByC_R_P(companyId,
-				repositoryId, path);
+		List<FileInfo> fileInfos = fileInfoPersistence.findByC_R_P(
+			companyId, repositoryId, path);
 
 		for (FileInfo fileInfo : fileInfos) {
 			deleteFileInfo(fileInfo);
@@ -111,8 +112,9 @@ public class FileInfoLocalServiceImpl extends FileInfoLocalServiceBaseImpl {
 	}
 
 	@Override
-	public void deleteFileInfosByDirectory(long companyId, long repositoryId,
-			String dirName) throws SystemException, PortalException {
+	public void deleteFileInfosByDirectory(
+			long companyId, long repositoryId, String dirName) 
+		throws SystemException, PortalException {
 
 		if (!dirName.endsWith(StringPool.SLASH)) {
 			dirName = dirName.concat(StringPool.SLASH);
@@ -130,13 +132,14 @@ public class FileInfoLocalServiceImpl extends FileInfoLocalServiceBaseImpl {
 	}
 
 	@Override
-	public FileInfo getFileInfo(long companyId, long repositoryId, String path)
-			throws NoSuchFileInfoException, SystemException {
+	public FileInfo getFileInfo(
+			long companyId, long repositoryId, String path)
+		throws NoSuchFileInfoException, SystemException {
 
 		OrderByComparator orderByComparator = new FileInfoVersionComparator();
 
-		List<FileInfo> fileInfos = fileInfoPersistence.findByC_R_P(companyId,
-				repositoryId, path, 0, 1, orderByComparator);
+		List<FileInfo> fileInfos = fileInfoPersistence.findByC_R_P(
+			companyId, repositoryId, path, 0, 1, orderByComparator);
 
 		if ((fileInfos == null) || fileInfos.isEmpty()) {
 			throw new NoSuchFileInfoException(path);
@@ -146,11 +149,12 @@ public class FileInfoLocalServiceImpl extends FileInfoLocalServiceBaseImpl {
 	}
 
 	@Override
-	public FileInfo getFileInfo(long companyId, long repositoryId, String path,
-			String version) throws NoSuchFileInfoException, SystemException {
+	public FileInfo getFileInfo(
+			long companyId, long repositoryId, String path, String version) 
+		throws NoSuchFileInfoException, SystemException {
 
-		FileInfo fileInfo = fileInfoPersistence.findByC_R_P_V(companyId,
-				repositoryId, path, version);
+		FileInfo fileInfo = fileInfoPersistence.findByC_R_P_V(
+			companyId, repositoryId, path, version);
 
 		return fileInfo;
 	}
@@ -163,15 +167,17 @@ public class FileInfoLocalServiceImpl extends FileInfoLocalServiceBaseImpl {
 	}
 
 	@Override
-	public List<FileInfo> getFileInfos(long companyId, long repositoryId,
-			String path) throws SystemException {
+	public List<FileInfo> getFileInfos(
+			long companyId, long repositoryId, String path)
+		throws SystemException {
 
 		return fileInfoPersistence.findByC_R_P(companyId, repositoryId, path);
 	}
 
 	@Override
-	public List<FileInfo> getFileInfosByDirectory(long companyId,
-			long repositoryId, String dirName) throws SystemException {
+	public List<FileInfo> getFileInfosByDirectory(
+			long companyId, long repositoryId, String dirName)
+		throws SystemException {
 
 		if (!dirName.endsWith(StringPool.SLASH)) {
 			dirName = dirName.concat(StringPool.SLASH);
@@ -179,13 +185,15 @@ public class FileInfoLocalServiceImpl extends FileInfoLocalServiceBaseImpl {
 
 		dirName = dirName.concat(StringPool.PERCENT);
 
-		return fileInfoPersistence.findByC_R_LikeP(companyId, repositoryId,
-				dirName);
+		return fileInfoPersistence.findByC_R_LikeP(
+			companyId, repositoryId, dirName);
 	}
 
 	@Override
-	public InputStream getFileAsStream(long companyId, long repositoryId,
-			String fileName) throws PortalException, SystemException {
+	public InputStream getFileAsStream(
+			long companyId, long repositoryId, String fileName) 
+		throws PortalException, SystemException {
+
 		FileInfo fileInfo = getFileInfo(companyId, repositoryId, fileName);
 		
 		return fileDataLocalService.getFileInputStream(
@@ -193,12 +201,12 @@ public class FileInfoLocalServiceImpl extends FileInfoLocalServiceBaseImpl {
 	}
 
 	@Override
-	public InputStream getFileAsStream(long companyId, long repositoryId,
-			String fileName, String version) throws PortalException,
-			SystemException {		
+	public InputStream getFileAsStream(
+			long companyId, long repositoryId, String fileName, String version) 
+		throws PortalException, SystemException {		
 		
-		FileInfo fileInfo = getFileInfo(companyId, repositoryId, fileName,
-				version);
+		FileInfo fileInfo = getFileInfo(
+			companyId, repositoryId, fileName, version);
 		
 		return fileDataLocalService.getFileInputStream(
 			fileInfo.getFileDataId());
@@ -208,8 +216,8 @@ public class FileInfoLocalServiceImpl extends FileInfoLocalServiceBaseImpl {
 	public boolean hasFileInfo(long companyId, long repositoryId, String path,
 			String version) throws SystemException {
 
-		int count = fileInfoPersistence.countByC_R_P_V(companyId, repositoryId,
-			path, version);
+		int count = fileInfoPersistence.countByC_R_P_V(
+			companyId, repositoryId, path, version);
 
 		if (count > 0) {
 			return true;
