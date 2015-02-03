@@ -58,40 +58,10 @@ public class FileInfoLocalServiceImpl extends FileInfoLocalServiceBaseImpl {
 	 * com.sohlman.liferay.bffss.service.FileInfoLocalServiceUtil} to access the
 	 * file info local service.
 	 */
+	
 	@Override
 	public FileInfo addFileInfo(long companyId, long repositoryId, String path,
-			String version, byte[] bytes) throws SystemException {
-
-		InputStream inputStream = null;
-
-		try {
-			long fileInfoId = counterLocalService.increment(FileInfo.class
-					.getName());
-
-			FileInfo fileInfo = fileInfoPersistence.create(fileInfoId);
-
-			fileInfo.setCompanyId(companyId);
-			fileInfo.setRepositoryId(repositoryId);
-			fileInfo.setPath(path);
-			fileInfo.setVersion(version);
-
-			UnsyncByteArrayInputStream unsyncByteArrayInputStream = 
-				new UnsyncByteArrayInputStream(bytes);
-
-			inputStream = new UnsyncByteArrayInputStream(bytes);
-			storeFileInfo(fileInfo, bytes.length, inputStream);
-
-			fileInfoPersistence.update(fileInfo);
-
-			return fileInfo;
-		} finally {
-			StreamUtil.cleanUp(inputStream);
-		}
-	}
-
-	@Override
-	public FileInfo addFileInfo(long companyId, long repositoryId, String path,
-			String version, InputStream inputStream, long size)
+			String version, InputStream inputStream)
 			throws SystemException {
 
 		long fileId = counterLocalService.increment(FileInfo.class.getName());
@@ -103,17 +73,18 @@ public class FileInfoLocalServiceImpl extends FileInfoLocalServiceBaseImpl {
 		fileInfo.setPath(path);
 		fileInfo.setVersion(version);
 
-		storeFileInfo(fileInfo, size, inputStream);
+		storeFileInfo(fileInfo, inputStream);
 
 		fileInfoPersistence.update(fileInfo);
 
 		return fileInfo;
 	}
 
-	protected void storeFileInfo(FileInfo fileInfo, long size,
-			InputStream inputStream) throws SystemException {
+	protected void storeFileInfo(FileInfo fileInfo, InputStream inputStream) 
+			throws SystemException {
+
 		FileData fileData = fileDataLocalService.addFileData(
-			fileInfo.getCompanyId(), size, inputStream);
+			fileInfo.getCompanyId(), inputStream);
 		fileInfo.setFileDataId(fileData.getFileDataId());
 	}
 

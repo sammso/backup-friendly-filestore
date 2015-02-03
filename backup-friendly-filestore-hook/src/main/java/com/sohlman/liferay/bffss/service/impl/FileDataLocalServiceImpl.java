@@ -64,8 +64,9 @@ public class FileDataLocalServiceImpl extends FileDataLocalServiceBaseImpl {
 	 * com.sohlman.liferay.bffss.service.FileDataLocalServiceUtil} to access the
 	 * file data local service.
 	 */
-	public FileData addFileData(long companyId, long size,
-			InputStream inputStream) throws SystemException {
+	public FileData addFileData(long companyId, InputStream inputStream) 
+			throws SystemException {
+
 		OutputStream outputStream = null;
 
 		MessageDigest messageDigest = null;
@@ -88,6 +89,7 @@ public class FileDataLocalServiceImpl extends FileDataLocalServiceBaseImpl {
 
 			int read = 0;
 			byte[] bytes = new byte[1024]; 
+			long size = 0;
 
 			// TODO: Make fingerprint algorithm configurable.
 			
@@ -95,9 +97,9 @@ public class FileDataLocalServiceImpl extends FileDataLocalServiceBaseImpl {
 
 			while ((read = inputStream.read(bytes)) != -1) {
 				outputStream.write(bytes, 0, read);
-				
 				if (read > 0) {
 					messageDigest.update(bytes, 0, read);
+					size = size + read;
 				}
 			}
 
