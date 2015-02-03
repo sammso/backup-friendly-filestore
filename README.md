@@ -7,9 +7,9 @@ Backup Friendly Filesystem Storage just shortly abbreviated as BFFSS is a Lifera
 
 ## How it does work:
 
-BFFSS does not actually remove files from the filesystem, but only "marks" those as deleted and the file status will be handled at Database Level. The File name is Unique Id so the probability of the collision even case of rollback is minimal.
+BFFSS does not actually remove files from the filesystem, but only "marks" those as deleted and the file status will be handled at database Level. The filesystem filename is unique by having Random + UUID so the probability of the collision even case of rollback is unexistent.
 
-BFFSS also is also optimising file system usage by _**trying**_ to store every file only once. There are use cases that there might be same file twice, example use cases when two same files are uploaded same time.
+BFFSS also is also optimising file system usage by _**trying**_ to store every file only once. There are use cases that there might be same file twice, example use cases when two same files are uploaded same time. 
 
 ## Disclaimer: 
 
