@@ -55,7 +55,6 @@
 		<column name="createDate" type="Date" />
 		<column name="name" type="String" />
 		<column name="size" type="long" />
-		<column name="deletedTimestamp" type="long" />
 		<column name="fingerprint" type="String" />
 		<finder name="FingerPrint" return-type="Collection" unique="false">
 			<finder-column name="fingerprint" />

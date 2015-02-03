@@ -79,8 +79,6 @@ public class FileDataLocalServiceImpl extends FileDataLocalServiceBaseImpl {
 
 			fileData.setName(Util.generateUniqName());
 			fileData.setCreateDate(new Date());
-			// TODO: Remember to remove this field:
-			fileData.setDeletedTimestamp(0L);
 
 			file = getFile(fileData);
 
