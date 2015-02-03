@@ -7,6 +7,7 @@ import org.junit.Test;
 public class UtilTest {
 	@Test
 	public void testPrefixZero() {
+		Assert.assertEquals("0000", Util.prefixZero(""));
 		Assert.assertEquals("000A", Util.prefixZero("A"));
 		Assert.assertEquals("00AA", Util.prefixZero("AA"));
 		Assert.assertEquals("0AAA", Util.prefixZero("AAA"));

@@ -49,7 +49,7 @@ public abstract class Util {
 			numberString.length() <= 4 ? numberString : numberString.substring(
 				0, 4);
 		
-		return _ZEROS[numberString.length() - 1].concat(numberString);
+		return _ZEROS[numberString.length()].concat(numberString);
 	}
 
 	/**
@@ -62,7 +62,7 @@ public abstract class Util {
 					.toUpperCase();
 	}
 	
-	final private static String[] _ZEROS = {"000", "00", "0", "" };
+	final private static String[] _ZEROS = {"0000", "000", "00", "0", "" };
 	
 	final private static char[] _charArray = "0123456789ABCDEF".toCharArray();
 }
