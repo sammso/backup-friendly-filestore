@@ -13,7 +13,6 @@
 		<property name="createDate" type="org.hibernate.type.TimestampType" />
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="size" type="com.liferay.portal.dao.orm.hibernate.LongType" column="size_" />
-		<property name="deletedTimestamp" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="fingerprint" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.sohlman.liferay.bffss.model.impl.FileInfoImpl" table="bffss_FileInfo">

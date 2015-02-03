@@ -42,7 +42,6 @@ public class FileDataWrapper implements FileData, ModelWrapper<FileData> {
         attributes.put("createDate", getCreateDate());
         attributes.put("name", getName());
         attributes.put("size", getSize());
-        attributes.put("deletedTimestamp", getDeletedTimestamp());
         attributes.put("fingerprint", getFingerprint());
 
         return attributes;
@@ -78,12 +77,6 @@ public class FileDataWrapper implements FileData, ModelWrapper<FileData> {
 
         if (size != null) {
             setSize(size);
-        }
-
-        Long deletedTimestamp = (Long) attributes.get("deletedTimestamp");
-
-        if (deletedTimestamp != null) {
-            setDeletedTimestamp(deletedTimestamp);
         }
 
         String fingerprint = (String) attributes.get("fingerprint");
@@ -211,26 +204,6 @@ public class FileDataWrapper implements FileData, ModelWrapper<FileData> {
     @Override
     public void setSize(long size) {
         _fileData.setSize(size);
-    }
-
-    /**
-    * Returns the deleted timestamp of this file data.
-    *
-    * @return the deleted timestamp of this file data
-    */
-    @Override
-    public long getDeletedTimestamp() {
-        return _fileData.getDeletedTimestamp();
-    }
-
-    /**
-    * Sets the deleted timestamp of this file data.
-    *
-    * @param deletedTimestamp the deleted timestamp of this file data
-    */
-    @Override
-    public void setDeletedTimestamp(long deletedTimestamp) {
-        _fileData.setDeletedTimestamp(deletedTimestamp);
     }
 
     /**

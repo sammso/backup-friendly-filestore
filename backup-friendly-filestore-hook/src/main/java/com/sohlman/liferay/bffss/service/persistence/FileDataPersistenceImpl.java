@@ -870,7 +870,6 @@ public class FileDataPersistenceImpl extends BasePersistenceImpl<FileData>
         fileDataImpl.setCreateDate(fileData.getCreateDate());
         fileDataImpl.setName(fileData.getName());
         fileDataImpl.setSize(fileData.getSize());
-        fileDataImpl.setDeletedTimestamp(fileData.getDeletedTimestamp());
         fileDataImpl.setFingerprint(fileData.getFingerprint());
 
         return fileDataImpl;

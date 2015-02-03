@@ -25,7 +25,6 @@ public class FileDataClp extends BaseModelImpl<FileData> implements FileData {
     private Date _createDate;
     private String _name;
     private long _size;
-    private long _deletedTimestamp;
     private String _fingerprint;
     private BaseModel<?> _fileDataRemoteModel;
     private Class<?> _clpSerializerClass = com.sohlman.liferay.bffss.service.ClpSerializer.class;
@@ -72,7 +71,6 @@ public class FileDataClp extends BaseModelImpl<FileData> implements FileData {
         attributes.put("createDate", getCreateDate());
         attributes.put("name", getName());
         attributes.put("size", getSize());
-        attributes.put("deletedTimestamp", getDeletedTimestamp());
         attributes.put("fingerprint", getFingerprint());
 
         return attributes;
@@ -108,12 +106,6 @@ public class FileDataClp extends BaseModelImpl<FileData> implements FileData {
 
         if (size != null) {
             setSize(size);
-        }
-
-        Long deletedTimestamp = (Long) attributes.get("deletedTimestamp");
-
-        if (deletedTimestamp != null) {
-            setDeletedTimestamp(deletedTimestamp);
         }
 
         String fingerprint = (String) attributes.get("fingerprint");
@@ -234,29 +226,6 @@ public class FileDataClp extends BaseModelImpl<FileData> implements FileData {
     }
 
     @Override
-    public long getDeletedTimestamp() {
-        return _deletedTimestamp;
-    }
-
-    @Override
-    public void setDeletedTimestamp(long deletedTimestamp) {
-        _deletedTimestamp = deletedTimestamp;
-
-        if (_fileDataRemoteModel != null) {
-            try {
-                Class<?> clazz = _fileDataRemoteModel.getClass();
-
-                Method method = clazz.getMethod("setDeletedTimestamp",
-                        long.class);
-
-                method.invoke(_fileDataRemoteModel, deletedTimestamp);
-            } catch (Exception e) {
-                throw new UnsupportedOperationException(e);
-            }
-        }
-    }
-
-    @Override
     public String getFingerprint() {
         return _fingerprint;
     }
@@ -350,7 +319,6 @@ public class FileDataClp extends BaseModelImpl<FileData> implements FileData {
         clone.setCreateDate(getCreateDate());
         clone.setName(getName());
         clone.setSize(getSize());
-        clone.setDeletedTimestamp(getDeletedTimestamp());
         clone.setFingerprint(getFingerprint());
 
         return clone;
@@ -401,7 +369,7 @@ public class FileDataClp extends BaseModelImpl<FileData> implements FileData {
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(15);
+        StringBundler sb = new StringBundler(13);
 
         sb.append("{fileDataId=");
         sb.append(getFileDataId());
@@ -413,8 +381,6 @@ public class FileDataClp extends BaseModelImpl<FileData> implements FileData {
         sb.append(getName());
         sb.append(", size=");
         sb.append(getSize());
-        sb.append(", deletedTimestamp=");
-        sb.append(getDeletedTimestamp());
         sb.append(", fingerprint=");
         sb.append(getFingerprint());
         sb.append("}");
@@ -424,7 +390,7 @@ public class FileDataClp extends BaseModelImpl<FileData> implements FileData {
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(25);
+        StringBundler sb = new StringBundler(22);
 
         sb.append("<model><model-name>");
         sb.append("com.sohlman.liferay.bffss.model.FileData");
@@ -449,10 +415,6 @@ public class FileDataClp extends BaseModelImpl<FileData> implements FileData {
         sb.append(
             "<column><column-name>size</column-name><column-value><![CDATA[");
         sb.append(getSize());
-        sb.append("]]></column-value></column>");
-        sb.append(
-            "<column><column-name>deletedTimestamp</column-name><column-value><![CDATA[");
-        sb.append(getDeletedTimestamp());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>fingerprint</column-name><column-value><![CDATA[");

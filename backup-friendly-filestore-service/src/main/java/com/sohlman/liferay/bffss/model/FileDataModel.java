@@ -117,20 +117,6 @@ public interface FileDataModel extends BaseModel<FileData> {
     public void setSize(long size);
 
     /**
-     * Returns the deleted timestamp of this file data.
-     *
-     * @return the deleted timestamp of this file data
-     */
-    public long getDeletedTimestamp();
-
-    /**
-     * Sets the deleted timestamp of this file data.
-     *
-     * @param deletedTimestamp the deleted timestamp of this file data
-     */
-    public void setDeletedTimestamp(long deletedTimestamp);
-
-    /**
      * Returns the fingerprint of this file data.
      *
      * @return the fingerprint of this file data

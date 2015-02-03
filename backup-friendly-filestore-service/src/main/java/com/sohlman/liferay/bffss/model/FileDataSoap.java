@@ -18,7 +18,6 @@ public class FileDataSoap implements Serializable {
     private Date _createDate;
     private String _name;
     private long _size;
-    private long _deletedTimestamp;
     private String _fingerprint;
 
     public FileDataSoap() {
@@ -32,7 +31,6 @@ public class FileDataSoap implements Serializable {
         soapModel.setCreateDate(model.getCreateDate());
         soapModel.setName(model.getName());
         soapModel.setSize(model.getSize());
-        soapModel.setDeletedTimestamp(model.getDeletedTimestamp());
         soapModel.setFingerprint(model.getFingerprint());
 
         return soapModel;
@@ -120,14 +118,6 @@ public class FileDataSoap implements Serializable {
 
     public void setSize(long size) {
         _size = size;
-    }
-
-    public long getDeletedTimestamp() {
-        return _deletedTimestamp;
-    }
-
-    public void setDeletedTimestamp(long deletedTimestamp) {
-        _deletedTimestamp = deletedTimestamp;
     }
 
     public String getFingerprint() {

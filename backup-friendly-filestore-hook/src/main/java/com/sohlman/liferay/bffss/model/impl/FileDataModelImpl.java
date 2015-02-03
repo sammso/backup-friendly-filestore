@@ -50,10 +50,9 @@ public class FileDataModelImpl extends BaseModelImpl<FileData>
             { "createDate", Types.TIMESTAMP },
             { "name", Types.VARCHAR },
             { "size_", Types.BIGINT },
-            { "deletedTimestamp", Types.BIGINT },
             { "fingerprint", Types.VARCHAR }
         };
-    public static final String TABLE_SQL_CREATE = "create table bffss_FileData (fileDataId LONG not null primary key,companyId LONG,createDate DATE null,name VARCHAR(75) null,size_ LONG,deletedTimestamp LONG,fingerprint VARCHAR(75) null)";
+    public static final String TABLE_SQL_CREATE = "create table bffss_FileData (fileDataId LONG not null primary key,companyId LONG,createDate DATE null,name VARCHAR(75) null,size_ LONG,fingerprint VARCHAR(75) null)";
     public static final String TABLE_SQL_DROP = "drop table bffss_FileData";
     public static final String ORDER_BY_JPQL = " ORDER BY fileData.fileDataId ASC";
     public static final String ORDER_BY_SQL = " ORDER BY bffss_FileData.fileDataId ASC";
@@ -82,7 +81,6 @@ public class FileDataModelImpl extends BaseModelImpl<FileData>
     private Date _createDate;
     private String _name;
     private long _size;
-    private long _deletedTimestamp;
     private String _fingerprint;
     private String _originalFingerprint;
     private long _columnBitmask;
@@ -130,7 +128,6 @@ public class FileDataModelImpl extends BaseModelImpl<FileData>
         attributes.put("createDate", getCreateDate());
         attributes.put("name", getName());
         attributes.put("size", getSize());
-        attributes.put("deletedTimestamp", getDeletedTimestamp());
         attributes.put("fingerprint", getFingerprint());
 
         return attributes;
@@ -166,12 +163,6 @@ public class FileDataModelImpl extends BaseModelImpl<FileData>
 
         if (size != null) {
             setSize(size);
-        }
-
-        Long deletedTimestamp = (Long) attributes.get("deletedTimestamp");
-
-        if (deletedTimestamp != null) {
-            setDeletedTimestamp(deletedTimestamp);
         }
 
         String fingerprint = (String) attributes.get("fingerprint");
@@ -236,16 +227,6 @@ public class FileDataModelImpl extends BaseModelImpl<FileData>
     }
 
     @Override
-    public long getDeletedTimestamp() {
-        return _deletedTimestamp;
-    }
-
-    @Override
-    public void setDeletedTimestamp(long deletedTimestamp) {
-        _deletedTimestamp = deletedTimestamp;
-    }
-
-    @Override
     public String getFingerprint() {
         if (_fingerprint == null) {
             return StringPool.BLANK;
@@ -305,7 +286,6 @@ public class FileDataModelImpl extends BaseModelImpl<FileData>
         fileDataImpl.setCreateDate(getCreateDate());
         fileDataImpl.setName(getName());
         fileDataImpl.setSize(getSize());
-        fileDataImpl.setDeletedTimestamp(getDeletedTimestamp());
         fileDataImpl.setFingerprint(getFingerprint());
 
         fileDataImpl.resetOriginalValues();
@@ -387,8 +367,6 @@ public class FileDataModelImpl extends BaseModelImpl<FileData>
 
         fileDataCacheModel.size = getSize();
 
-        fileDataCacheModel.deletedTimestamp = getDeletedTimestamp();
-
         fileDataCacheModel.fingerprint = getFingerprint();
 
         String fingerprint = fileDataCacheModel.fingerprint;
@@ -402,7 +380,7 @@ public class FileDataModelImpl extends BaseModelImpl<FileData>
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(15);
+        StringBundler sb = new StringBundler(13);
 
         sb.append("{fileDataId=");
         sb.append(getFileDataId());
@@ -414,8 +392,6 @@ public class FileDataModelImpl extends BaseModelImpl<FileData>
         sb.append(getName());
         sb.append(", size=");
         sb.append(getSize());
-        sb.append(", deletedTimestamp=");
-        sb.append(getDeletedTimestamp());
         sb.append(", fingerprint=");
         sb.append(getFingerprint());
         sb.append("}");
@@ -425,7 +401,7 @@ public class FileDataModelImpl extends BaseModelImpl<FileData>
 
     @Override
     public String toXmlString() {
-        StringBundler sb = new StringBundler(25);
+        StringBundler sb = new StringBundler(22);
 
         sb.append("<model><model-name>");
         sb.append("com.sohlman.liferay.bffss.model.FileData");
@@ -450,10 +426,6 @@ public class FileDataModelImpl extends BaseModelImpl<FileData>
         sb.append(
             "<column><column-name>size</column-name><column-value><![CDATA[");
         sb.append(getSize());
-        sb.append("]]></column-value></column>");
-        sb.append(
-            "<column><column-name>deletedTimestamp</column-name><column-value><![CDATA[");
-        sb.append(getDeletedTimestamp());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>fingerprint</column-name><column-value><![CDATA[");

@@ -7,7 +7,6 @@
 		<field name="createDate" type="Date" />
 		<field name="name" type="String" />
 		<field name="size" type="long" />
-		<field name="deletedTimestamp" type="long" />
 		<field name="fingerprint" type="String" />
 	</model>
 	<model name="com.sohlman.liferay.bffss.model.FileInfo">

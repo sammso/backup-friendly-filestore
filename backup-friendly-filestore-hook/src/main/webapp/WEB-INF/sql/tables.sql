@@ -4,7 +4,6 @@ create table bffss_FileData (
 	createDate DATE null,
 	name VARCHAR(75) null,
 	size_ LONG,
-	deletedTimestamp LONG,
 	fingerprint VARCHAR(75) null
 );
 

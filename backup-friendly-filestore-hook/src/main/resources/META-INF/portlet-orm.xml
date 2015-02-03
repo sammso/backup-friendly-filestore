@@ -18,7 +18,6 @@
 			<basic name="size">
 				<column name="SIZE_" />
 			</basic>
-			<basic name="deletedTimestamp" />
 			<basic name="fingerprint" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />

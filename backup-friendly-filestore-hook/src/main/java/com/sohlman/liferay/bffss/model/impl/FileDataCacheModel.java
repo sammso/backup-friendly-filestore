@@ -26,12 +26,11 @@ public class FileDataCacheModel implements CacheModel<FileData>, Externalizable 
     public long createDate;
     public String name;
     public long size;
-    public long deletedTimestamp;
     public String fingerprint;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(15);
+        StringBundler sb = new StringBundler(13);
 
         sb.append("{fileDataId=");
         sb.append(fileDataId);
@@ -43,8 +42,6 @@ public class FileDataCacheModel implements CacheModel<FileData>, Externalizable 
         sb.append(name);
         sb.append(", size=");
         sb.append(size);
-        sb.append(", deletedTimestamp=");
-        sb.append(deletedTimestamp);
         sb.append(", fingerprint=");
         sb.append(fingerprint);
         sb.append("}");
@@ -72,7 +69,6 @@ public class FileDataCacheModel implements CacheModel<FileData>, Externalizable 
         }
 
         fileDataImpl.setSize(size);
-        fileDataImpl.setDeletedTimestamp(deletedTimestamp);
 
         if (fingerprint == null) {
             fileDataImpl.setFingerprint(StringPool.BLANK);
@@ -92,7 +88,6 @@ public class FileDataCacheModel implements CacheModel<FileData>, Externalizable 
         createDate = objectInput.readLong();
         name = objectInput.readUTF();
         size = objectInput.readLong();
-        deletedTimestamp = objectInput.readLong();
         fingerprint = objectInput.readUTF();
     }
 
@@ -110,7 +105,6 @@ public class FileDataCacheModel implements CacheModel<FileData>, Externalizable 
         }
 
         objectOutput.writeLong(size);
-        objectOutput.writeLong(deletedTimestamp);
 
         if (fingerprint == null) {
             objectOutput.writeUTF(StringPool.BLANK);
