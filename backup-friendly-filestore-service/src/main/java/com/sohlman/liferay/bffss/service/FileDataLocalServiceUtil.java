@@ -263,6 +263,25 @@ public class FileDataLocalServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
+    public static com.sohlman.liferay.bffss.model.FileData addFileData(
+        long companyId, long size, java.io.InputStream inputStream)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().addFileData(companyId, size, inputStream);
+    }
+
+    public static java.io.InputStream getFileInputStream(long fileDataId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getFileInputStream(fileDataId);
+    }
+
+    public static java.io.InputStream getFileInputStream(
+        com.sohlman.liferay.bffss.model.FileData fileData)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getFileInputStream(fileData);
+    }
+
     public static void clearService() {
         _service = null;
     }

@@ -45,6 +45,12 @@ public class FileDataLocalServiceClpInvoker {
     private String[] _methodParameterTypes36;
     private String _methodName37;
     private String[] _methodParameterTypes37;
+    private String _methodName42;
+    private String[] _methodParameterTypes42;
+    private String _methodName43;
+    private String[] _methodParameterTypes43;
+    private String _methodName44;
+    private String[] _methodParameterTypes44;
 
     public FileDataLocalServiceClpInvoker() {
         _methodName0 = "addFileData";
@@ -136,6 +142,22 @@ public class FileDataLocalServiceClpInvoker {
         _methodName37 = "setBeanIdentifier";
 
         _methodParameterTypes37 = new String[] { "java.lang.String" };
+
+        _methodName42 = "addFileData";
+
+        _methodParameterTypes42 = new String[] {
+                "long", "long", "java.io.InputStream"
+            };
+
+        _methodName43 = "getFileInputStream";
+
+        _methodParameterTypes43 = new String[] { "long" };
+
+        _methodName44 = "getFileInputStream";
+
+        _methodParameterTypes44 = new String[] {
+                "com.sohlman.liferay.bffss.model.FileData"
+            };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -237,6 +259,23 @@ public class FileDataLocalServiceClpInvoker {
             FileDataLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
+        }
+
+        if (_methodName42.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes42, parameterTypes)) {
+            return FileDataLocalServiceUtil.addFileData(((Long) arguments[0]).longValue(),
+                ((Long) arguments[1]).longValue(),
+                (java.io.InputStream) arguments[2]);
+        }
+
+        if (_methodName43.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes43, parameterTypes)) {
+            return FileDataLocalServiceUtil.getFileInputStream(((Long) arguments[0]).longValue());
+        }
+
+        if (_methodName44.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes44, parameterTypes)) {
+            return FileDataLocalServiceUtil.getFileInputStream((com.sohlman.liferay.bffss.model.FileData) arguments[0]);
         }
 
         throw new UnsupportedOperationException();

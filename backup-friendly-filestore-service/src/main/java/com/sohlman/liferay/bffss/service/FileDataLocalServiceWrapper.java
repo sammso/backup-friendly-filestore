@@ -273,6 +273,28 @@ public class FileDataLocalServiceWrapper implements FileDataLocalService,
             arguments);
     }
 
+    @Override
+    public com.sohlman.liferay.bffss.model.FileData addFileData(
+        long companyId, long size, java.io.InputStream inputStream)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return _fileDataLocalService.addFileData(companyId, size, inputStream);
+    }
+
+    @Override
+    public java.io.InputStream getFileInputStream(long fileDataId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _fileDataLocalService.getFileInputStream(fileDataId);
+    }
+
+    @Override
+    public java.io.InputStream getFileInputStream(
+        com.sohlman.liferay.bffss.model.FileData fileData)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return _fileDataLocalService.getFileInputStream(fileData);
+    }
+
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

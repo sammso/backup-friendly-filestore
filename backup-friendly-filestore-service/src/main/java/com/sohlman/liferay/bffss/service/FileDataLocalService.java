@@ -239,4 +239,19 @@ public interface FileDataLocalService extends BaseLocalService,
     public java.lang.Object invokeMethod(java.lang.String name,
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable;
+
+    public com.sohlman.liferay.bffss.model.FileData addFileData(
+        long companyId, long size, java.io.InputStream inputStream)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.io.InputStream getFileInputStream(long fileDataId)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.io.InputStream getFileInputStream(
+        com.sohlman.liferay.bffss.model.FileData fileData)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
 }

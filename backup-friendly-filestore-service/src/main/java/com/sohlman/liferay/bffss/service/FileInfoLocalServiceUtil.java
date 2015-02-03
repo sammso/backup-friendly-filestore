@@ -263,6 +263,107 @@ public class FileInfoLocalServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
+    public static com.sohlman.liferay.bffss.model.FileInfo addFileInfo(
+        long companyId, long repositoryId, java.lang.String path,
+        java.lang.String version, byte[] bytes)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .addFileInfo(companyId, repositoryId, path, version, bytes);
+    }
+
+    public static com.sohlman.liferay.bffss.model.FileInfo addFileInfo(
+        long companyId, long repositoryId, java.lang.String path,
+        java.lang.String version, java.io.InputStream inputStream, long size)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .addFileInfo(companyId, repositoryId, path, version,
+            inputStream, size);
+    }
+
+    public static void deleteFileInfo(long companyId, long repositoryId,
+        java.lang.String path, java.lang.String version)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService().deleteFileInfo(companyId, repositoryId, path, version);
+    }
+
+    public static void deleteFileInfos(long companyId, long repositoryId,
+        java.lang.String path)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService().deleteFileInfos(companyId, repositoryId, path);
+    }
+
+    public static void deleteFileInfosByDirectory(long companyId,
+        long repositoryId, java.lang.String dirName)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        getService().deleteFileInfosByDirectory(companyId, repositoryId, dirName);
+    }
+
+    public static com.sohlman.liferay.bffss.model.FileInfo getFileInfo(
+        long companyId, long repositoryId, java.lang.String path)
+        throws com.liferay.portal.kernel.exception.SystemException,
+            com.sohlman.liferay.bffss.NoSuchFileInfoException {
+        return getService().getFileInfo(companyId, repositoryId, path);
+    }
+
+    public static com.sohlman.liferay.bffss.model.FileInfo getFileInfo(
+        long companyId, long repositoryId, java.lang.String path,
+        java.lang.String version)
+        throws com.liferay.portal.kernel.exception.SystemException,
+            com.sohlman.liferay.bffss.NoSuchFileInfoException {
+        return getService().getFileInfo(companyId, repositoryId, path, version);
+    }
+
+    public static java.util.List<com.sohlman.liferay.bffss.model.FileInfo> getFileInfos(
+        long companyId, long repositoryId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getFileInfos(companyId, repositoryId);
+    }
+
+    public static java.util.List<com.sohlman.liferay.bffss.model.FileInfo> getFileInfos(
+        long companyId, long repositoryId, java.lang.String path)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().getFileInfos(companyId, repositoryId, path);
+    }
+
+    public static java.util.List<com.sohlman.liferay.bffss.model.FileInfo> getFileInfosByDirectory(
+        long companyId, long repositoryId, java.lang.String dirName)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .getFileInfosByDirectory(companyId, repositoryId, dirName);
+    }
+
+    public static java.io.InputStream getFileAsStream(long companyId,
+        long repositoryId, java.lang.String fileName)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService().getFileAsStream(companyId, repositoryId, fileName);
+    }
+
+    public static java.io.InputStream getFileAsStream(long companyId,
+        long repositoryId, java.lang.String fileName, java.lang.String version)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        return getService()
+                   .getFileAsStream(companyId, repositoryId, fileName, version);
+    }
+
+    public static boolean hasFileInfo(long companyId, long repositoryId,
+        java.lang.String path, java.lang.String version)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        return getService().hasFileInfo(companyId, repositoryId, path, version);
+    }
+
+    public static void updateFileInfo(long companyId, long oldRepositoryId,
+        long newRepositoryId, java.lang.String oldPath, java.lang.String newPath)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        getService()
+            .updateFileInfo(companyId, oldRepositoryId, newRepositoryId,
+            oldPath, newPath);
+    }
+
     public static void clearService() {
         _service = null;
     }

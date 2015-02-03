@@ -44,6 +44,34 @@ public class FileInfoLocalServiceClp implements FileInfoLocalService {
     private String[] _methodParameterTypes16;
     private String _methodName17;
     private String[] _methodParameterTypes17;
+    private String _methodName19;
+    private String[] _methodParameterTypes19;
+    private String _methodName20;
+    private String[] _methodParameterTypes20;
+    private String _methodName21;
+    private String[] _methodParameterTypes21;
+    private String _methodName22;
+    private String[] _methodParameterTypes22;
+    private String _methodName23;
+    private String[] _methodParameterTypes23;
+    private String _methodName24;
+    private String[] _methodParameterTypes24;
+    private String _methodName25;
+    private String[] _methodParameterTypes25;
+    private String _methodName26;
+    private String[] _methodParameterTypes26;
+    private String _methodName27;
+    private String[] _methodParameterTypes27;
+    private String _methodName28;
+    private String[] _methodParameterTypes28;
+    private String _methodName29;
+    private String[] _methodParameterTypes29;
+    private String _methodName30;
+    private String[] _methodParameterTypes30;
+    private String _methodName31;
+    private String[] _methodParameterTypes31;
+    private String _methodName32;
+    private String[] _methodParameterTypes32;
 
     public FileInfoLocalServiceClp(InvokableLocalService invokableLocalService) {
         _invokableLocalService = invokableLocalService;
@@ -137,6 +165,90 @@ public class FileInfoLocalServiceClp implements FileInfoLocalService {
         _methodName17 = "setBeanIdentifier";
 
         _methodParameterTypes17 = new String[] { "java.lang.String" };
+
+        _methodName19 = "addFileInfo";
+
+        _methodParameterTypes19 = new String[] {
+                "long", "long", "java.lang.String", "java.lang.String",
+                "byte[][]"
+            };
+
+        _methodName20 = "addFileInfo";
+
+        _methodParameterTypes20 = new String[] {
+                "long", "long", "java.lang.String", "java.lang.String",
+                "java.io.InputStream", "long"
+            };
+
+        _methodName21 = "deleteFileInfo";
+
+        _methodParameterTypes21 = new String[] {
+                "long", "long", "java.lang.String", "java.lang.String"
+            };
+
+        _methodName22 = "deleteFileInfos";
+
+        _methodParameterTypes22 = new String[] {
+                "long", "long", "java.lang.String"
+            };
+
+        _methodName23 = "deleteFileInfosByDirectory";
+
+        _methodParameterTypes23 = new String[] {
+                "long", "long", "java.lang.String"
+            };
+
+        _methodName24 = "getFileInfo";
+
+        _methodParameterTypes24 = new String[] {
+                "long", "long", "java.lang.String"
+            };
+
+        _methodName25 = "getFileInfo";
+
+        _methodParameterTypes25 = new String[] {
+                "long", "long", "java.lang.String", "java.lang.String"
+            };
+
+        _methodName26 = "getFileInfos";
+
+        _methodParameterTypes26 = new String[] { "long", "long" };
+
+        _methodName27 = "getFileInfos";
+
+        _methodParameterTypes27 = new String[] {
+                "long", "long", "java.lang.String"
+            };
+
+        _methodName28 = "getFileInfosByDirectory";
+
+        _methodParameterTypes28 = new String[] {
+                "long", "long", "java.lang.String"
+            };
+
+        _methodName29 = "getFileAsStream";
+
+        _methodParameterTypes29 = new String[] {
+                "long", "long", "java.lang.String"
+            };
+
+        _methodName30 = "getFileAsStream";
+
+        _methodParameterTypes30 = new String[] {
+                "long", "long", "java.lang.String", "java.lang.String"
+            };
+
+        _methodName31 = "hasFileInfo";
+
+        _methodParameterTypes31 = new String[] {
+                "long", "long", "java.lang.String", "java.lang.String"
+            };
+
+        _methodName32 = "updateFileInfo";
+
+        _methodParameterTypes32 = new String[] {
+                "long", "long", "long", "java.lang.String", "java.lang.String"
+            };
     }
 
     @Override
@@ -650,5 +762,519 @@ public class FileInfoLocalServiceClp implements FileInfoLocalService {
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable {
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public com.sohlman.liferay.bffss.model.FileInfo addFileInfo(
+        long companyId, long repositoryId, java.lang.String path,
+        java.lang.String version, byte[] bytes)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName19,
+                    _methodParameterTypes19,
+                    new Object[] {
+                        companyId,
+                        
+                    repositoryId,
+                        
+                    ClpSerializer.translateInput(path),
+                        
+                    ClpSerializer.translateInput(version),
+                        
+                    ClpSerializer.translateInput(bytes)
+                    });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.sohlman.liferay.bffss.model.FileInfo) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public com.sohlman.liferay.bffss.model.FileInfo addFileInfo(
+        long companyId, long repositoryId, java.lang.String path,
+        java.lang.String version, java.io.InputStream inputStream, long size)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName20,
+                    _methodParameterTypes20,
+                    new Object[] {
+                        companyId,
+                        
+                    repositoryId,
+                        
+                    ClpSerializer.translateInput(path),
+                        
+                    ClpSerializer.translateInput(version),
+                        
+                    ClpSerializer.translateInput(inputStream),
+                        
+                    size
+                    });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.sohlman.liferay.bffss.model.FileInfo) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public void deleteFileInfo(long companyId, long repositoryId,
+        java.lang.String path, java.lang.String version)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        try {
+            _invokableLocalService.invokeMethod(_methodName21,
+                _methodParameterTypes21,
+                new Object[] {
+                    companyId,
+                    
+                repositoryId,
+                    
+                ClpSerializer.translateInput(path),
+                    
+                ClpSerializer.translateInput(version)
+                });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    @Override
+    public void deleteFileInfos(long companyId, long repositoryId,
+        java.lang.String path)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        try {
+            _invokableLocalService.invokeMethod(_methodName22,
+                _methodParameterTypes22,
+                new Object[] {
+                    companyId,
+                    
+                repositoryId,
+                    
+                ClpSerializer.translateInput(path)
+                });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    @Override
+    public void deleteFileInfosByDirectory(long companyId, long repositoryId,
+        java.lang.String dirName)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        try {
+            _invokableLocalService.invokeMethod(_methodName23,
+                _methodParameterTypes23,
+                new Object[] {
+                    companyId,
+                    
+                repositoryId,
+                    
+                ClpSerializer.translateInput(dirName)
+                });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+    }
+
+    @Override
+    public com.sohlman.liferay.bffss.model.FileInfo getFileInfo(
+        long companyId, long repositoryId, java.lang.String path)
+        throws com.liferay.portal.kernel.exception.SystemException,
+            com.sohlman.liferay.bffss.NoSuchFileInfoException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName24,
+                    _methodParameterTypes24,
+                    new Object[] {
+                        companyId,
+                        
+                    repositoryId,
+                        
+                    ClpSerializer.translateInput(path)
+                    });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof com.sohlman.liferay.bffss.NoSuchFileInfoException) {
+                throw (com.sohlman.liferay.bffss.NoSuchFileInfoException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.sohlman.liferay.bffss.model.FileInfo) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public com.sohlman.liferay.bffss.model.FileInfo getFileInfo(
+        long companyId, long repositoryId, java.lang.String path,
+        java.lang.String version)
+        throws com.liferay.portal.kernel.exception.SystemException,
+            com.sohlman.liferay.bffss.NoSuchFileInfoException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName25,
+                    _methodParameterTypes25,
+                    new Object[] {
+                        companyId,
+                        
+                    repositoryId,
+                        
+                    ClpSerializer.translateInput(path),
+                        
+                    ClpSerializer.translateInput(version)
+                    });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof com.sohlman.liferay.bffss.NoSuchFileInfoException) {
+                throw (com.sohlman.liferay.bffss.NoSuchFileInfoException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (com.sohlman.liferay.bffss.model.FileInfo) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public java.util.List<com.sohlman.liferay.bffss.model.FileInfo> getFileInfos(
+        long companyId, long repositoryId)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName26,
+                    _methodParameterTypes26,
+                    new Object[] { companyId, repositoryId });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.sohlman.liferay.bffss.model.FileInfo>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public java.util.List<com.sohlman.liferay.bffss.model.FileInfo> getFileInfos(
+        long companyId, long repositoryId, java.lang.String path)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName27,
+                    _methodParameterTypes27,
+                    new Object[] {
+                        companyId,
+                        
+                    repositoryId,
+                        
+                    ClpSerializer.translateInput(path)
+                    });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.sohlman.liferay.bffss.model.FileInfo>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public java.util.List<com.sohlman.liferay.bffss.model.FileInfo> getFileInfosByDirectory(
+        long companyId, long repositoryId, java.lang.String dirName)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName28,
+                    _methodParameterTypes28,
+                    new Object[] {
+                        companyId,
+                        
+                    repositoryId,
+                        
+                    ClpSerializer.translateInput(dirName)
+                    });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.util.List<com.sohlman.liferay.bffss.model.FileInfo>) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public java.io.InputStream getFileAsStream(long companyId,
+        long repositoryId, java.lang.String fileName)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName29,
+                    _methodParameterTypes29,
+                    new Object[] {
+                        companyId,
+                        
+                    repositoryId,
+                        
+                    ClpSerializer.translateInput(fileName)
+                    });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.io.InputStream) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public java.io.InputStream getFileAsStream(long companyId,
+        long repositoryId, java.lang.String fileName, java.lang.String version)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName30,
+                    _methodParameterTypes30,
+                    new Object[] {
+                        companyId,
+                        
+                    repositoryId,
+                        
+                    ClpSerializer.translateInput(fileName),
+                        
+                    ClpSerializer.translateInput(version)
+                    });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+                throw (com.liferay.portal.kernel.exception.PortalException) t;
+            }
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return (java.io.InputStream) ClpSerializer.translateOutput(returnObj);
+    }
+
+    @Override
+    public boolean hasFileInfo(long companyId, long repositoryId,
+        java.lang.String path, java.lang.String version)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        Object returnObj = null;
+
+        try {
+            returnObj = _invokableLocalService.invokeMethod(_methodName31,
+                    _methodParameterTypes31,
+                    new Object[] {
+                        companyId,
+                        
+                    repositoryId,
+                        
+                    ClpSerializer.translateInput(path),
+                        
+                    ClpSerializer.translateInput(version)
+                    });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
+
+        return ((Boolean) returnObj).booleanValue();
+    }
+
+    @Override
+    public void updateFileInfo(long companyId, long oldRepositoryId,
+        long newRepositoryId, java.lang.String oldPath, java.lang.String newPath)
+        throws com.liferay.portal.kernel.exception.SystemException {
+        try {
+            _invokableLocalService.invokeMethod(_methodName32,
+                _methodParameterTypes32,
+                new Object[] {
+                    companyId,
+                    
+                oldRepositoryId,
+                    
+                newRepositoryId,
+                    
+                ClpSerializer.translateInput(oldPath),
+                    
+                ClpSerializer.translateInput(newPath)
+                });
+        } catch (Throwable t) {
+            t = ClpSerializer.translateThrowable(t);
+
+            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+                throw (com.liferay.portal.kernel.exception.SystemException) t;
+            }
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else {
+                throw new RuntimeException(t.getClass().getName() +
+                    " is not a valid exception");
+            }
+        }
     }
 }

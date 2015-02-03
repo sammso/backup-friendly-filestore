@@ -45,6 +45,34 @@ public class FileInfoLocalServiceClpInvoker {
     private String[] _methodParameterTypes36;
     private String _methodName37;
     private String[] _methodParameterTypes37;
+    private String _methodName42;
+    private String[] _methodParameterTypes42;
+    private String _methodName43;
+    private String[] _methodParameterTypes43;
+    private String _methodName45;
+    private String[] _methodParameterTypes45;
+    private String _methodName46;
+    private String[] _methodParameterTypes46;
+    private String _methodName47;
+    private String[] _methodParameterTypes47;
+    private String _methodName48;
+    private String[] _methodParameterTypes48;
+    private String _methodName49;
+    private String[] _methodParameterTypes49;
+    private String _methodName50;
+    private String[] _methodParameterTypes50;
+    private String _methodName51;
+    private String[] _methodParameterTypes51;
+    private String _methodName52;
+    private String[] _methodParameterTypes52;
+    private String _methodName53;
+    private String[] _methodParameterTypes53;
+    private String _methodName54;
+    private String[] _methodParameterTypes54;
+    private String _methodName55;
+    private String[] _methodParameterTypes55;
+    private String _methodName56;
+    private String[] _methodParameterTypes56;
 
     public FileInfoLocalServiceClpInvoker() {
         _methodName0 = "addFileInfo";
@@ -136,6 +164,90 @@ public class FileInfoLocalServiceClpInvoker {
         _methodName37 = "setBeanIdentifier";
 
         _methodParameterTypes37 = new String[] { "java.lang.String" };
+
+        _methodName42 = "addFileInfo";
+
+        _methodParameterTypes42 = new String[] {
+                "long", "long", "java.lang.String", "java.lang.String",
+                "byte[][]"
+            };
+
+        _methodName43 = "addFileInfo";
+
+        _methodParameterTypes43 = new String[] {
+                "long", "long", "java.lang.String", "java.lang.String",
+                "java.io.InputStream", "long"
+            };
+
+        _methodName45 = "deleteFileInfo";
+
+        _methodParameterTypes45 = new String[] {
+                "long", "long", "java.lang.String", "java.lang.String"
+            };
+
+        _methodName46 = "deleteFileInfos";
+
+        _methodParameterTypes46 = new String[] {
+                "long", "long", "java.lang.String"
+            };
+
+        _methodName47 = "deleteFileInfosByDirectory";
+
+        _methodParameterTypes47 = new String[] {
+                "long", "long", "java.lang.String"
+            };
+
+        _methodName48 = "getFileInfo";
+
+        _methodParameterTypes48 = new String[] {
+                "long", "long", "java.lang.String"
+            };
+
+        _methodName49 = "getFileInfo";
+
+        _methodParameterTypes49 = new String[] {
+                "long", "long", "java.lang.String", "java.lang.String"
+            };
+
+        _methodName50 = "getFileInfos";
+
+        _methodParameterTypes50 = new String[] { "long", "long" };
+
+        _methodName51 = "getFileInfos";
+
+        _methodParameterTypes51 = new String[] {
+                "long", "long", "java.lang.String"
+            };
+
+        _methodName52 = "getFileInfosByDirectory";
+
+        _methodParameterTypes52 = new String[] {
+                "long", "long", "java.lang.String"
+            };
+
+        _methodName53 = "getFileAsStream";
+
+        _methodParameterTypes53 = new String[] {
+                "long", "long", "java.lang.String"
+            };
+
+        _methodName54 = "getFileAsStream";
+
+        _methodParameterTypes54 = new String[] {
+                "long", "long", "java.lang.String", "java.lang.String"
+            };
+
+        _methodName55 = "hasFileInfo";
+
+        _methodParameterTypes55 = new String[] {
+                "long", "long", "java.lang.String", "java.lang.String"
+            };
+
+        _methodName56 = "updateFileInfo";
+
+        _methodParameterTypes56 = new String[] {
+                "long", "long", "long", "java.lang.String", "java.lang.String"
+            };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -235,6 +347,116 @@ public class FileInfoLocalServiceClpInvoker {
         if (_methodName37.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes37, parameterTypes)) {
             FileInfoLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
+
+            return null;
+        }
+
+        if (_methodName42.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes42, parameterTypes)) {
+            return FileInfoLocalServiceUtil.addFileInfo(((Long) arguments[0]).longValue(),
+                ((Long) arguments[1]).longValue(),
+                (java.lang.String) arguments[2],
+                (java.lang.String) arguments[3], (byte[]) arguments[4]);
+        }
+
+        if (_methodName43.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes43, parameterTypes)) {
+            return FileInfoLocalServiceUtil.addFileInfo(((Long) arguments[0]).longValue(),
+                ((Long) arguments[1]).longValue(),
+                (java.lang.String) arguments[2],
+                (java.lang.String) arguments[3],
+                (java.io.InputStream) arguments[4],
+                ((Long) arguments[5]).longValue());
+        }
+
+        if (_methodName45.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes45, parameterTypes)) {
+            FileInfoLocalServiceUtil.deleteFileInfo(((Long) arguments[0]).longValue(),
+                ((Long) arguments[1]).longValue(),
+                (java.lang.String) arguments[2], (java.lang.String) arguments[3]);
+
+            return null;
+        }
+
+        if (_methodName46.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes46, parameterTypes)) {
+            FileInfoLocalServiceUtil.deleteFileInfos(((Long) arguments[0]).longValue(),
+                ((Long) arguments[1]).longValue(),
+                (java.lang.String) arguments[2]);
+
+            return null;
+        }
+
+        if (_methodName47.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes47, parameterTypes)) {
+            FileInfoLocalServiceUtil.deleteFileInfosByDirectory(((Long) arguments[0]).longValue(),
+                ((Long) arguments[1]).longValue(),
+                (java.lang.String) arguments[2]);
+
+            return null;
+        }
+
+        if (_methodName48.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes48, parameterTypes)) {
+            return FileInfoLocalServiceUtil.getFileInfo(((Long) arguments[0]).longValue(),
+                ((Long) arguments[1]).longValue(),
+                (java.lang.String) arguments[2]);
+        }
+
+        if (_methodName49.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes49, parameterTypes)) {
+            return FileInfoLocalServiceUtil.getFileInfo(((Long) arguments[0]).longValue(),
+                ((Long) arguments[1]).longValue(),
+                (java.lang.String) arguments[2], (java.lang.String) arguments[3]);
+        }
+
+        if (_methodName50.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes50, parameterTypes)) {
+            return FileInfoLocalServiceUtil.getFileInfos(((Long) arguments[0]).longValue(),
+                ((Long) arguments[1]).longValue());
+        }
+
+        if (_methodName51.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes51, parameterTypes)) {
+            return FileInfoLocalServiceUtil.getFileInfos(((Long) arguments[0]).longValue(),
+                ((Long) arguments[1]).longValue(),
+                (java.lang.String) arguments[2]);
+        }
+
+        if (_methodName52.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes52, parameterTypes)) {
+            return FileInfoLocalServiceUtil.getFileInfosByDirectory(((Long) arguments[0]).longValue(),
+                ((Long) arguments[1]).longValue(),
+                (java.lang.String) arguments[2]);
+        }
+
+        if (_methodName53.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes53, parameterTypes)) {
+            return FileInfoLocalServiceUtil.getFileAsStream(((Long) arguments[0]).longValue(),
+                ((Long) arguments[1]).longValue(),
+                (java.lang.String) arguments[2]);
+        }
+
+        if (_methodName54.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes54, parameterTypes)) {
+            return FileInfoLocalServiceUtil.getFileAsStream(((Long) arguments[0]).longValue(),
+                ((Long) arguments[1]).longValue(),
+                (java.lang.String) arguments[2], (java.lang.String) arguments[3]);
+        }
+
+        if (_methodName55.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes55, parameterTypes)) {
+            return FileInfoLocalServiceUtil.hasFileInfo(((Long) arguments[0]).longValue(),
+                ((Long) arguments[1]).longValue(),
+                (java.lang.String) arguments[2], (java.lang.String) arguments[3]);
+        }
+
+        if (_methodName56.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes56, parameterTypes)) {
+            FileInfoLocalServiceUtil.updateFileInfo(((Long) arguments[0]).longValue(),
+                ((Long) arguments[1]).longValue(),
+                ((Long) arguments[2]).longValue(),
+                (java.lang.String) arguments[3], (java.lang.String) arguments[4]);
 
             return null;
         }

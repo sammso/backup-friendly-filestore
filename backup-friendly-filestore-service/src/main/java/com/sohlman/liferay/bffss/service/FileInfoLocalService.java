@@ -239,4 +239,78 @@ public interface FileInfoLocalService extends BaseLocalService,
     public java.lang.Object invokeMethod(java.lang.String name,
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable;
+
+    public com.sohlman.liferay.bffss.model.FileInfo addFileInfo(
+        long companyId, long repositoryId, java.lang.String path,
+        java.lang.String version, byte[] bytes)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public com.sohlman.liferay.bffss.model.FileInfo addFileInfo(
+        long companyId, long repositoryId, java.lang.String path,
+        java.lang.String version, java.io.InputStream inputStream, long size)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void deleteFileInfo(long companyId, long repositoryId,
+        java.lang.String path, java.lang.String version)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void deleteFileInfos(long companyId, long repositoryId,
+        java.lang.String path)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    public void deleteFileInfosByDirectory(long companyId, long repositoryId,
+        java.lang.String dirName)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.sohlman.liferay.bffss.model.FileInfo getFileInfo(
+        long companyId, long repositoryId, java.lang.String path)
+        throws com.liferay.portal.kernel.exception.SystemException,
+            com.sohlman.liferay.bffss.NoSuchFileInfoException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.sohlman.liferay.bffss.model.FileInfo getFileInfo(
+        long companyId, long repositoryId, java.lang.String path,
+        java.lang.String version)
+        throws com.liferay.portal.kernel.exception.SystemException,
+            com.sohlman.liferay.bffss.NoSuchFileInfoException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.sohlman.liferay.bffss.model.FileInfo> getFileInfos(
+        long companyId, long repositoryId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.sohlman.liferay.bffss.model.FileInfo> getFileInfos(
+        long companyId, long repositoryId, java.lang.String path)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.sohlman.liferay.bffss.model.FileInfo> getFileInfosByDirectory(
+        long companyId, long repositoryId, java.lang.String dirName)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.io.InputStream getFileAsStream(long companyId,
+        long repositoryId, java.lang.String fileName)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.io.InputStream getFileAsStream(long companyId,
+        long repositoryId, java.lang.String fileName, java.lang.String version)
+        throws com.liferay.portal.kernel.exception.PortalException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public boolean hasFileInfo(long companyId, long repositoryId,
+        java.lang.String path, java.lang.String version)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    public void updateFileInfo(long companyId, long oldRepositoryId,
+        long newRepositoryId, java.lang.String oldPath, java.lang.String newPath)
+        throws com.liferay.portal.kernel.exception.SystemException;
 }
