@@ -10,7 +10,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>backup-friendly-filestore-service</artifactId>
 	<packaging>jar</packaging>
-	<name>backup-friendly-filestore Portlet Service</name>
+	<name>Back Friendly FileStore Service</name>
 	<build>
 		<plugins>
 			<plugin>

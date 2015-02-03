@@ -19,7 +19,7 @@
 					<appServerLibGlobalDir>${liferay.app.server.lib.global.dir}</appServerLibGlobalDir>
 					<appServerPortalDir>${liferay.app.server.portal.dir}</appServerPortalDir>
 					<liferayVersion>${liferay.version}</liferayVersion>
-					<pluginName>backup-friendly-filestore-hook</pluginName>
+					<pluginName>backup-friendly-filestore</pluginName>
 					<pluginType>hook</pluginType>
 				</configuration>
 			</plugin>
@@ -48,16 +48,17 @@
 	<properties>
 		<liferay.version>6.2.2</liferay.version>
 		<liferay.maven.plugin.version>6.2.2</liferay.maven.plugin.version>
+				<liferay.home>/Users/sammso/LDS/6.2-ce/bundles</liferay.home>
+				<liferay.auto.deploy.dir>${liferay.home}/deploy</liferay.auto.deploy.dir>
+				<liferay.app.server.deploy.dir>${liferay.home}/tomcat-7.0.42/webapps</liferay.app.server.deploy.dir>
+				<liferay.app.server.lib.global.dir>${liferay.home}/tomcat-7.0.42/lib/ext</liferay.app.server.lib.global.dir>
+				<liferay.app.server.portal.dir>${liferay.home}/tomcat-7.0.42/webapps/ROOT</liferay.app.server.portal.dir>
 	</properties>
 	<profiles>
 		<profile>
 			<id>Liferay-v6.2-EE-(Tomcat-7)</id>
 			<properties>
-				<liferay.home>/Users/sammso/LDS/liferay-portal-6.2-ce-ga3</liferay.home>
-				<liferay.auto.deploy.dir>${liferay.home}/deploy</liferay.auto.deploy.dir>
-				<liferay.app.server.deploy.dir>${liferay.home}/tomcat-7.0.42/webapps</liferay.app.server.deploy.dir>
-				<liferay.app.server.lib.global.dir>${liferay.home}/tomcat-7.0.42/lib/ext</liferay.app.server.lib.global.dir>
-				<liferay.app.server.portal.dir>${liferay.home}/tomcat-7.0.42/webapps/ROOT</liferay.app.server.portal.dir>
+
 			</properties>
 		</profile>
 	</profiles>
