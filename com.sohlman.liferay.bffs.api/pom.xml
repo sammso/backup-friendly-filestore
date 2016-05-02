@@ -1,16 +1,17 @@
 <?xml version="1.0"?>
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
-		<groupId>com.sohlman.liferay</groupId>
-		<artifactId>backup-friendly-filestore</artifactId>
-		<version>6.2.0.0-SNAPSHOT</version>
+		<groupId>com.sohlman.liferay.bffs</groupId>
+		<artifactId>com.sohlman.liferay.bffs</artifactId>
+		<version>1.0.0.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>backup-friendly-filestore-service</artifactId>
+	<artifactId>com.sohlman.liferay.bffs.api</artifactId>
 	<packaging>jar</packaging>
-	<name>Back Friendly FileStore Service</name>
+	<name>Back Friendly File Store Service</name>
 	<build>
 		<plugins>
 			<plugin>
@@ -18,7 +19,7 @@
 				<artifactId>liferay-maven-plugin</artifactId>
 				<version>${liferay.maven.plugin.version}</version>
 				<configuration>
-					<webappBaseDir>${basedir}/../backup-friendly-filestore-hook</webappBaseDir>
+					<webappBaseDir>${basedir}/../com.sohlman.liferay.bffs.service</webappBaseDir>
 				</configuration>
 			</plugin>
 		</plugins>
