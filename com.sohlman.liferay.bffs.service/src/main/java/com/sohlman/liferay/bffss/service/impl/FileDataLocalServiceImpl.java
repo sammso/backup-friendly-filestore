@@ -13,18 +13,6 @@
  */
 package com.sohlman.liferay.bffss.service.impl;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.kernel.util.PropsUtil;
-import com.liferay.portal.kernel.util.StreamUtil;
-import com.liferay.portal.kernel.util.StringBundler;
-import com.sohlman.liferay.bffss.model.FileData;
-import com.sohlman.liferay.bffss.service.base.FileDataLocalServiceBaseImpl;
-import com.sohlman.liferay.bffss.util.Util;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -36,6 +24,23 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
+
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
+import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.StreamUtil;
+import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.spring.extender.service.ServiceReference;
+import com.sohlman.liferay.bffss.configuration.BackupFriendlyFileSystemStoreConfiguration;
+import com.sohlman.liferay.bffss.model.FileData;
+import com.sohlman.liferay.bffss.service.base.FileDataLocalServiceBaseImpl;
+import com.sohlman.liferay.bffss.util.Util;
 
 /**
  * The implementation of the file data local service.
@@ -64,8 +69,9 @@ public class FileDataLocalServiceImpl extends FileDataLocalServiceBaseImpl {
 	 * com.sohlman.liferay.bffss.service.FileDataLocalServiceUtil} to access the
 	 * file data local service.
 	 */
-	public FileData addFileData(long companyId, InputStream inputStream) 
-			throws SystemException {
+	public FileData addFileData(
+			long companyId, InputStream inputStream) 
+		throws SystemException {
 
 		OutputStream outputStream = null;
 
@@ -109,7 +115,7 @@ public class FileDataLocalServiceImpl extends FileDataLocalServiceBaseImpl {
 			
 			// There is always a change that same file is added twice same time
 			// and two fingerprints exists. It is allowed condition. It is
-			// beter to have two samefiles at Filesystem than we should
+			// better to have two samefiles at Filesystem than we should
 			// do the file name change, which would cause problems to
 			// backup procedure
 			
@@ -141,7 +147,7 @@ public class FileDataLocalServiceImpl extends FileDataLocalServiceBaseImpl {
 		} finally {
 			StreamUtil.cleanUp(outputStream);
 			if (file!=null) {
-				deleteFile(file);
+				deleteFile(companyId, file);
 			}
 		}
 	}
@@ -166,7 +172,7 @@ public class FileDataLocalServiceImpl extends FileDataLocalServiceBaseImpl {
 		String path1 = fileData.getName().substring(0, 2);
 		String path2 = fileData.getName().substring(2, 4);
 		
-		File root = new File(_rootDir, path1);
+		File root = new File(getRootDir(fileData.getCompanyId()), path1);
 
 		if (!root.exists()) {
 			root.mkdirs();
@@ -181,8 +187,58 @@ public class FileDataLocalServiceImpl extends FileDataLocalServiceBaseImpl {
 		return new File(root, fileData.getName());
 	}
 	
-	protected void deleteFile(File file) {		
-		if (file.equals(_rootDir)) {
+	protected BackupFriendlyFileSystemStoreConfiguration 
+			getBackupFriendlyFileSystemStoreConfiguration(long companyId)
+		throws ConfigurationException {
+
+		return configurationProvider.getCompanyConfiguration(
+				BackupFriendlyFileSystemStoreConfiguration.class, companyId);
+	}
+ 
+	protected File getRootDir(long companyId) {
+		if (_rootDir!=null) {
+			return _rootDir;
+		}
+		return getRootDirFromConfiguration(companyId);
+	}
+	
+	protected synchronized File getRootDirFromConfiguration(long companyId) {
+		if (_rootDir!=null) {
+			return _rootDir;
+		}
+		try {
+			BackupFriendlyFileSystemStoreConfiguration 
+				backupFriendlyFileSystemStoreConfiguration = 
+					getBackupFriendlyFileSystemStoreConfiguration(companyId);
+
+			String rootDir = 
+				backupFriendlyFileSystemStoreConfiguration.rootDir();
+			
+			if ("".equals(rootDir)) {
+				rootDir = "data/document_library";
+			}
+			
+			_rootDir = new File(rootDir);
+
+			if (!_rootDir.isAbsolute()) {
+				_rootDir = new File(
+					PropsUtil.get(PropsKeys.LIFERAY_HOME), rootDir);
+			}
+
+			FileUtil.mkdirs(_rootDir);
+
+			return _rootDir;
+		} 
+		catch (ConfigurationException e) {
+			throw new SystemException(e.getMessage());
+		}
+		catch  (IOException ioe) {
+			throw new SystemException(ioe);
+		}
+	}
+	
+	protected void deleteFile(long companyId, File file) {	
+		if (file.equals(getRootDir(companyId))) {
 			return;
 		}
 		
@@ -204,12 +260,14 @@ public class FileDataLocalServiceImpl extends FileDataLocalServiceBaseImpl {
 				return;
 			}
 		}
-		deleteFile(file.getParentFile());
+		deleteFile(companyId, file.getParentFile());
 	}
 
-	private File _rootDir = new File(
-		PropsUtil.get(PropsKeys.DL_STORE_FILE_SYSTEM_ROOT_DIR));
-
+	
+	private File _rootDir = null;
+	
+	@ServiceReference(type = ConfigurationProvider.class)
+	protected ConfigurationProvider configurationProvider;
 
 	private static Log _log = LogFactoryUtil.getLog(
 		FileDataLocalServiceImpl.class);

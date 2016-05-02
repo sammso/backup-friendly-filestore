@@ -1,21 +1,45 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
 package com.sohlman.liferay.bffss.service.base;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.bean.IdentifiableBean;
+import com.liferay.portal.kernel.dao.db.DB;
+import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.jdbc.SqlUpdate;
 import com.liferay.portal.kernel.dao.jdbc.SqlUpdateFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.dao.orm.DefaultActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
+import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
+import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
+import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
+import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.model.PersistedModel;
-import com.liferay.portal.service.BaseLocalServiceImpl;
-import com.liferay.portal.service.PersistedModelLocalServiceRegistryUtil;
-import com.liferay.portal.service.persistence.UserPersistence;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import com.sohlman.liferay.bffss.model.FileInfo;
 import com.sohlman.liferay.bffss.service.FileInfoLocalService;
@@ -40,494 +64,511 @@ import javax.sql.DataSource;
  * @see com.sohlman.liferay.bffss.service.FileInfoLocalServiceUtil
  * @generated
  */
+@ProviderType
 public abstract class FileInfoLocalServiceBaseImpl extends BaseLocalServiceImpl
-    implements FileInfoLocalService, IdentifiableBean {
-    @BeanReference(type = com.sohlman.liferay.bffss.service.FileDataLocalService.class)
-    protected com.sohlman.liferay.bffss.service.FileDataLocalService fileDataLocalService;
-    @BeanReference(type = FileDataPersistence.class)
-    protected FileDataPersistence fileDataPersistence;
-    @BeanReference(type = com.sohlman.liferay.bffss.service.FileInfoLocalService.class)
-    protected com.sohlman.liferay.bffss.service.FileInfoLocalService fileInfoLocalService;
-    @BeanReference(type = FileInfoPersistence.class)
-    protected FileInfoPersistence fileInfoPersistence;
-    @BeanReference(type = com.liferay.counter.service.CounterLocalService.class)
-    protected com.liferay.counter.service.CounterLocalService counterLocalService;
-    @BeanReference(type = com.liferay.portal.service.ResourceLocalService.class)
-    protected com.liferay.portal.service.ResourceLocalService resourceLocalService;
-    @BeanReference(type = com.liferay.portal.service.UserLocalService.class)
-    protected com.liferay.portal.service.UserLocalService userLocalService;
-    @BeanReference(type = com.liferay.portal.service.UserService.class)
-    protected com.liferay.portal.service.UserService userService;
-    @BeanReference(type = UserPersistence.class)
-    protected UserPersistence userPersistence;
-    private String _beanIdentifier;
-    private ClassLoader _classLoader;
-    private FileInfoLocalServiceClpInvoker _clpInvoker = new FileInfoLocalServiceClpInvoker();
+	implements FileInfoLocalService, IdentifiableOSGiService {
+	/*
+	 * NOTE FOR DEVELOPERS:
+	 *
+	 * Never modify or reference this class directly. Always use {@link com.sohlman.liferay.bffss.service.FileInfoLocalServiceUtil} to access the file info local service.
+	 */
 
-    /*
-     * NOTE FOR DEVELOPERS:
-     *
-     * Never modify or reference this class directly. Always use {@link com.sohlman.liferay.bffss.service.FileInfoLocalServiceUtil} to access the file info local service.
-     */
+	/**
+	 * Adds the file info to the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param fileInfo the file info
+	 * @return the file info that was added
+	 */
+	@Indexable(type = IndexableType.REINDEX)
+	@Override
+	public FileInfo addFileInfo(FileInfo fileInfo) {
+		fileInfo.setNew(true);
 
-    /**
-     * Adds the file info to the database. Also notifies the appropriate model listeners.
-     *
-     * @param fileInfo the file info
-     * @return the file info that was added
-     * @throws SystemException if a system exception occurred
-     */
-    @Indexable(type = IndexableType.REINDEX)
-    @Override
-    public FileInfo addFileInfo(FileInfo fileInfo) throws SystemException {
-        fileInfo.setNew(true);
+		return fileInfoPersistence.update(fileInfo);
+	}
 
-        return fileInfoPersistence.update(fileInfo);
-    }
+	/**
+	 * Creates a new file info with the primary key. Does not add the file info to the database.
+	 *
+	 * @param fileInfoId the primary key for the new file info
+	 * @return the new file info
+	 */
+	@Override
+	public FileInfo createFileInfo(long fileInfoId) {
+		return fileInfoPersistence.create(fileInfoId);
+	}
 
-    /**
-     * Creates a new file info with the primary key. Does not add the file info to the database.
-     *
-     * @param fileInfoId the primary key for the new file info
-     * @return the new file info
-     */
-    @Override
-    public FileInfo createFileInfo(long fileInfoId) {
-        return fileInfoPersistence.create(fileInfoId);
-    }
+	/**
+	 * Deletes the file info with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param fileInfoId the primary key of the file info
+	 * @return the file info that was removed
+	 * @throws PortalException if a file info with the primary key could not be found
+	 */
+	@Indexable(type = IndexableType.DELETE)
+	@Override
+	public FileInfo deleteFileInfo(long fileInfoId) throws PortalException {
+		return fileInfoPersistence.remove(fileInfoId);
+	}
 
-    /**
-     * Deletes the file info with the primary key from the database. Also notifies the appropriate model listeners.
-     *
-     * @param fileInfoId the primary key of the file info
-     * @return the file info that was removed
-     * @throws PortalException if a file info with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Indexable(type = IndexableType.DELETE)
-    @Override
-    public FileInfo deleteFileInfo(long fileInfoId)
-        throws PortalException, SystemException {
-        return fileInfoPersistence.remove(fileInfoId);
-    }
+	/**
+	 * Deletes the file info from the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param fileInfo the file info
+	 * @return the file info that was removed
+	 */
+	@Indexable(type = IndexableType.DELETE)
+	@Override
+	public FileInfo deleteFileInfo(FileInfo fileInfo) {
+		return fileInfoPersistence.remove(fileInfo);
+	}
 
-    /**
-     * Deletes the file info from the database. Also notifies the appropriate model listeners.
-     *
-     * @param fileInfo the file info
-     * @return the file info that was removed
-     * @throws SystemException if a system exception occurred
-     */
-    @Indexable(type = IndexableType.DELETE)
-    @Override
-    public FileInfo deleteFileInfo(FileInfo fileInfo) throws SystemException {
-        return fileInfoPersistence.remove(fileInfo);
-    }
+	@Override
+	public DynamicQuery dynamicQuery() {
+		Class<?> clazz = getClass();
 
-    @Override
-    public DynamicQuery dynamicQuery() {
-        Class<?> clazz = getClass();
+		return DynamicQueryFactoryUtil.forClass(FileInfo.class,
+			clazz.getClassLoader());
+	}
 
-        return DynamicQueryFactoryUtil.forClass(FileInfo.class,
-            clazz.getClassLoader());
-    }
+	/**
+	 * Performs a dynamic query on the database and returns the matching rows.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @return the matching rows
+	 */
+	@Override
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
+		return fileInfoPersistence.findWithDynamicQuery(dynamicQuery);
+	}
 
-    /**
-     * Performs a dynamic query on the database and returns the matching rows.
-     *
-     * @param dynamicQuery the dynamic query
-     * @return the matching rows
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    @SuppressWarnings("rawtypes")
-    public List dynamicQuery(DynamicQuery dynamicQuery)
-        throws SystemException {
-        return fileInfoPersistence.findWithDynamicQuery(dynamicQuery);
-    }
+	/**
+	 * Performs a dynamic query on the database and returns a range of the matching rows.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.sohlman.liferay.bffss.model.impl.FileInfoModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param start the lower bound of the range of model instances
+	 * @param end the upper bound of the range of model instances (not inclusive)
+	 * @return the range of matching rows
+	 */
+	@Override
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end) {
+		return fileInfoPersistence.findWithDynamicQuery(dynamicQuery, start, end);
+	}
 
-    /**
-     * Performs a dynamic query on the database and returns a range of the matching rows.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.sohlman.liferay.bffss.model.impl.FileInfoModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-     * </p>
-     *
-     * @param dynamicQuery the dynamic query
-     * @param start the lower bound of the range of model instances
-     * @param end the upper bound of the range of model instances (not inclusive)
-     * @return the range of matching rows
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    @SuppressWarnings("rawtypes")
-    public List dynamicQuery(DynamicQuery dynamicQuery, int start, int end)
-        throws SystemException {
-        return fileInfoPersistence.findWithDynamicQuery(dynamicQuery, start, end);
-    }
+	/**
+	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.sohlman.liferay.bffss.model.impl.FileInfoModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param start the lower bound of the range of model instances
+	 * @param end the upper bound of the range of model instances (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching rows
+	 */
+	@Override
+	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
+		int end, OrderByComparator<T> orderByComparator) {
+		return fileInfoPersistence.findWithDynamicQuery(dynamicQuery, start,
+			end, orderByComparator);
+	}
 
-    /**
-     * Performs a dynamic query on the database and returns an ordered range of the matching rows.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.sohlman.liferay.bffss.model.impl.FileInfoModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-     * </p>
-     *
-     * @param dynamicQuery the dynamic query
-     * @param start the lower bound of the range of model instances
-     * @param end the upper bound of the range of model instances (not inclusive)
-     * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-     * @return the ordered range of matching rows
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    @SuppressWarnings("rawtypes")
-    public List dynamicQuery(DynamicQuery dynamicQuery, int start, int end,
-        OrderByComparator orderByComparator) throws SystemException {
-        return fileInfoPersistence.findWithDynamicQuery(dynamicQuery, start,
-            end, orderByComparator);
-    }
+	/**
+	 * Returns the number of rows matching the dynamic query.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @return the number of rows matching the dynamic query
+	 */
+	@Override
+	public long dynamicQueryCount(DynamicQuery dynamicQuery) {
+		return fileInfoPersistence.countWithDynamicQuery(dynamicQuery);
+	}
 
-    /**
-     * Returns the number of rows that match the dynamic query.
-     *
-     * @param dynamicQuery the dynamic query
-     * @return the number of rows that match the dynamic query
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public long dynamicQueryCount(DynamicQuery dynamicQuery)
-        throws SystemException {
-        return fileInfoPersistence.countWithDynamicQuery(dynamicQuery);
-    }
+	/**
+	 * Returns the number of rows matching the dynamic query.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param projection the projection to apply to the query
+	 * @return the number of rows matching the dynamic query
+	 */
+	@Override
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection) {
+		return fileInfoPersistence.countWithDynamicQuery(dynamicQuery,
+			projection);
+	}
 
-    /**
-     * Returns the number of rows that match the dynamic query.
-     *
-     * @param dynamicQuery the dynamic query
-     * @param projection the projection to apply to the query
-     * @return the number of rows that match the dynamic query
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public long dynamicQueryCount(DynamicQuery dynamicQuery,
-        Projection projection) throws SystemException {
-        return fileInfoPersistence.countWithDynamicQuery(dynamicQuery,
-            projection);
-    }
+	@Override
+	public FileInfo fetchFileInfo(long fileInfoId) {
+		return fileInfoPersistence.fetchByPrimaryKey(fileInfoId);
+	}
 
-    @Override
-    public FileInfo fetchFileInfo(long fileInfoId) throws SystemException {
-        return fileInfoPersistence.fetchByPrimaryKey(fileInfoId);
-    }
+	/**
+	 * Returns the file info with the primary key.
+	 *
+	 * @param fileInfoId the primary key of the file info
+	 * @return the file info
+	 * @throws PortalException if a file info with the primary key could not be found
+	 */
+	@Override
+	public FileInfo getFileInfo(long fileInfoId) throws PortalException {
+		return fileInfoPersistence.findByPrimaryKey(fileInfoId);
+	}
 
-    /**
-     * Returns the file info with the primary key.
-     *
-     * @param fileInfoId the primary key of the file info
-     * @return the file info
-     * @throws PortalException if a file info with the primary key could not be found
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public FileInfo getFileInfo(long fileInfoId)
-        throws PortalException, SystemException {
-        return fileInfoPersistence.findByPrimaryKey(fileInfoId);
-    }
+	@Override
+	public ActionableDynamicQuery getActionableDynamicQuery() {
+		ActionableDynamicQuery actionableDynamicQuery = new DefaultActionableDynamicQuery();
 
-    @Override
-    public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-        throws PortalException, SystemException {
-        return fileInfoPersistence.findByPrimaryKey(primaryKeyObj);
-    }
+		actionableDynamicQuery.setBaseLocalService(com.sohlman.liferay.bffss.service.FileInfoLocalServiceUtil.getService());
+		actionableDynamicQuery.setClassLoader(getClassLoader());
+		actionableDynamicQuery.setModelClass(FileInfo.class);
 
-    /**
-     * Returns a range of all the file infos.
-     *
-     * <p>
-     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.sohlman.liferay.bffss.model.impl.FileInfoModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-     * </p>
-     *
-     * @param start the lower bound of the range of file infos
-     * @param end the upper bound of the range of file infos (not inclusive)
-     * @return the range of file infos
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public List<FileInfo> getFileInfos(int start, int end)
-        throws SystemException {
-        return fileInfoPersistence.findAll(start, end);
-    }
+		actionableDynamicQuery.setPrimaryKeyPropertyName("fileInfoId");
 
-    /**
-     * Returns the number of file infos.
-     *
-     * @return the number of file infos
-     * @throws SystemException if a system exception occurred
-     */
-    @Override
-    public int getFileInfosCount() throws SystemException {
-        return fileInfoPersistence.countAll();
-    }
+		return actionableDynamicQuery;
+	}
 
-    /**
-     * Updates the file info in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-     *
-     * @param fileInfo the file info
-     * @return the file info that was updated
-     * @throws SystemException if a system exception occurred
-     */
-    @Indexable(type = IndexableType.REINDEX)
-    @Override
-    public FileInfo updateFileInfo(FileInfo fileInfo) throws SystemException {
-        return fileInfoPersistence.update(fileInfo);
-    }
+	@Override
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		IndexableActionableDynamicQuery indexableActionableDynamicQuery = new IndexableActionableDynamicQuery();
 
-    /**
-     * Returns the file data local service.
-     *
-     * @return the file data local service
-     */
-    public com.sohlman.liferay.bffss.service.FileDataLocalService getFileDataLocalService() {
-        return fileDataLocalService;
-    }
+		indexableActionableDynamicQuery.setBaseLocalService(com.sohlman.liferay.bffss.service.FileInfoLocalServiceUtil.getService());
+		indexableActionableDynamicQuery.setClassLoader(getClassLoader());
+		indexableActionableDynamicQuery.setModelClass(FileInfo.class);
 
-    /**
-     * Sets the file data local service.
-     *
-     * @param fileDataLocalService the file data local service
-     */
-    public void setFileDataLocalService(
-        com.sohlman.liferay.bffss.service.FileDataLocalService fileDataLocalService) {
-        this.fileDataLocalService = fileDataLocalService;
-    }
+		indexableActionableDynamicQuery.setPrimaryKeyPropertyName("fileInfoId");
 
-    /**
-     * Returns the file data persistence.
-     *
-     * @return the file data persistence
-     */
-    public FileDataPersistence getFileDataPersistence() {
-        return fileDataPersistence;
-    }
+		return indexableActionableDynamicQuery;
+	}
 
-    /**
-     * Sets the file data persistence.
-     *
-     * @param fileDataPersistence the file data persistence
-     */
-    public void setFileDataPersistence(FileDataPersistence fileDataPersistence) {
-        this.fileDataPersistence = fileDataPersistence;
-    }
+	protected void initActionableDynamicQuery(
+		ActionableDynamicQuery actionableDynamicQuery) {
+		actionableDynamicQuery.setBaseLocalService(com.sohlman.liferay.bffss.service.FileInfoLocalServiceUtil.getService());
+		actionableDynamicQuery.setClassLoader(getClassLoader());
+		actionableDynamicQuery.setModelClass(FileInfo.class);
 
-    /**
-     * Returns the file info local service.
-     *
-     * @return the file info local service
-     */
-    public com.sohlman.liferay.bffss.service.FileInfoLocalService getFileInfoLocalService() {
-        return fileInfoLocalService;
-    }
+		actionableDynamicQuery.setPrimaryKeyPropertyName("fileInfoId");
+	}
 
-    /**
-     * Sets the file info local service.
-     *
-     * @param fileInfoLocalService the file info local service
-     */
-    public void setFileInfoLocalService(
-        com.sohlman.liferay.bffss.service.FileInfoLocalService fileInfoLocalService) {
-        this.fileInfoLocalService = fileInfoLocalService;
-    }
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
+		throws PortalException {
+		return fileInfoLocalService.deleteFileInfo((FileInfo)persistedModel);
+	}
 
-    /**
-     * Returns the file info persistence.
-     *
-     * @return the file info persistence
-     */
-    public FileInfoPersistence getFileInfoPersistence() {
-        return fileInfoPersistence;
-    }
+	@Override
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
+		return fileInfoPersistence.findByPrimaryKey(primaryKeyObj);
+	}
 
-    /**
-     * Sets the file info persistence.
-     *
-     * @param fileInfoPersistence the file info persistence
-     */
-    public void setFileInfoPersistence(FileInfoPersistence fileInfoPersistence) {
-        this.fileInfoPersistence = fileInfoPersistence;
-    }
+	/**
+	 * Returns a range of all the file infos.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.sohlman.liferay.bffss.model.impl.FileInfoModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of file infos
+	 * @param end the upper bound of the range of file infos (not inclusive)
+	 * @return the range of file infos
+	 */
+	@Override
+	public List<FileInfo> getFileInfos(int start, int end) {
+		return fileInfoPersistence.findAll(start, end);
+	}
 
-    /**
-     * Returns the counter local service.
-     *
-     * @return the counter local service
-     */
-    public com.liferay.counter.service.CounterLocalService getCounterLocalService() {
-        return counterLocalService;
-    }
+	/**
+	 * Returns the number of file infos.
+	 *
+	 * @return the number of file infos
+	 */
+	@Override
+	public int getFileInfosCount() {
+		return fileInfoPersistence.countAll();
+	}
 
-    /**
-     * Sets the counter local service.
-     *
-     * @param counterLocalService the counter local service
-     */
-    public void setCounterLocalService(
-        com.liferay.counter.service.CounterLocalService counterLocalService) {
-        this.counterLocalService = counterLocalService;
-    }
+	/**
+	 * Updates the file info in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * @param fileInfo the file info
+	 * @return the file info that was updated
+	 */
+	@Indexable(type = IndexableType.REINDEX)
+	@Override
+	public FileInfo updateFileInfo(FileInfo fileInfo) {
+		return fileInfoPersistence.update(fileInfo);
+	}
 
-    /**
-     * Returns the resource local service.
-     *
-     * @return the resource local service
-     */
-    public com.liferay.portal.service.ResourceLocalService getResourceLocalService() {
-        return resourceLocalService;
-    }
+	/**
+	 * Returns the file data local service.
+	 *
+	 * @return the file data local service
+	 */
+	public com.sohlman.liferay.bffss.service.FileDataLocalService getFileDataLocalService() {
+		return fileDataLocalService;
+	}
 
-    /**
-     * Sets the resource local service.
-     *
-     * @param resourceLocalService the resource local service
-     */
-    public void setResourceLocalService(
-        com.liferay.portal.service.ResourceLocalService resourceLocalService) {
-        this.resourceLocalService = resourceLocalService;
-    }
+	/**
+	 * Sets the file data local service.
+	 *
+	 * @param fileDataLocalService the file data local service
+	 */
+	public void setFileDataLocalService(
+		com.sohlman.liferay.bffss.service.FileDataLocalService fileDataLocalService) {
+		this.fileDataLocalService = fileDataLocalService;
+	}
 
-    /**
-     * Returns the user local service.
-     *
-     * @return the user local service
-     */
-    public com.liferay.portal.service.UserLocalService getUserLocalService() {
-        return userLocalService;
-    }
+	/**
+	 * Returns the file data persistence.
+	 *
+	 * @return the file data persistence
+	 */
+	public FileDataPersistence getFileDataPersistence() {
+		return fileDataPersistence;
+	}
 
-    /**
-     * Sets the user local service.
-     *
-     * @param userLocalService the user local service
-     */
-    public void setUserLocalService(
-        com.liferay.portal.service.UserLocalService userLocalService) {
-        this.userLocalService = userLocalService;
-    }
+	/**
+	 * Sets the file data persistence.
+	 *
+	 * @param fileDataPersistence the file data persistence
+	 */
+	public void setFileDataPersistence(FileDataPersistence fileDataPersistence) {
+		this.fileDataPersistence = fileDataPersistence;
+	}
 
-    /**
-     * Returns the user remote service.
-     *
-     * @return the user remote service
-     */
-    public com.liferay.portal.service.UserService getUserService() {
-        return userService;
-    }
+	/**
+	 * Returns the file info local service.
+	 *
+	 * @return the file info local service
+	 */
+	public FileInfoLocalService getFileInfoLocalService() {
+		return fileInfoLocalService;
+	}
 
-    /**
-     * Sets the user remote service.
-     *
-     * @param userService the user remote service
-     */
-    public void setUserService(
-        com.liferay.portal.service.UserService userService) {
-        this.userService = userService;
-    }
+	/**
+	 * Sets the file info local service.
+	 *
+	 * @param fileInfoLocalService the file info local service
+	 */
+	public void setFileInfoLocalService(
+		FileInfoLocalService fileInfoLocalService) {
+		this.fileInfoLocalService = fileInfoLocalService;
+	}
 
-    /**
-     * Returns the user persistence.
-     *
-     * @return the user persistence
-     */
-    public UserPersistence getUserPersistence() {
-        return userPersistence;
-    }
+	/**
+	 * Returns the file info persistence.
+	 *
+	 * @return the file info persistence
+	 */
+	public FileInfoPersistence getFileInfoPersistence() {
+		return fileInfoPersistence;
+	}
 
-    /**
-     * Sets the user persistence.
-     *
-     * @param userPersistence the user persistence
-     */
-    public void setUserPersistence(UserPersistence userPersistence) {
-        this.userPersistence = userPersistence;
-    }
+	/**
+	 * Sets the file info persistence.
+	 *
+	 * @param fileInfoPersistence the file info persistence
+	 */
+	public void setFileInfoPersistence(FileInfoPersistence fileInfoPersistence) {
+		this.fileInfoPersistence = fileInfoPersistence;
+	}
 
-    public void afterPropertiesSet() {
-        Class<?> clazz = getClass();
+	/**
+	 * Returns the counter local service.
+	 *
+	 * @return the counter local service
+	 */
+	public com.liferay.counter.kernel.service.CounterLocalService getCounterLocalService() {
+		return counterLocalService;
+	}
 
-        _classLoader = clazz.getClassLoader();
+	/**
+	 * Sets the counter local service.
+	 *
+	 * @param counterLocalService the counter local service
+	 */
+	public void setCounterLocalService(
+		com.liferay.counter.kernel.service.CounterLocalService counterLocalService) {
+		this.counterLocalService = counterLocalService;
+	}
 
-        PersistedModelLocalServiceRegistryUtil.register("com.sohlman.liferay.bffss.model.FileInfo",
-            fileInfoLocalService);
-    }
+	/**
+	 * Returns the class name local service.
+	 *
+	 * @return the class name local service
+	 */
+	public com.liferay.portal.kernel.service.ClassNameLocalService getClassNameLocalService() {
+		return classNameLocalService;
+	}
 
-    public void destroy() {
-        PersistedModelLocalServiceRegistryUtil.unregister(
-            "com.sohlman.liferay.bffss.model.FileInfo");
-    }
+	/**
+	 * Sets the class name local service.
+	 *
+	 * @param classNameLocalService the class name local service
+	 */
+	public void setClassNameLocalService(
+		com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService) {
+		this.classNameLocalService = classNameLocalService;
+	}
 
-    /**
-     * Returns the Spring bean ID for this bean.
-     *
-     * @return the Spring bean ID for this bean
-     */
-    @Override
-    public String getBeanIdentifier() {
-        return _beanIdentifier;
-    }
+	/**
+	 * Returns the class name persistence.
+	 *
+	 * @return the class name persistence
+	 */
+	public ClassNamePersistence getClassNamePersistence() {
+		return classNamePersistence;
+	}
 
-    /**
-     * Sets the Spring bean ID for this bean.
-     *
-     * @param beanIdentifier the Spring bean ID for this bean
-     */
-    @Override
-    public void setBeanIdentifier(String beanIdentifier) {
-        _beanIdentifier = beanIdentifier;
-    }
+	/**
+	 * Sets the class name persistence.
+	 *
+	 * @param classNamePersistence the class name persistence
+	 */
+	public void setClassNamePersistence(
+		ClassNamePersistence classNamePersistence) {
+		this.classNamePersistence = classNamePersistence;
+	}
 
-    @Override
-    public Object invokeMethod(String name, String[] parameterTypes,
-        Object[] arguments) throws Throwable {
-        Thread currentThread = Thread.currentThread();
+	/**
+	 * Returns the resource local service.
+	 *
+	 * @return the resource local service
+	 */
+	public com.liferay.portal.kernel.service.ResourceLocalService getResourceLocalService() {
+		return resourceLocalService;
+	}
 
-        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+	/**
+	 * Sets the resource local service.
+	 *
+	 * @param resourceLocalService the resource local service
+	 */
+	public void setResourceLocalService(
+		com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService) {
+		this.resourceLocalService = resourceLocalService;
+	}
 
-        if (contextClassLoader != _classLoader) {
-            currentThread.setContextClassLoader(_classLoader);
-        }
+	/**
+	 * Returns the user local service.
+	 *
+	 * @return the user local service
+	 */
+	public com.liferay.portal.kernel.service.UserLocalService getUserLocalService() {
+		return userLocalService;
+	}
 
-        try {
-            return _clpInvoker.invokeMethod(name, parameterTypes, arguments);
-        } finally {
-            if (contextClassLoader != _classLoader) {
-                currentThread.setContextClassLoader(contextClassLoader);
-            }
-        }
-    }
+	/**
+	 * Sets the user local service.
+	 *
+	 * @param userLocalService the user local service
+	 */
+	public void setUserLocalService(
+		com.liferay.portal.kernel.service.UserLocalService userLocalService) {
+		this.userLocalService = userLocalService;
+	}
 
-    protected Class<?> getModelClass() {
-        return FileInfo.class;
-    }
+	/**
+	 * Returns the user persistence.
+	 *
+	 * @return the user persistence
+	 */
+	public UserPersistence getUserPersistence() {
+		return userPersistence;
+	}
 
-    protected String getModelClassName() {
-        return FileInfo.class.getName();
-    }
+	/**
+	 * Sets the user persistence.
+	 *
+	 * @param userPersistence the user persistence
+	 */
+	public void setUserPersistence(UserPersistence userPersistence) {
+		this.userPersistence = userPersistence;
+	}
 
-    /**
-     * Performs an SQL query.
-     *
-     * @param sql the sql query
-     */
-    protected void runSQL(String sql) throws SystemException {
-        try {
-            DataSource dataSource = fileInfoPersistence.getDataSource();
+	public void afterPropertiesSet() {
+		persistedModelLocalServiceRegistry.register("com.sohlman.liferay.bffss.model.FileInfo",
+			fileInfoLocalService);
+	}
 
-            SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource,
-                    sql, new int[0]);
+	public void destroy() {
+		persistedModelLocalServiceRegistry.unregister(
+			"com.sohlman.liferay.bffss.model.FileInfo");
+	}
 
-            sqlUpdate.update();
-        } catch (Exception e) {
-            throw new SystemException(e);
-        }
-    }
+	/**
+	 * Returns the OSGi service identifier.
+	 *
+	 * @return the OSGi service identifier
+	 */
+	@Override
+	public String getOSGiServiceIdentifier() {
+		return FileInfoLocalService.class.getName();
+	}
+
+	protected Class<?> getModelClass() {
+		return FileInfo.class;
+	}
+
+	protected String getModelClassName() {
+		return FileInfo.class.getName();
+	}
+
+	/**
+	 * Performs a SQL query.
+	 *
+	 * @param sql the sql query
+	 */
+	protected void runSQL(String sql) {
+		try {
+			DataSource dataSource = fileInfoPersistence.getDataSource();
+
+			DB db = DBManagerUtil.getDB();
+
+			sql = db.buildSQL(sql);
+			sql = PortalUtil.transformSQL(sql);
+
+			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource,
+					sql);
+
+			sqlUpdate.update();
+		}
+		catch (Exception e) {
+			throw new SystemException(e);
+		}
+	}
+
+	@BeanReference(type = com.sohlman.liferay.bffss.service.FileDataLocalService.class)
+	protected com.sohlman.liferay.bffss.service.FileDataLocalService fileDataLocalService;
+	@BeanReference(type = FileDataPersistence.class)
+	protected FileDataPersistence fileDataPersistence;
+	@BeanReference(type = com.sohlman.liferay.bffss.service.FileInfoLocalService.class)
+	protected FileInfoLocalService fileInfoLocalService;
+	@BeanReference(type = FileInfoPersistence.class)
+	protected FileInfoPersistence fileInfoPersistence;
+	@ServiceReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
+	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
+	@ServiceReference(type = com.liferay.portal.kernel.service.ClassNameLocalService.class)
+	protected com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService;
+	@ServiceReference(type = ClassNamePersistence.class)
+	protected ClassNamePersistence classNamePersistence;
+	@ServiceReference(type = com.liferay.portal.kernel.service.ResourceLocalService.class)
+	protected com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService;
+	@ServiceReference(type = com.liferay.portal.kernel.service.UserLocalService.class)
+	protected com.liferay.portal.kernel.service.UserLocalService userLocalService;
+	@ServiceReference(type = UserPersistence.class)
+	protected UserPersistence userPersistence;
+	@ServiceReference(type = PersistedModelLocalServiceRegistry.class)
+	protected PersistedModelLocalServiceRegistry persistedModelLocalServiceRegistry;
 }

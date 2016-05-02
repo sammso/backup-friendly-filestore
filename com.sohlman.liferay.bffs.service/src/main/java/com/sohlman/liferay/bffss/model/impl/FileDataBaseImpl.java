@@ -1,6 +1,20 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
 package com.sohlman.liferay.bffss.model.impl;
 
-import com.liferay.portal.kernel.exception.SystemException;
+import aQute.bnd.annotation.ProviderType;
 
 import com.sohlman.liferay.bffss.model.FileData;
 import com.sohlman.liferay.bffss.service.FileDataLocalServiceUtil;
@@ -14,22 +28,24 @@ import com.sohlman.liferay.bffss.service.FileDataLocalServiceUtil;
  *
  * @author Brian Wing Shun Chan
  * @see FileDataImpl
- * @see com.sohlman.liferay.bffss.model.FileData
+ * @see FileData
  * @generated
  */
+@ProviderType
 public abstract class FileDataBaseImpl extends FileDataModelImpl
-    implements FileData {
-    /*
-     * NOTE FOR DEVELOPERS:
-     *
-     * Never modify or reference this class directly. All methods that expect a file data model instance should use the {@link FileData} interface instead.
-     */
-    @Override
-    public void persist() throws SystemException {
-        if (this.isNew()) {
-            FileDataLocalServiceUtil.addFileData(this);
-        } else {
-            FileDataLocalServiceUtil.updateFileData(this);
-        }
-    }
+	implements FileData {
+	/*
+	 * NOTE FOR DEVELOPERS:
+	 *
+	 * Never modify or reference this class directly. All methods that expect a file data model instance should use the {@link FileData} interface instead.
+	 */
+	@Override
+	public void persist() {
+		if (this.isNew()) {
+			FileDataLocalServiceUtil.addFileData(this);
+		}
+		else {
+			FileDataLocalServiceUtil.updateFileData(this);
+		}
+	}
 }

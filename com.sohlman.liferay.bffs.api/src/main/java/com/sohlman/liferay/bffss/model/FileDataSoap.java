@@ -1,4 +1,20 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
 package com.sohlman.liferay.bffss.model;
+
+import aQute.bnd.annotation.ProviderType;
 
 import java.io.Serializable;
 
@@ -12,119 +28,121 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @generated
  */
+@ProviderType
 public class FileDataSoap implements Serializable {
-    private long _fileDataId;
-    private long _companyId;
-    private Date _createDate;
-    private String _name;
-    private long _size;
-    private String _fingerprint;
+	public static FileDataSoap toSoapModel(FileData model) {
+		FileDataSoap soapModel = new FileDataSoap();
 
-    public FileDataSoap() {
-    }
+		soapModel.setFileDataId(model.getFileDataId());
+		soapModel.setCompanyId(model.getCompanyId());
+		soapModel.setCreateDate(model.getCreateDate());
+		soapModel.setName(model.getName());
+		soapModel.setSize(model.getSize());
+		soapModel.setFingerprint(model.getFingerprint());
 
-    public static FileDataSoap toSoapModel(FileData model) {
-        FileDataSoap soapModel = new FileDataSoap();
+		return soapModel;
+	}
 
-        soapModel.setFileDataId(model.getFileDataId());
-        soapModel.setCompanyId(model.getCompanyId());
-        soapModel.setCreateDate(model.getCreateDate());
-        soapModel.setName(model.getName());
-        soapModel.setSize(model.getSize());
-        soapModel.setFingerprint(model.getFingerprint());
+	public static FileDataSoap[] toSoapModels(FileData[] models) {
+		FileDataSoap[] soapModels = new FileDataSoap[models.length];
 
-        return soapModel;
-    }
+		for (int i = 0; i < models.length; i++) {
+			soapModels[i] = toSoapModel(models[i]);
+		}
 
-    public static FileDataSoap[] toSoapModels(FileData[] models) {
-        FileDataSoap[] soapModels = new FileDataSoap[models.length];
+		return soapModels;
+	}
 
-        for (int i = 0; i < models.length; i++) {
-            soapModels[i] = toSoapModel(models[i]);
-        }
+	public static FileDataSoap[][] toSoapModels(FileData[][] models) {
+		FileDataSoap[][] soapModels = null;
 
-        return soapModels;
-    }
+		if (models.length > 0) {
+			soapModels = new FileDataSoap[models.length][models[0].length];
+		}
+		else {
+			soapModels = new FileDataSoap[0][0];
+		}
 
-    public static FileDataSoap[][] toSoapModels(FileData[][] models) {
-        FileDataSoap[][] soapModels = null;
+		for (int i = 0; i < models.length; i++) {
+			soapModels[i] = toSoapModels(models[i]);
+		}
 
-        if (models.length > 0) {
-            soapModels = new FileDataSoap[models.length][models[0].length];
-        } else {
-            soapModels = new FileDataSoap[0][0];
-        }
+		return soapModels;
+	}
 
-        for (int i = 0; i < models.length; i++) {
-            soapModels[i] = toSoapModels(models[i]);
-        }
+	public static FileDataSoap[] toSoapModels(List<FileData> models) {
+		List<FileDataSoap> soapModels = new ArrayList<FileDataSoap>(models.size());
 
-        return soapModels;
-    }
+		for (FileData model : models) {
+			soapModels.add(toSoapModel(model));
+		}
 
-    public static FileDataSoap[] toSoapModels(List<FileData> models) {
-        List<FileDataSoap> soapModels = new ArrayList<FileDataSoap>(models.size());
+		return soapModels.toArray(new FileDataSoap[soapModels.size()]);
+	}
 
-        for (FileData model : models) {
-            soapModels.add(toSoapModel(model));
-        }
+	public FileDataSoap() {
+	}
 
-        return soapModels.toArray(new FileDataSoap[soapModels.size()]);
-    }
+	public long getPrimaryKey() {
+		return _fileDataId;
+	}
 
-    public long getPrimaryKey() {
-        return _fileDataId;
-    }
+	public void setPrimaryKey(long pk) {
+		setFileDataId(pk);
+	}
 
-    public void setPrimaryKey(long pk) {
-        setFileDataId(pk);
-    }
+	public long getFileDataId() {
+		return _fileDataId;
+	}
 
-    public long getFileDataId() {
-        return _fileDataId;
-    }
+	public void setFileDataId(long fileDataId) {
+		_fileDataId = fileDataId;
+	}
 
-    public void setFileDataId(long fileDataId) {
-        _fileDataId = fileDataId;
-    }
+	public long getCompanyId() {
+		return _companyId;
+	}
 
-    public long getCompanyId() {
-        return _companyId;
-    }
+	public void setCompanyId(long companyId) {
+		_companyId = companyId;
+	}
 
-    public void setCompanyId(long companyId) {
-        _companyId = companyId;
-    }
+	public Date getCreateDate() {
+		return _createDate;
+	}
 
-    public Date getCreateDate() {
-        return _createDate;
-    }
+	public void setCreateDate(Date createDate) {
+		_createDate = createDate;
+	}
 
-    public void setCreateDate(Date createDate) {
-        _createDate = createDate;
-    }
+	public String getName() {
+		return _name;
+	}
 
-    public String getName() {
-        return _name;
-    }
+	public void setName(String name) {
+		_name = name;
+	}
 
-    public void setName(String name) {
-        _name = name;
-    }
+	public long getSize() {
+		return _size;
+	}
 
-    public long getSize() {
-        return _size;
-    }
+	public void setSize(long size) {
+		_size = size;
+	}
 
-    public void setSize(long size) {
-        _size = size;
-    }
+	public String getFingerprint() {
+		return _fingerprint;
+	}
 
-    public String getFingerprint() {
-        return _fingerprint;
-    }
+	public void setFingerprint(String fingerprint) {
+		_fingerprint = fingerprint;
+	}
 
-    public void setFingerprint(String fingerprint) {
-        _fingerprint = fingerprint;
-    }
+	private long _fileDataId;
+	private long _companyId;
+	private Date _createDate;
+	private String _name;
+	private long _size;
+	private String _fingerprint;
 }

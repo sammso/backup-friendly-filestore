@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.sohlman.liferay.bffs</groupId>
 	<artifactId>com.sohlman.liferay.bffs</artifactId>
@@ -8,60 +9,68 @@
 	<name>com.sohlman.liferay.bffs</name>
 	<version>1.0.0.0-SNAPSHOT</version>
 	<build>
-		<plugins>
-			<plugin>
-				<groupId>com.liferay.maven.plugins</groupId>
-				<artifactId>liferay-maven-plugin</artifactId>
-				<version>${liferay.maven.plugin.version}</version>
-				<configuration>
-					<autoDeployDir>${liferay.auto.deploy.dir}</autoDeployDir>
-					<appServerDeployDir>${liferay.app.server.deploy.dir}</appServerDeployDir>
-					<appServerLibGlobalDir>${liferay.app.server.lib.global.dir}</appServerLibGlobalDir>
-					<appServerPortalDir>${liferay.app.server.portal.dir}</appServerPortalDir>
-					<liferayVersion>${liferay.version}</liferayVersion>
-					<pluginName>backup-friendly-filestore</pluginName>
-					<pluginType>hook</pluginType>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.5</version>
-				<configuration>
-					<encoding>UTF-8</encoding>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.5</version>
-				<configuration>
-					<encoding>UTF-8</encoding>
-				</configuration>
-			</plugin>
-		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.1</version>
+					<configuration>
+						<source>1.8</source>
+						<target>1.8</target>
+					</configuration>
+				</plugin>
+	
+				<plugin>
+					<groupId>biz.aQute.bnd</groupId>
+					<artifactId>bnd-maven-plugin</artifactId>
+					<version>3.1.0</version>
+					<executions>
+						<execution>
+							<id>default-bnd-process</id>
+							<goals>
+								<goal>bnd-process</goal>
+							</goals>
+						</execution>
+					</executions>
+
+					<dependencies>
+						<dependency>
+							<groupId>biz.aQute.bnd</groupId>
+							<artifactId>biz.aQute.bndlib</artifactId>
+							<version>3.1.0</version>
+						</dependency>
+						<dependency>
+							<groupId>com.liferay</groupId>
+							<artifactId>com.liferay.ant.bnd</artifactId>
+							<version>2.0.20</version>
+						</dependency>
+					</dependencies>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>2.6</version>
+					<configuration>
+						<archive>
+							<manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+						</archive>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 	<modules>
 		<module>com.sohlman.liferay.bffs.api</module>
 		<module>com.sohlman.liferay.bffs.service</module>
 	</modules>
 	<properties>
-		<liferay.version>6.2.2</liferay.version>
-		<liferay.maven.plugin.version>6.2.2</liferay.maven.plugin.version>
-				<liferay.home>/Users/sammso/LDS/6.2-ce/bundles</liferay.home>
-				<liferay.auto.deploy.dir>${liferay.home}/deploy</liferay.auto.deploy.dir>
-				<liferay.app.server.deploy.dir>${liferay.home}/tomcat-7.0.42/webapps</liferay.app.server.deploy.dir>
-				<liferay.app.server.lib.global.dir>${liferay.home}/tomcat-7.0.42/lib/ext</liferay.app.server.lib.global.dir>
-				<liferay.app.server.portal.dir>${liferay.home}/tomcat-7.0.42/webapps/ROOT</liferay.app.server.portal.dir>
+		<liferay.home>../bundles</liferay.home>
+		<liferay.tomcat.home>${liferay.home}/tomcat-8.0.32</liferay.tomcat.home>
+		<liferay.auto.deploy.dir>${liferay.home}/deploy</liferay.auto.deploy.dir>
+		<liferay.app.server.deploy.dir>${liferay.tomcat.home}/webapps</liferay.app.server.deploy.dir>
+		<liferay.app.server.lib.global.dir>${liferay.tomcat.home}/lib/ext</liferay.app.server.lib.global.dir>
+		<liferay.app.server.portal.dir>${liferay.tomcat.home}/webapps/ROOT</liferay.app.server.portal.dir>
 	</properties>
-	<profiles>
-		<profile>
-			<id>Liferay-v6.2-EE-(Tomcat-7)</id>
-			<properties>
-
-			</properties>
-		</profile>
-	</profiles>
 	<repositories>
 		<repository>
 			<id>liferay-ce</id>

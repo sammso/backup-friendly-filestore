@@ -14,18 +14,18 @@
  */
 package com.sohlman.liferay.bffss.service.impl;
 
+import java.io.InputStream;
+import java.util.List;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringPool;
-import com.sohlman.liferay.bffss.NoSuchFileInfoException;
+import com.sohlman.liferay.bffss.exception.NoSuchFileInfoException;
 import com.sohlman.liferay.bffss.model.FileData;
 import com.sohlman.liferay.bffss.model.FileInfo;
 import com.sohlman.liferay.bffss.service.base.FileInfoLocalServiceBaseImpl;
 import com.sohlman.liferay.bffss.util.FileInfoVersionComparator;
-
-import java.io.InputStream;
-import java.util.List;
 
 /**
  * The implementation of the file info local service.
@@ -134,7 +134,7 @@ public class FileInfoLocalServiceImpl extends FileInfoLocalServiceBaseImpl {
 	@Override
 	public FileInfo getFileInfo(
 			long companyId, long repositoryId, String path)
-		throws NoSuchFileInfoException, SystemException {
+		throws NoSuchFileInfoException  {
 
 		OrderByComparator orderByComparator = new FileInfoVersionComparator();
 
@@ -151,7 +151,7 @@ public class FileInfoLocalServiceImpl extends FileInfoLocalServiceBaseImpl {
 	@Override
 	public FileInfo getFileInfo(
 			long companyId, long repositoryId, String path, String version) 
-		throws NoSuchFileInfoException, SystemException {
+		throws NoSuchFileInfoException  {
 
 		FileInfo fileInfo = fileInfoPersistence.findByC_R_P_V(
 			companyId, repositoryId, path, version);

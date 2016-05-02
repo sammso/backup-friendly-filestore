@@ -1,0 +1,8 @@
+Bundle-Version: ${project.version}
+Liferay-Require-SchemaVersion: 1.0.0
+Liferay-Service: true
+
+-sources: true
+Bundle-SymbolicName: ${project.name}
+-plugin.service: com.liferay.ant.bnd.service.ServiceAnalyzerPlugin
+-plugin.spring: com.liferay.ant.bnd.spring.SpringDependencyAnalyzerPlugin

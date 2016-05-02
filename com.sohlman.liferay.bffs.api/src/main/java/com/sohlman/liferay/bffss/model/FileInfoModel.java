@@ -1,11 +1,28 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
 package com.sohlman.liferay.bffss.model;
 
-import com.liferay.portal.kernel.bean.AutoEscape;
-import com.liferay.portal.model.BaseModel;
-import com.liferay.portal.model.CacheModel;
-import com.liferay.portal.service.ServiceContext;
+import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portlet.expando.model.ExpandoBridge;
+import com.liferay.expando.kernel.model.ExpandoBridge;
+
+import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.model.BaseModel;
+import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.ShardedModel;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
@@ -22,167 +39,170 @@ import java.io.Serializable;
  * @see com.sohlman.liferay.bffss.model.impl.FileInfoModelImpl
  * @generated
  */
-public interface FileInfoModel extends BaseModel<FileInfo> {
-    /*
-     * NOTE FOR DEVELOPERS:
-     *
-     * Never modify or reference this interface directly. All methods that expect a file info model instance should use the {@link FileInfo} interface instead.
-     */
+@ProviderType
+public interface FileInfoModel extends BaseModel<FileInfo>, ShardedModel {
+	/*
+	 * NOTE FOR DEVELOPERS:
+	 *
+	 * Never modify or reference this interface directly. All methods that expect a file info model instance should use the {@link FileInfo} interface instead.
+	 */
 
-    /**
-     * Returns the primary key of this file info.
-     *
-     * @return the primary key of this file info
-     */
-    public long getPrimaryKey();
+	/**
+	 * Returns the primary key of this file info.
+	 *
+	 * @return the primary key of this file info
+	 */
+	public long getPrimaryKey();
 
-    /**
-     * Sets the primary key of this file info.
-     *
-     * @param primaryKey the primary key of this file info
-     */
-    public void setPrimaryKey(long primaryKey);
+	/**
+	 * Sets the primary key of this file info.
+	 *
+	 * @param primaryKey the primary key of this file info
+	 */
+	public void setPrimaryKey(long primaryKey);
 
-    /**
-     * Returns the file info ID of this file info.
-     *
-     * @return the file info ID of this file info
-     */
-    public long getFileInfoId();
+	/**
+	 * Returns the file info ID of this file info.
+	 *
+	 * @return the file info ID of this file info
+	 */
+	public long getFileInfoId();
 
-    /**
-     * Sets the file info ID of this file info.
-     *
-     * @param fileInfoId the file info ID of this file info
-     */
-    public void setFileInfoId(long fileInfoId);
+	/**
+	 * Sets the file info ID of this file info.
+	 *
+	 * @param fileInfoId the file info ID of this file info
+	 */
+	public void setFileInfoId(long fileInfoId);
 
-    /**
-     * Returns the company ID of this file info.
-     *
-     * @return the company ID of this file info
-     */
-    public long getCompanyId();
+	/**
+	 * Returns the company ID of this file info.
+	 *
+	 * @return the company ID of this file info
+	 */
+	@Override
+	public long getCompanyId();
 
-    /**
-     * Sets the company ID of this file info.
-     *
-     * @param companyId the company ID of this file info
-     */
-    public void setCompanyId(long companyId);
+	/**
+	 * Sets the company ID of this file info.
+	 *
+	 * @param companyId the company ID of this file info
+	 */
+	@Override
+	public void setCompanyId(long companyId);
 
-    /**
-     * Returns the repository ID of this file info.
-     *
-     * @return the repository ID of this file info
-     */
-    public long getRepositoryId();
+	/**
+	 * Returns the repository ID of this file info.
+	 *
+	 * @return the repository ID of this file info
+	 */
+	public long getRepositoryId();
 
-    /**
-     * Sets the repository ID of this file info.
-     *
-     * @param repositoryId the repository ID of this file info
-     */
-    public void setRepositoryId(long repositoryId);
+	/**
+	 * Sets the repository ID of this file info.
+	 *
+	 * @param repositoryId the repository ID of this file info
+	 */
+	public void setRepositoryId(long repositoryId);
 
-    /**
-     * Returns the path of this file info.
-     *
-     * @return the path of this file info
-     */
-    @AutoEscape
-    public String getPath();
+	/**
+	 * Returns the path of this file info.
+	 *
+	 * @return the path of this file info
+	 */
+	@AutoEscape
+	public String getPath();
 
-    /**
-     * Sets the path of this file info.
-     *
-     * @param path the path of this file info
-     */
-    public void setPath(String path);
+	/**
+	 * Sets the path of this file info.
+	 *
+	 * @param path the path of this file info
+	 */
+	public void setPath(String path);
 
-    /**
-     * Returns the version of this file info.
-     *
-     * @return the version of this file info
-     */
-    @AutoEscape
-    public String getVersion();
+	/**
+	 * Returns the version of this file info.
+	 *
+	 * @return the version of this file info
+	 */
+	@AutoEscape
+	public String getVersion();
 
-    /**
-     * Sets the version of this file info.
-     *
-     * @param version the version of this file info
-     */
-    public void setVersion(String version);
+	/**
+	 * Sets the version of this file info.
+	 *
+	 * @param version the version of this file info
+	 */
+	public void setVersion(String version);
 
-    /**
-     * Returns the file data ID of this file info.
-     *
-     * @return the file data ID of this file info
-     */
-    public long getFileDataId();
+	/**
+	 * Returns the file data ID of this file info.
+	 *
+	 * @return the file data ID of this file info
+	 */
+	public long getFileDataId();
 
-    /**
-     * Sets the file data ID of this file info.
-     *
-     * @param fileDataId the file data ID of this file info
-     */
-    public void setFileDataId(long fileDataId);
+	/**
+	 * Sets the file data ID of this file info.
+	 *
+	 * @param fileDataId the file data ID of this file info
+	 */
+	public void setFileDataId(long fileDataId);
 
-    @Override
-    public boolean isNew();
+	@Override
+	public boolean isNew();
 
-    @Override
-    public void setNew(boolean n);
+	@Override
+	public void setNew(boolean n);
 
-    @Override
-    public boolean isCachedModel();
+	@Override
+	public boolean isCachedModel();
 
-    @Override
-    public void setCachedModel(boolean cachedModel);
+	@Override
+	public void setCachedModel(boolean cachedModel);
 
-    @Override
-    public boolean isEscapedModel();
+	@Override
+	public boolean isEscapedModel();
 
-    @Override
-    public Serializable getPrimaryKeyObj();
+	@Override
+	public Serializable getPrimaryKeyObj();
 
-    @Override
-    public void setPrimaryKeyObj(Serializable primaryKeyObj);
+	@Override
+	public void setPrimaryKeyObj(Serializable primaryKeyObj);
 
-    @Override
-    public ExpandoBridge getExpandoBridge();
+	@Override
+	public ExpandoBridge getExpandoBridge();
 
-    @Override
-    public void setExpandoBridgeAttributes(BaseModel<?> baseModel);
+	@Override
+	public void setExpandoBridgeAttributes(BaseModel<?> baseModel);
 
-    @Override
-    public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge);
+	@Override
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge);
 
-    @Override
-    public void setExpandoBridgeAttributes(ServiceContext serviceContext);
+	@Override
+	public void setExpandoBridgeAttributes(ServiceContext serviceContext);
 
-    @Override
-    public Object clone();
+	@Override
+	public Object clone();
 
-    @Override
-    public int compareTo(FileInfo fileInfo);
+	@Override
+	public int compareTo(com.sohlman.liferay.bffss.model.FileInfo fileInfo);
 
-    @Override
-    public int hashCode();
+	@Override
+	public int hashCode();
 
-    @Override
-    public CacheModel<FileInfo> toCacheModel();
+	@Override
+	public CacheModel<com.sohlman.liferay.bffss.model.FileInfo> toCacheModel();
 
-    @Override
-    public FileInfo toEscapedModel();
+	@Override
+	public com.sohlman.liferay.bffss.model.FileInfo toEscapedModel();
 
-    @Override
-    public FileInfo toUnescapedModel();
+	@Override
+	public com.sohlman.liferay.bffss.model.FileInfo toUnescapedModel();
 
-    @Override
-    public String toString();
+	@Override
+	public String toString();
 
-    @Override
-    public String toXmlString();
+	@Override
+	public String toXmlString();
 }

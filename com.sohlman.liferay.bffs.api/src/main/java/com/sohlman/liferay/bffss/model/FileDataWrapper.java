@@ -1,7 +1,28 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
 package com.sohlman.liferay.bffss.model;
 
+import aQute.bnd.annotation.ProviderType;
+
+import com.liferay.expando.kernel.model.ExpandoBridge;
+
+import com.liferay.portal.kernel.model.ModelWrapper;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.model.ModelWrapper;
+
+import java.io.Serializable;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -16,353 +37,354 @@ import java.util.Map;
  * @see FileData
  * @generated
  */
+@ProviderType
 public class FileDataWrapper implements FileData, ModelWrapper<FileData> {
-    private FileData _fileData;
+	public FileDataWrapper(FileData fileData) {
+		_fileData = fileData;
+	}
 
-    public FileDataWrapper(FileData fileData) {
-        _fileData = fileData;
-    }
+	@Override
+	public Class<?> getModelClass() {
+		return FileData.class;
+	}
 
-    @Override
-    public Class<?> getModelClass() {
-        return FileData.class;
-    }
+	@Override
+	public String getModelClassName() {
+		return FileData.class.getName();
+	}
 
-    @Override
-    public String getModelClassName() {
-        return FileData.class.getName();
-    }
+	@Override
+	public Map<String, Object> getModelAttributes() {
+		Map<String, Object> attributes = new HashMap<String, Object>();
 
-    @Override
-    public Map<String, Object> getModelAttributes() {
-        Map<String, Object> attributes = new HashMap<String, Object>();
+		attributes.put("fileDataId", getFileDataId());
+		attributes.put("companyId", getCompanyId());
+		attributes.put("createDate", getCreateDate());
+		attributes.put("name", getName());
+		attributes.put("size", getSize());
+		attributes.put("fingerprint", getFingerprint());
 
-        attributes.put("fileDataId", getFileDataId());
-        attributes.put("companyId", getCompanyId());
-        attributes.put("createDate", getCreateDate());
-        attributes.put("name", getName());
-        attributes.put("size", getSize());
-        attributes.put("fingerprint", getFingerprint());
+		return attributes;
+	}
 
-        return attributes;
-    }
+	@Override
+	public void setModelAttributes(Map<String, Object> attributes) {
+		Long fileDataId = (Long)attributes.get("fileDataId");
 
-    @Override
-    public void setModelAttributes(Map<String, Object> attributes) {
-        Long fileDataId = (Long) attributes.get("fileDataId");
+		if (fileDataId != null) {
+			setFileDataId(fileDataId);
+		}
 
-        if (fileDataId != null) {
-            setFileDataId(fileDataId);
-        }
+		Long companyId = (Long)attributes.get("companyId");
 
-        Long companyId = (Long) attributes.get("companyId");
+		if (companyId != null) {
+			setCompanyId(companyId);
+		}
 
-        if (companyId != null) {
-            setCompanyId(companyId);
-        }
+		Date createDate = (Date)attributes.get("createDate");
 
-        Date createDate = (Date) attributes.get("createDate");
+		if (createDate != null) {
+			setCreateDate(createDate);
+		}
 
-        if (createDate != null) {
-            setCreateDate(createDate);
-        }
+		String name = (String)attributes.get("name");
 
-        String name = (String) attributes.get("name");
+		if (name != null) {
+			setName(name);
+		}
 
-        if (name != null) {
-            setName(name);
-        }
+		Long size = (Long)attributes.get("size");
 
-        Long size = (Long) attributes.get("size");
+		if (size != null) {
+			setSize(size);
+		}
 
-        if (size != null) {
-            setSize(size);
-        }
+		String fingerprint = (String)attributes.get("fingerprint");
 
-        String fingerprint = (String) attributes.get("fingerprint");
+		if (fingerprint != null) {
+			setFingerprint(fingerprint);
+		}
+	}
 
-        if (fingerprint != null) {
-            setFingerprint(fingerprint);
-        }
-    }
+	@Override
+	public java.lang.Object clone() {
+		return new FileDataWrapper((FileData)_fileData.clone());
+	}
 
-    /**
-    * Returns the primary key of this file data.
-    *
-    * @return the primary key of this file data
-    */
-    @Override
-    public long getPrimaryKey() {
-        return _fileData.getPrimaryKey();
-    }
+	@Override
+	public int compareTo(com.sohlman.liferay.bffss.model.FileData fileData) {
+		return _fileData.compareTo(fileData);
+	}
 
-    /**
-    * Sets the primary key of this file data.
-    *
-    * @param primaryKey the primary key of this file data
-    */
-    @Override
-    public void setPrimaryKey(long primaryKey) {
-        _fileData.setPrimaryKey(primaryKey);
-    }
+	/**
+	* Returns the company ID of this file data.
+	*
+	* @return the company ID of this file data
+	*/
+	@Override
+	public long getCompanyId() {
+		return _fileData.getCompanyId();
+	}
 
-    /**
-    * Returns the file data ID of this file data.
-    *
-    * @return the file data ID of this file data
-    */
-    @Override
-    public long getFileDataId() {
-        return _fileData.getFileDataId();
-    }
+	/**
+	* Returns the create date of this file data.
+	*
+	* @return the create date of this file data
+	*/
+	@Override
+	public Date getCreateDate() {
+		return _fileData.getCreateDate();
+	}
 
-    /**
-    * Sets the file data ID of this file data.
-    *
-    * @param fileDataId the file data ID of this file data
-    */
-    @Override
-    public void setFileDataId(long fileDataId) {
-        _fileData.setFileDataId(fileDataId);
-    }
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _fileData.getExpandoBridge();
+	}
 
-    /**
-    * Returns the company ID of this file data.
-    *
-    * @return the company ID of this file data
-    */
-    @Override
-    public long getCompanyId() {
-        return _fileData.getCompanyId();
-    }
+	/**
+	* Returns the file data ID of this file data.
+	*
+	* @return the file data ID of this file data
+	*/
+	@Override
+	public long getFileDataId() {
+		return _fileData.getFileDataId();
+	}
 
-    /**
-    * Sets the company ID of this file data.
-    *
-    * @param companyId the company ID of this file data
-    */
-    @Override
-    public void setCompanyId(long companyId) {
-        _fileData.setCompanyId(companyId);
-    }
+	/**
+	* Returns the fingerprint of this file data.
+	*
+	* @return the fingerprint of this file data
+	*/
+	@Override
+	public java.lang.String getFingerprint() {
+		return _fileData.getFingerprint();
+	}
 
-    /**
-    * Returns the create date of this file data.
-    *
-    * @return the create date of this file data
-    */
-    @Override
-    public java.util.Date getCreateDate() {
-        return _fileData.getCreateDate();
-    }
+	/**
+	* Returns the name of this file data.
+	*
+	* @return the name of this file data
+	*/
+	@Override
+	public java.lang.String getName() {
+		return _fileData.getName();
+	}
 
-    /**
-    * Sets the create date of this file data.
-    *
-    * @param createDate the create date of this file data
-    */
-    @Override
-    public void setCreateDate(java.util.Date createDate) {
-        _fileData.setCreateDate(createDate);
-    }
+	/**
+	* Returns the primary key of this file data.
+	*
+	* @return the primary key of this file data
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _fileData.getPrimaryKey();
+	}
 
-    /**
-    * Returns the name of this file data.
-    *
-    * @return the name of this file data
-    */
-    @Override
-    public java.lang.String getName() {
-        return _fileData.getName();
-    }
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _fileData.getPrimaryKeyObj();
+	}
 
-    /**
-    * Sets the name of this file data.
-    *
-    * @param name the name of this file data
-    */
-    @Override
-    public void setName(java.lang.String name) {
-        _fileData.setName(name);
-    }
+	/**
+	* Returns the size of this file data.
+	*
+	* @return the size of this file data
+	*/
+	@Override
+	public long getSize() {
+		return _fileData.getSize();
+	}
 
-    /**
-    * Returns the size of this file data.
-    *
-    * @return the size of this file data
-    */
-    @Override
-    public long getSize() {
-        return _fileData.getSize();
-    }
+	@Override
+	public int hashCode() {
+		return _fileData.hashCode();
+	}
 
-    /**
-    * Sets the size of this file data.
-    *
-    * @param size the size of this file data
-    */
-    @Override
-    public void setSize(long size) {
-        _fileData.setSize(size);
-    }
+	@Override
+	public boolean isCachedModel() {
+		return _fileData.isCachedModel();
+	}
 
-    /**
-    * Returns the fingerprint of this file data.
-    *
-    * @return the fingerprint of this file data
-    */
-    @Override
-    public java.lang.String getFingerprint() {
-        return _fileData.getFingerprint();
-    }
+	@Override
+	public boolean isEscapedModel() {
+		return _fileData.isEscapedModel();
+	}
 
-    /**
-    * Sets the fingerprint of this file data.
-    *
-    * @param fingerprint the fingerprint of this file data
-    */
-    @Override
-    public void setFingerprint(java.lang.String fingerprint) {
-        _fileData.setFingerprint(fingerprint);
-    }
+	@Override
+	public boolean isNew() {
+		return _fileData.isNew();
+	}
 
-    @Override
-    public boolean isNew() {
-        return _fileData.isNew();
-    }
+	@Override
+	public void persist() {
+		_fileData.persist();
+	}
 
-    @Override
-    public void setNew(boolean n) {
-        _fileData.setNew(n);
-    }
+	@Override
+	public void setCachedModel(boolean cachedModel) {
+		_fileData.setCachedModel(cachedModel);
+	}
 
-    @Override
-    public boolean isCachedModel() {
-        return _fileData.isCachedModel();
-    }
+	/**
+	* Sets the company ID of this file data.
+	*
+	* @param companyId the company ID of this file data
+	*/
+	@Override
+	public void setCompanyId(long companyId) {
+		_fileData.setCompanyId(companyId);
+	}
 
-    @Override
-    public void setCachedModel(boolean cachedModel) {
-        _fileData.setCachedModel(cachedModel);
-    }
+	/**
+	* Sets the create date of this file data.
+	*
+	* @param createDate the create date of this file data
+	*/
+	@Override
+	public void setCreateDate(Date createDate) {
+		_fileData.setCreateDate(createDate);
+	}
 
-    @Override
-    public boolean isEscapedModel() {
-        return _fileData.isEscapedModel();
-    }
+	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_fileData.setExpandoBridgeAttributes(baseModel);
+	}
 
-    @Override
-    public java.io.Serializable getPrimaryKeyObj() {
-        return _fileData.getPrimaryKeyObj();
-    }
+	@Override
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_fileData.setExpandoBridgeAttributes(expandoBridge);
+	}
 
-    @Override
-    public void setPrimaryKeyObj(java.io.Serializable primaryKeyObj) {
-        _fileData.setPrimaryKeyObj(primaryKeyObj);
-    }
+	@Override
+	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
+		_fileData.setExpandoBridgeAttributes(serviceContext);
+	}
 
-    @Override
-    public com.liferay.portlet.expando.model.ExpandoBridge getExpandoBridge() {
-        return _fileData.getExpandoBridge();
-    }
+	/**
+	* Sets the file data ID of this file data.
+	*
+	* @param fileDataId the file data ID of this file data
+	*/
+	@Override
+	public void setFileDataId(long fileDataId) {
+		_fileData.setFileDataId(fileDataId);
+	}
 
-    @Override
-    public void setExpandoBridgeAttributes(
-        com.liferay.portal.model.BaseModel<?> baseModel) {
-        _fileData.setExpandoBridgeAttributes(baseModel);
-    }
+	/**
+	* Sets the fingerprint of this file data.
+	*
+	* @param fingerprint the fingerprint of this file data
+	*/
+	@Override
+	public void setFingerprint(java.lang.String fingerprint) {
+		_fileData.setFingerprint(fingerprint);
+	}
 
-    @Override
-    public void setExpandoBridgeAttributes(
-        com.liferay.portlet.expando.model.ExpandoBridge expandoBridge) {
-        _fileData.setExpandoBridgeAttributes(expandoBridge);
-    }
+	/**
+	* Sets the name of this file data.
+	*
+	* @param name the name of this file data
+	*/
+	@Override
+	public void setName(java.lang.String name) {
+		_fileData.setName(name);
+	}
 
-    @Override
-    public void setExpandoBridgeAttributes(
-        com.liferay.portal.service.ServiceContext serviceContext) {
-        _fileData.setExpandoBridgeAttributes(serviceContext);
-    }
+	@Override
+	public void setNew(boolean n) {
+		_fileData.setNew(n);
+	}
 
-    @Override
-    public java.lang.Object clone() {
-        return new FileDataWrapper((FileData) _fileData.clone());
-    }
+	/**
+	* Sets the primary key of this file data.
+	*
+	* @param primaryKey the primary key of this file data
+	*/
+	@Override
+	public void setPrimaryKey(long primaryKey) {
+		_fileData.setPrimaryKey(primaryKey);
+	}
 
-    @Override
-    public int compareTo(com.sohlman.liferay.bffss.model.FileData fileData) {
-        return _fileData.compareTo(fileData);
-    }
+	@Override
+	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
+		_fileData.setPrimaryKeyObj(primaryKeyObj);
+	}
 
-    @Override
-    public int hashCode() {
-        return _fileData.hashCode();
-    }
+	/**
+	* Sets the size of this file data.
+	*
+	* @param size the size of this file data
+	*/
+	@Override
+	public void setSize(long size) {
+		_fileData.setSize(size);
+	}
 
-    @Override
-    public com.liferay.portal.model.CacheModel<com.sohlman.liferay.bffss.model.FileData> toCacheModel() {
-        return _fileData.toCacheModel();
-    }
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<com.sohlman.liferay.bffss.model.FileData> toCacheModel() {
+		return _fileData.toCacheModel();
+	}
 
-    @Override
-    public com.sohlman.liferay.bffss.model.FileData toEscapedModel() {
-        return new FileDataWrapper(_fileData.toEscapedModel());
-    }
+	@Override
+	public com.sohlman.liferay.bffss.model.FileData toEscapedModel() {
+		return new FileDataWrapper(_fileData.toEscapedModel());
+	}
 
-    @Override
-    public com.sohlman.liferay.bffss.model.FileData toUnescapedModel() {
-        return new FileDataWrapper(_fileData.toUnescapedModel());
-    }
+	@Override
+	public java.lang.String toString() {
+		return _fileData.toString();
+	}
 
-    @Override
-    public java.lang.String toString() {
-        return _fileData.toString();
-    }
+	@Override
+	public com.sohlman.liferay.bffss.model.FileData toUnescapedModel() {
+		return new FileDataWrapper(_fileData.toUnescapedModel());
+	}
 
-    @Override
-    public java.lang.String toXmlString() {
-        return _fileData.toXmlString();
-    }
+	@Override
+	public java.lang.String toXmlString() {
+		return _fileData.toXmlString();
+	}
 
-    @Override
-    public void persist()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _fileData.persist();
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
+		if (!(obj instanceof FileDataWrapper)) {
+			return false;
+		}
 
-        if (!(obj instanceof FileDataWrapper)) {
-            return false;
-        }
+		FileDataWrapper fileDataWrapper = (FileDataWrapper)obj;
 
-        FileDataWrapper fileDataWrapper = (FileDataWrapper) obj;
+		if (Validator.equals(_fileData, fileDataWrapper._fileData)) {
+			return true;
+		}
 
-        if (Validator.equals(_fileData, fileDataWrapper._fileData)) {
-            return true;
-        }
+		return false;
+	}
 
-        return false;
-    }
+	@Override
+	public FileData getWrappedModel() {
+		return _fileData;
+	}
 
-    /**
-     * @deprecated As of 6.1.0, replaced by {@link #getWrappedModel}
-     */
-    public FileData getWrappedFileData() {
-        return _fileData;
-    }
+	@Override
+	public boolean isEntityCacheEnabled() {
+		return _fileData.isEntityCacheEnabled();
+	}
 
-    @Override
-    public FileData getWrappedModel() {
-        return _fileData;
-    }
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _fileData.isFinderCacheEnabled();
+	}
 
-    @Override
-    public void resetOriginalValues() {
-        _fileData.resetOriginalValues();
-    }
+	@Override
+	public void resetOriginalValues() {
+		_fileData.resetOriginalValues();
+	}
+
+	private final FileData _fileData;
 }

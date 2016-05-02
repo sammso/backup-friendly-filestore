@@ -12,28 +12,28 @@
  * details.
  */
 
-package com.sohlman.liferay.bffss;
+package com.sohlman.liferay.bffss.exception;
 
-import com.liferay.portal.NoSuchModelException;
+import com.liferay.portal.kernel.exception.NoSuchModelException;
 
 /**
  * @author Brian Wing Shun Chan
  */
-public class NoSuchFileInfoException extends NoSuchModelException {
+public class NoSuchFileDataException extends NoSuchModelException {
 
-	public NoSuchFileInfoException() {
+	public NoSuchFileDataException() {
 		super();
 	}
 
-	public NoSuchFileInfoException(String msg) {
+	public NoSuchFileDataException(String msg) {
 		super(msg);
 	}
 
-	public NoSuchFileInfoException(String msg, Throwable cause) {
+	public NoSuchFileDataException(String msg, Throwable cause) {
 		super(msg, cause);
 	}
 
-	public NoSuchFileInfoException(Throwable cause) {
+	public NoSuchFileDataException(Throwable cause) {
 		super(cause);
 	}
 

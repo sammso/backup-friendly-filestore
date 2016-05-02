@@ -1,0 +1,9 @@
+Bundle-Version: ${project.version}
+Bundle-SymbolicName: ${project.artifactId}
+Export-Package:\
+	com.sohlman.liferay.bffss.exception,\
+	com.sohlman.liferay.bffss.model,\
+	com.sohlman.liferay.bffss.service,\
+	com.sohlman.liferay.bffss.service.persistence
+-includeresource: META-INF/service.xml=../com.sohlman.liferay.bffs.service/service.xml
+-sources: true

@@ -13,6 +13,19 @@
  */
 package com.sohlman.liferay.bffss;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.List;
+
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.ConfigurationPolicy;
+import org.osgi.service.component.annotations.Reference;
+
+import com.liferay.document.library.kernel.exception.DuplicateFileException;
+import com.liferay.document.library.kernel.store.BaseStore;
+import com.liferay.document.library.kernel.store.Store;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
@@ -20,25 +33,22 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
-import com.liferay.portlet.documentlibrary.DuplicateFileException;
-import com.liferay.portlet.documentlibrary.store.BaseStore;
-import com.liferay.portlet.documentlibrary.store.Store;
+import com.sohlman.liferay.bffss.configuration.BackupFriendlyFileSystemStoreConfiguration;
 import com.sohlman.liferay.bffss.model.FileData;
 import com.sohlman.liferay.bffss.model.FileInfo;
-import com.sohlman.liferay.bffss.service.FileDataLocalServiceUtil;
-import com.sohlman.liferay.bffss.service.FileInfoLocalServiceUtil;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.util.List;
+import com.sohlman.liferay.bffss.service.FileDataLocalService;
+import com.sohlman.liferay.bffss.service.FileInfoLocalService;
 
 /**
  * @author Shuyang Zhou
  * @author Tina Tian
  * @author Sampsa Sohlman
  */
+@Component(
+		configurationPid = "com.sohlman.liferay.bffss.configuration.BackupFriendlyFileSystemStoreConfiguration",
+		property = "store.type=com.sohlman.liferay.bffss.BackupFriendlyFileSystemStore",
+		service = Store.class
+	)
 public class BackupFriendlyFileSystemStore extends BaseStore {
 
 	@Override
@@ -85,7 +95,7 @@ public class BackupFriendlyFileSystemStore extends BaseStore {
 		throws SystemException {
 
 		try {
-			FileInfoLocalServiceUtil.deleteFileInfosByDirectory(
+			_fileInfoLocalService.deleteFileInfosByDirectory(
 				companyId, repositoryId, dirName);
 		} catch (PortalException e) {
 			throw new SystemException(e);
@@ -93,11 +103,10 @@ public class BackupFriendlyFileSystemStore extends BaseStore {
 	}
 
 	@Override
-	public void deleteFile(long companyId, long repositoryId, String fileName)
-		throws SystemException {
+	public void deleteFile(long companyId, long repositoryId, String fileName) {
 		
 		try {
-			FileInfoLocalServiceUtil.deleteFileInfos(
+			_fileInfoLocalService.deleteFileInfos(
 				companyId, repositoryId, fileName);
 		} catch (PortalException e) {
 			throw new SystemException(e);
@@ -107,20 +116,23 @@ public class BackupFriendlyFileSystemStore extends BaseStore {
 	@Override
 	public void deleteFile(
 			long companyId, long repositoryId, String fileName,
-			String versionLabel)
-		throws PortalException, SystemException {
+			String versionLabel) {
 
-		FileInfoLocalServiceUtil.deleteFileInfo(
-			companyId, repositoryId, fileName, versionLabel);
+		try {
+			_fileInfoLocalService.deleteFileInfo(
+				companyId, repositoryId, fileName, versionLabel);
+		} catch (PortalException e) {
+			throw new SystemException(e);
+		}		
 	}
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public InputStream getFileAsStream(
 			long companyId, long repositoryId, String fileName)
-		throws PortalException, SystemException {
+		throws PortalException {
 
-		return FileInfoLocalServiceUtil.getFileAsStream(
+		return _fileInfoLocalService.getFileAsStream(
 			companyId, repositoryId, fileName);
 	}
 
@@ -129,9 +141,9 @@ public class BackupFriendlyFileSystemStore extends BaseStore {
 	public InputStream getFileAsStream(
 			long companyId, long repositoryId, String fileName, 
 			String versionLabel)
-		throws PortalException, SystemException {
+		throws PortalException {
 		
-		return FileInfoLocalServiceUtil.getFileAsStream(
+		return _fileInfoLocalService.getFileAsStream(
 				companyId, repositoryId, fileName, versionLabel);
 	}
 
@@ -140,7 +152,7 @@ public class BackupFriendlyFileSystemStore extends BaseStore {
 		throws SystemException {
 
 		List<FileInfo> FileInfos = 
-			FileInfoLocalServiceUtil.getFileInfos(
+			_fileInfoLocalService.getFileInfos(
 				companyId, repositoryId);
 
 		String[] fileNames = new String[FileInfos.size()];
@@ -160,7 +172,7 @@ public class BackupFriendlyFileSystemStore extends BaseStore {
 		throws SystemException {
 
 		List<FileInfo> FileInfos =
-			FileInfoLocalServiceUtil.getFileInfosByDirectory(
+			_fileInfoLocalService.getFileInfosByDirectory(
 				companyId, repositoryId, dirName);
 
 		String[] fileNames = new String[FileInfos.size()];
@@ -178,10 +190,11 @@ public class BackupFriendlyFileSystemStore extends BaseStore {
 	public long getFileSize(long companyId, long repositoryId, String fileName)
 		throws PortalException, SystemException {
 
-		FileInfo fileInfo = FileInfoLocalServiceUtil.getFileInfo(
+		FileInfo fileInfo = _fileInfoLocalService.getFileInfo(
 			companyId, repositoryId, fileName);
 
-		FileData fileData = FileDataLocalServiceUtil.getFileData(fileInfo.getFileDataId());
+		FileData fileData = _fileDataLocalService.getFileData(
+			fileInfo.getFileDataId());
 		
 		return fileData.getSize();
 	}
@@ -199,7 +212,7 @@ public class BackupFriendlyFileSystemStore extends BaseStore {
 			String versionLabel)
 		throws SystemException {
 
-		return FileInfoLocalServiceUtil.hasFileInfo(
+		return _fileInfoLocalService.hasFileInfo(
 			companyId, repositoryId, fileName, versionLabel);
 	}
 
@@ -213,7 +226,7 @@ public class BackupFriendlyFileSystemStore extends BaseStore {
 			String fileName)
 		throws SystemException {
 
-		FileInfoLocalServiceUtil.updateFileInfo(
+		_fileInfoLocalService.updateFileInfo(
 			companyId, repositoryId, newRepositoryId, fileName, fileName);
 	}
 
@@ -223,7 +236,7 @@ public class BackupFriendlyFileSystemStore extends BaseStore {
 			String newFileName)
 		throws SystemException {
 
-		FileInfoLocalServiceUtil.updateFileInfo(
+		_fileInfoLocalService.updateFileInfo(
 			companyId, repositoryId, repositoryId, fileName, newFileName);
 	}
 
@@ -233,13 +246,13 @@ public class BackupFriendlyFileSystemStore extends BaseStore {
 			String versionLabel, byte[] bytes)
 		throws PortalException, SystemException {
 
-		if (FileInfoLocalServiceUtil.hasFileInfo(
+		if (_fileInfoLocalService.hasFileInfo(
 				companyId, repositoryId, fileName, versionLabel)) {
 
 			throw new DuplicateFileException(fileName);
 		}
 
-		FileInfoLocalServiceUtil.addFileInfo(
+		_fileInfoLocalService.addFileInfo(
 			companyId, repositoryId, fileName, versionLabel, 
 			new UnsyncByteArrayInputStream(bytes));
 	}
@@ -250,7 +263,7 @@ public class BackupFriendlyFileSystemStore extends BaseStore {
 			String versionLabel, File file)
 		throws PortalException, SystemException {
 
-		if (FileInfoLocalServiceUtil.hasFileInfo(
+		if (_fileInfoLocalService.hasFileInfo(
 				companyId, repositoryId, fileName, versionLabel)) {
 
 			throw new DuplicateFileException(fileName);
@@ -265,7 +278,7 @@ public class BackupFriendlyFileSystemStore extends BaseStore {
 			throw new SystemException(fnfe);
 		}
 
-		FileInfoLocalServiceUtil.addFileInfo(
+		_fileInfoLocalService.addFileInfo(
 			companyId, repositoryId, fileName, versionLabel, inputStream);
 	}
 
@@ -275,16 +288,25 @@ public class BackupFriendlyFileSystemStore extends BaseStore {
 			String versionLabel, InputStream inputStream)
 		throws PortalException, SystemException {
 
-		if (FileInfoLocalServiceUtil.hasFileInfo(
+		if (_fileInfoLocalService.hasFileInfo(
 				companyId, repositoryId, fileName, versionLabel)) {
 
 			throw new DuplicateFileException(fileName);
 		}
 
-		FileInfoLocalServiceUtil.addFileInfo(
+		_fileInfoLocalService.addFileInfo(
 				companyId, repositoryId, fileName, versionLabel, inputStream);
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(BackupFriendlyFileSystemStore.class);
-
+	@Reference
+	private FileDataLocalService _fileDataLocalService;
+	
+	@Reference
+	private FileInfoLocalService _fileInfoLocalService;
+	
+	private static volatile BackupFriendlyFileSystemStoreConfiguration
+		_backupFriendlyFileSystemStoreConfiguration;
+	private static Log _log = 
+		LogFactoryUtil.getLog(BackupFriendlyFileSystemStore.class);
+	
 }
