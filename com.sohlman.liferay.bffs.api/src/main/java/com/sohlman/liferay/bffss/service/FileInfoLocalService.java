@@ -1,21 +1,11 @@
 /**
- * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * SPDX-FileCopyrightText: (c) 2026 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
 package com.sohlman.liferay.bffss.service;
 
-import aQute.bnd.annotation.ProviderType;
-
+import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
@@ -27,6 +17,7 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
+import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -40,6 +31,8 @@ import java.io.Serializable;
 
 import java.util.List;
 
+import org.osgi.annotation.versioning.ProviderType;
+
 /**
  * Provides the local service interface for FileInfo. Methods of this
  * service will not have security checks based on the propagated JAAS
@@ -48,135 +41,176 @@ import java.util.List;
  *
  * @author Brian Wing Shun Chan
  * @see FileInfoLocalServiceUtil
- * @see com.sohlman.liferay.bffss.service.base.FileInfoLocalServiceBaseImpl
- * @see com.sohlman.liferay.bffss.service.impl.FileInfoLocalServiceImpl
  * @generated
  */
+@OSGiBeanProperties(
+	property = {"model.class.name=com.sohlman.liferay.bffss.model.FileInfo"}
+)
 @ProviderType
-@Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
-	PortalException.class, SystemException.class})
-public interface FileInfoLocalService extends BaseLocalService,
-	PersistedModelLocalService {
+@Transactional(
+	isolation = Isolation.PORTAL,
+	rollbackFor = {PortalException.class, SystemException.class}
+)
+public interface FileInfoLocalService
+	extends BaseLocalService, PersistedModelLocalService {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link FileInfoLocalServiceUtil} to access the file info local service. Add custom service methods to {@link com.sohlman.liferay.bffss.service.impl.FileInfoLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add custom service methods to <code>com.sohlman.liferay.bffss.service.impl.FileInfoLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the file info local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link FileInfoLocalServiceUtil} if injection and service tracking are not available.
 	 */
-	public FileInfo addFileInfo(long companyId, long repositoryId,
-		java.lang.String path, java.lang.String version, InputStream inputStream)
-		throws SystemException;
 
 	/**
-	* Adds the file info to the database. Also notifies the appropriate model listeners.
-	*
-	* @param fileInfo the file info
-	* @return the file info that was added
-	*/
+	 * Adds the file info to the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect FileInfoLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
+	 * @param fileInfo the file info
+	 * @return the file info that was added
+	 */
 	@Indexable(type = IndexableType.REINDEX)
 	public FileInfo addFileInfo(FileInfo fileInfo);
 
+	public FileInfo addFileInfo(
+			long companyId, long repositoryId, String path, String version,
+			InputStream inputStream)
+		throws SystemException;
+
 	/**
-	* Creates a new file info with the primary key. Does not add the file info to the database.
-	*
-	* @param fileInfoId the primary key for the new file info
-	* @return the new file info
-	*/
+	 * Creates a new file info with the primary key. Does not add the file info to the database.
+	 *
+	 * @param fileInfoId the primary key for the new file info
+	 * @return the new file info
+	 */
+	@Transactional(enabled = false)
 	public FileInfo createFileInfo(long fileInfoId);
 
-	public void deleteFileInfo(long companyId, long repositoryId,
-		java.lang.String path, java.lang.String version)
-		throws PortalException, SystemException;
+	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
 
 	/**
-	* Deletes the file info from the database. Also notifies the appropriate model listeners.
-	*
-	* @param fileInfo the file info
-	* @return the file info that was removed
-	*/
+	 * Deletes the file info from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect FileInfoLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
+	 * @param fileInfo the file info
+	 * @return the file info that was removed
+	 */
 	@Indexable(type = IndexableType.DELETE)
 	public FileInfo deleteFileInfo(FileInfo fileInfo);
 
 	/**
-	* Deletes the file info with the primary key from the database. Also notifies the appropriate model listeners.
-	*
-	* @param fileInfoId the primary key of the file info
-	* @return the file info that was removed
-	* @throws PortalException if a file info with the primary key could not be found
-	*/
+	 * Deletes the file info with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect FileInfoLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
+	 * @param fileInfoId the primary key of the file info
+	 * @return the file info that was removed
+	 * @throws PortalException if a file info with the primary key could not be found
+	 */
 	@Indexable(type = IndexableType.DELETE)
 	public FileInfo deleteFileInfo(long fileInfoId) throws PortalException;
 
-	public void deleteFileInfos(long companyId, long repositoryId,
-		java.lang.String path) throws PortalException, SystemException;
+	public void deleteFileInfo(
+			long companyId, long repositoryId, String path, String version)
+		throws PortalException, SystemException;
 
-	public void deleteFileInfosByDirectory(long companyId, long repositoryId,
-		java.lang.String dirName) throws PortalException, SystemException;
+	public void deleteFileInfos(long companyId, long repositoryId, String path)
+		throws PortalException, SystemException;
+
+	public void deleteFileInfosByCompany(long companyId) throws PortalException;
+
+	public void deleteFileInfosByDirectory(
+			long companyId, long repositoryId, String dirName)
+		throws PortalException, SystemException;
 
 	/**
-	* @throws PortalException
-	*/
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public <T> T dslQuery(DSLQuery dslQuery);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int dslQueryCount(DSLQuery dslQuery);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public DynamicQuery dynamicQuery();
 
 	/**
-	* Performs a dynamic query on the database and returns the matching rows.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the matching rows
-	*/
+	 * Performs a dynamic query on the database and returns the matching rows.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @return the matching rows
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery);
 
 	/**
-	* Performs a dynamic query on the database and returns a range of the matching rows.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.sohlman.liferay.bffss.model.impl.FileInfoModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param dynamicQuery the dynamic query
-	* @param start the lower bound of the range of model instances
-	* @param end the upper bound of the range of model instances (not inclusive)
-	* @return the range of matching rows
-	*/
-	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
-		int end);
+	 * Performs a dynamic query on the database and returns a range of the matching rows.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.sohlman.liferay.bffss.model.impl.FileInfoModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param start the lower bound of the range of model instances
+	 * @param end the upper bound of the range of model instances (not inclusive)
+	 * @return the range of matching rows
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end);
 
 	/**
-	* Performs a dynamic query on the database and returns an ordered range of the matching rows.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.sohlman.liferay.bffss.model.impl.FileInfoModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param dynamicQuery the dynamic query
-	* @param start the lower bound of the range of model instances
-	* @param end the upper bound of the range of model instances (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @return the ordered range of matching rows
-	*/
-	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
-		int end, OrderByComparator<T> orderByComparator);
+	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.sohlman.liferay.bffss.model.impl.FileInfoModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param start the lower bound of the range of model instances
+	 * @param end the upper bound of the range of model instances (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching rows
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator);
 
 	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
+	 * Returns the number of rows matching the dynamic query.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @return the number of rows matching the dynamic query
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public long dynamicQueryCount(DynamicQuery dynamicQuery);
 
 	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
+	 * Returns the number of rows matching the dynamic query.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param projection the projection to apply to the query
+	 * @return the number of rows matching the dynamic query
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public long dynamicQueryCount(
+		DynamicQuery dynamicQuery, Projection projection);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public FileInfo fetchFileInfo(long fileInfoId);
@@ -185,64 +219,67 @@ public interface FileInfoLocalService extends BaseLocalService,
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public InputStream getFileAsStream(long companyId, long repositoryId,
-		java.lang.String fileName) throws PortalException, SystemException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public InputStream getFileAsStream(long companyId, long repositoryId,
-		java.lang.String fileName, java.lang.String version)
+	public InputStream getFileAsStream(
+			long companyId, long repositoryId, String fileName)
 		throws PortalException, SystemException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public FileInfo getFileInfo(long companyId, long repositoryId,
-		java.lang.String path) throws NoSuchFileInfoException;
+	public InputStream getFileAsStream(
+			long companyId, long repositoryId, String fileName, String version)
+		throws PortalException, SystemException;
+
+	/**
+	 * Returns the file info with the primary key.
+	 *
+	 * @param fileInfoId the primary key of the file info
+	 * @return the file info
+	 * @throws PortalException if a file info with the primary key could not be found
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public FileInfo getFileInfo(long fileInfoId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public FileInfo getFileInfo(long companyId, long repositoryId,
-		java.lang.String path, java.lang.String version)
+	public FileInfo getFileInfo(long companyId, long repositoryId, String path)
+		throws NoSuchFileInfoException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public FileInfo getFileInfo(
+			long companyId, long repositoryId, String path, String version)
 		throws NoSuchFileInfoException;
 
 	/**
-	* Returns the file info with the primary key.
-	*
-	* @param fileInfoId the primary key of the file info
-	* @return the file info
-	* @throws PortalException if a file info with the primary key could not be found
-	*/
+	 * Returns a range of all the file infos.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.sohlman.liferay.bffss.model.impl.FileInfoModelImpl</code>.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of file infos
+	 * @param end the upper bound of the range of file infos (not inclusive)
+	 * @return the range of file infos
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public FileInfo getFileInfo(long fileInfoId) throws PortalException;
+	public List<FileInfo> getFileInfos(int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<FileInfo> getFileInfos(long companyId, long repositoryId)
 		throws SystemException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<FileInfo> getFileInfos(long companyId, long repositoryId,
-		java.lang.String path) throws SystemException;
-
-	/**
-	* Returns a range of all the file infos.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.sohlman.liferay.bffss.model.impl.FileInfoModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of file infos
-	* @param end the upper bound of the range of file infos (not inclusive)
-	* @return the range of file infos
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<FileInfo> getFileInfos(int start, int end);
+	public List<FileInfo> getFileInfos(
+			long companyId, long repositoryId, String path)
+		throws SystemException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<FileInfo> getFileInfosByDirectory(long companyId,
-		long repositoryId, java.lang.String dirName) throws SystemException;
+	public List<FileInfo> getFileInfosByDirectory(
+			long companyId, long repositoryId, String dirName)
+		throws SystemException;
 
 	/**
-	* Returns the number of file infos.
-	*
-	* @return the number of file infos
-	*/
+	 * Returns the number of file infos.
+	 *
+	 * @return the number of file infos
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getFileInfosCount();
 
@@ -250,32 +287,41 @@ public interface FileInfoLocalService extends BaseLocalService,
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
 
 	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	 * Returns the OSGi service identifier.
+	 *
+	 * @return the OSGi service identifier
+	 */
+	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasFileInfo(long companyId, long repositoryId,
-		java.lang.String path, java.lang.String version)
-		throws SystemException;
-
-	public void updateFileInfo(long companyId, long oldRepositoryId,
-		long newRepositoryId, java.lang.String oldPath, java.lang.String newPath)
+	public boolean hasFileInfo(
+			long companyId, long repositoryId, String path, String version)
 		throws SystemException;
 
 	/**
-	* Updates the file info in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param fileInfo the file info
-	* @return the file info that was updated
-	*/
+	 * Updates the file info in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect FileInfoLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
+	 * @param fileInfo the file info
+	 * @return the file info that was updated
+	 */
 	@Indexable(type = IndexableType.REINDEX)
 	public FileInfo updateFileInfo(FileInfo fileInfo);
+
+	public void updateFileInfo(
+			long companyId, long oldRepositoryId, long newRepositoryId,
+			String oldPath, String newPath)
+		throws SystemException;
+
 }

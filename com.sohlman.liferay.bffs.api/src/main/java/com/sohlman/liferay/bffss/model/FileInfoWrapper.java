@@ -1,28 +1,12 @@
 /**
- * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * SPDX-FileCopyrightText: (c) 2026 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
 package com.sohlman.liferay.bffss.model;
 
-import aQute.bnd.annotation.ProviderType;
-
-import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
-import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.util.Validator;
-
-import java.io.Serializable;
+import com.liferay.portal.kernel.model.wrapper.BaseModelWrapper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,20 +20,12 @@ import java.util.Map;
  * @see FileInfo
  * @generated
  */
-@ProviderType
-public class FileInfoWrapper implements FileInfo, ModelWrapper<FileInfo> {
+public class FileInfoWrapper
+	extends BaseModelWrapper<FileInfo>
+	implements FileInfo, ModelWrapper<FileInfo> {
+
 	public FileInfoWrapper(FileInfo fileInfo) {
-		_fileInfo = fileInfo;
-	}
-
-	@Override
-	public Class<?> getModelClass() {
-		return FileInfo.class;
-	}
-
-	@Override
-	public String getModelClassName() {
-		return FileInfo.class.getName();
+		super(fileInfo);
 	}
 
 	@Override
@@ -106,284 +82,163 @@ public class FileInfoWrapper implements FileInfo, ModelWrapper<FileInfo> {
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new FileInfoWrapper((FileInfo)_fileInfo.clone());
-	}
-
-	@Override
-	public int compareTo(com.sohlman.liferay.bffss.model.FileInfo fileInfo) {
-		return _fileInfo.compareTo(fileInfo);
+	public FileInfo cloneWithOriginalValues() {
+		return wrap(model.cloneWithOriginalValues());
 	}
 
 	/**
-	* Returns the company ID of this file info.
-	*
-	* @return the company ID of this file info
-	*/
+	 * Returns the company ID of this file info.
+	 *
+	 * @return the company ID of this file info
+	 */
 	@Override
 	public long getCompanyId() {
-		return _fileInfo.getCompanyId();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _fileInfo.getExpandoBridge();
+		return model.getCompanyId();
 	}
 
 	/**
-	* Returns the file data ID of this file info.
-	*
-	* @return the file data ID of this file info
-	*/
+	 * Returns the file data ID of this file info.
+	 *
+	 * @return the file data ID of this file info
+	 */
 	@Override
 	public long getFileDataId() {
-		return _fileInfo.getFileDataId();
+		return model.getFileDataId();
 	}
 
 	/**
-	* Returns the file info ID of this file info.
-	*
-	* @return the file info ID of this file info
-	*/
+	 * Returns the file info ID of this file info.
+	 *
+	 * @return the file info ID of this file info
+	 */
 	@Override
 	public long getFileInfoId() {
-		return _fileInfo.getFileInfoId();
+		return model.getFileInfoId();
 	}
 
 	/**
-	* Returns the path of this file info.
-	*
-	* @return the path of this file info
-	*/
+	 * Returns the path of this file info.
+	 *
+	 * @return the path of this file info
+	 */
 	@Override
-	public java.lang.String getPath() {
-		return _fileInfo.getPath();
+	public String getPath() {
+		return model.getPath();
 	}
 
 	/**
-	* Returns the primary key of this file info.
-	*
-	* @return the primary key of this file info
-	*/
+	 * Returns the primary key of this file info.
+	 *
+	 * @return the primary key of this file info
+	 */
 	@Override
 	public long getPrimaryKey() {
-		return _fileInfo.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _fileInfo.getPrimaryKeyObj();
+		return model.getPrimaryKey();
 	}
 
 	/**
-	* Returns the repository ID of this file info.
-	*
-	* @return the repository ID of this file info
-	*/
+	 * Returns the repository ID of this file info.
+	 *
+	 * @return the repository ID of this file info
+	 */
 	@Override
 	public long getRepositoryId() {
-		return _fileInfo.getRepositoryId();
+		return model.getRepositoryId();
 	}
 
 	/**
-	* Returns the version of this file info.
-	*
-	* @return the version of this file info
-	*/
+	 * Returns the version of this file info.
+	 *
+	 * @return the version of this file info
+	 */
 	@Override
-	public java.lang.String getVersion() {
-		return _fileInfo.getVersion();
-	}
-
-	@Override
-	public int hashCode() {
-		return _fileInfo.hashCode();
-	}
-
-	@Override
-	public boolean isCachedModel() {
-		return _fileInfo.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _fileInfo.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return _fileInfo.isNew();
+	public String getVersion() {
+		return model.getVersion();
 	}
 
 	@Override
 	public void persist() {
-		_fileInfo.persist();
-	}
-
-	@Override
-	public void setCachedModel(boolean cachedModel) {
-		_fileInfo.setCachedModel(cachedModel);
+		model.persist();
 	}
 
 	/**
-	* Sets the company ID of this file info.
-	*
-	* @param companyId the company ID of this file info
-	*/
+	 * Sets the company ID of this file info.
+	 *
+	 * @param companyId the company ID of this file info
+	 */
 	@Override
 	public void setCompanyId(long companyId) {
-		_fileInfo.setCompanyId(companyId);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_fileInfo.setExpandoBridgeAttributes(baseModel);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_fileInfo.setExpandoBridgeAttributes(expandoBridge);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-		_fileInfo.setExpandoBridgeAttributes(serviceContext);
+		model.setCompanyId(companyId);
 	}
 
 	/**
-	* Sets the file data ID of this file info.
-	*
-	* @param fileDataId the file data ID of this file info
-	*/
+	 * Sets the file data ID of this file info.
+	 *
+	 * @param fileDataId the file data ID of this file info
+	 */
 	@Override
 	public void setFileDataId(long fileDataId) {
-		_fileInfo.setFileDataId(fileDataId);
+		model.setFileDataId(fileDataId);
 	}
 
 	/**
-	* Sets the file info ID of this file info.
-	*
-	* @param fileInfoId the file info ID of this file info
-	*/
+	 * Sets the file info ID of this file info.
+	 *
+	 * @param fileInfoId the file info ID of this file info
+	 */
 	@Override
 	public void setFileInfoId(long fileInfoId) {
-		_fileInfo.setFileInfoId(fileInfoId);
-	}
-
-	@Override
-	public void setNew(boolean n) {
-		_fileInfo.setNew(n);
+		model.setFileInfoId(fileInfoId);
 	}
 
 	/**
-	* Sets the path of this file info.
-	*
-	* @param path the path of this file info
-	*/
+	 * Sets the path of this file info.
+	 *
+	 * @param path the path of this file info
+	 */
 	@Override
-	public void setPath(java.lang.String path) {
-		_fileInfo.setPath(path);
+	public void setPath(String path) {
+		model.setPath(path);
 	}
 
 	/**
-	* Sets the primary key of this file info.
-	*
-	* @param primaryKey the primary key of this file info
-	*/
+	 * Sets the primary key of this file info.
+	 *
+	 * @param primaryKey the primary key of this file info
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
-		_fileInfo.setPrimaryKey(primaryKey);
-	}
-
-	@Override
-	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
-		_fileInfo.setPrimaryKeyObj(primaryKeyObj);
+		model.setPrimaryKey(primaryKey);
 	}
 
 	/**
-	* Sets the repository ID of this file info.
-	*
-	* @param repositoryId the repository ID of this file info
-	*/
+	 * Sets the repository ID of this file info.
+	 *
+	 * @param repositoryId the repository ID of this file info
+	 */
 	@Override
 	public void setRepositoryId(long repositoryId) {
-		_fileInfo.setRepositoryId(repositoryId);
+		model.setRepositoryId(repositoryId);
 	}
 
 	/**
-	* Sets the version of this file info.
-	*
-	* @param version the version of this file info
-	*/
+	 * Sets the version of this file info.
+	 *
+	 * @param version the version of this file info
+	 */
 	@Override
-	public void setVersion(java.lang.String version) {
-		_fileInfo.setVersion(version);
+	public void setVersion(String version) {
+		model.setVersion(version);
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<com.sohlman.liferay.bffss.model.FileInfo> toCacheModel() {
-		return _fileInfo.toCacheModel();
+	public String toXmlString() {
+		return model.toXmlString();
 	}
 
 	@Override
-	public com.sohlman.liferay.bffss.model.FileInfo toEscapedModel() {
-		return new FileInfoWrapper(_fileInfo.toEscapedModel());
+	protected FileInfoWrapper wrap(FileInfo fileInfo) {
+		return new FileInfoWrapper(fileInfo);
 	}
 
-	@Override
-	public java.lang.String toString() {
-		return _fileInfo.toString();
-	}
-
-	@Override
-	public com.sohlman.liferay.bffss.model.FileInfo toUnescapedModel() {
-		return new FileInfoWrapper(_fileInfo.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _fileInfo.toXmlString();
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-
-		if (!(obj instanceof FileInfoWrapper)) {
-			return false;
-		}
-
-		FileInfoWrapper fileInfoWrapper = (FileInfoWrapper)obj;
-
-		if (Validator.equals(_fileInfo, fileInfoWrapper._fileInfo)) {
-			return true;
-		}
-
-		return false;
-	}
-
-	@Override
-	public FileInfo getWrappedModel() {
-		return _fileInfo;
-	}
-
-	@Override
-	public boolean isEntityCacheEnabled() {
-		return _fileInfo.isEntityCacheEnabled();
-	}
-
-	@Override
-	public boolean isFinderCacheEnabled() {
-		return _fileInfo.isFinderCacheEnabled();
-	}
-
-	@Override
-	public void resetOriginalValues() {
-		_fileInfo.resetOriginalValues();
-	}
-
-	private final FileInfo _fileInfo;
 }

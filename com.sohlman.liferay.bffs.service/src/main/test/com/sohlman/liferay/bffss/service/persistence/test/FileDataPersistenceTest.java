@@ -1,21 +1,11 @@
 /**
- * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * SPDX-FileCopyrightText: (c) 2026 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
 package com.sohlman.liferay.bffss.service.persistence.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
-
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -23,31 +13,21 @@ import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
-import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
+import com.liferay.portal.test.rule.TransactionalTestRule;
 
 import com.sohlman.liferay.bffss.exception.NoSuchFileDataException;
 import com.sohlman.liferay.bffss.model.FileData;
 import com.sohlman.liferay.bffss.service.FileDataLocalServiceUtil;
 import com.sohlman.liferay.bffss.service.persistence.FileDataPersistence;
 import com.sohlman.liferay.bffss.service.persistence.FileDataUtil;
-
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
-
-import org.junit.runner.RunWith;
 
 import java.io.Serializable;
 
@@ -58,16 +38,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 /**
  * @generated
  */
 @RunWith(Arquillian.class)
 public class FileDataPersistenceTest {
+
 	@ClassRule
 	@Rule
-	public static final AggregateTestRule aggregateTestRule = new AggregateTestRule(new LiferayIntegrationTestRule(),
-			PersistenceTestRule.INSTANCE,
-			new TransactionalTestRule(Propagation.REQUIRED));
+	public static final AggregateTestRule aggregateTestRule =
+		new AggregateTestRule(
+			new LiferayIntegrationTestRule(), PersistenceTestRule.INSTANCE,
+			new TransactionalTestRule(
+				Propagation.REQUIRED, "com.sohlman.liferay.bffss.service"));
 
 	@Before
 	public void setUp() {
@@ -106,7 +97,8 @@ public class FileDataPersistenceTest {
 
 		_persistence.remove(newFileData);
 
-		FileData existingFileData = _persistence.fetchByPrimaryKey(newFileData.getPrimaryKey());
+		FileData existingFileData = _persistence.fetchByPrimaryKey(
+			newFileData.getPrimaryKey());
 
 		Assert.assertNull(existingFileData);
 	}
@@ -134,26 +126,27 @@ public class FileDataPersistenceTest {
 
 		_fileDatas.add(_persistence.update(newFileData));
 
-		FileData existingFileData = _persistence.findByPrimaryKey(newFileData.getPrimaryKey());
+		FileData existingFileData = _persistence.findByPrimaryKey(
+			newFileData.getPrimaryKey());
 
-		Assert.assertEquals(existingFileData.getFileDataId(),
-			newFileData.getFileDataId());
-		Assert.assertEquals(existingFileData.getCompanyId(),
-			newFileData.getCompanyId());
-		Assert.assertEquals(Time.getShortTimestamp(
-				existingFileData.getCreateDate()),
+		Assert.assertEquals(
+			existingFileData.getFileDataId(), newFileData.getFileDataId());
+		Assert.assertEquals(
+			existingFileData.getCompanyId(), newFileData.getCompanyId());
+		Assert.assertEquals(
+			Time.getShortTimestamp(existingFileData.getCreateDate()),
 			Time.getShortTimestamp(newFileData.getCreateDate()));
 		Assert.assertEquals(existingFileData.getName(), newFileData.getName());
 		Assert.assertEquals(existingFileData.getSize(), newFileData.getSize());
-		Assert.assertEquals(existingFileData.getFingerprint(),
-			newFileData.getFingerprint());
+		Assert.assertEquals(
+			existingFileData.getFingerprint(), newFileData.getFingerprint());
 	}
 
 	@Test
 	public void testCountByFingerPrint() throws Exception {
-		_persistence.countByFingerPrint(StringPool.BLANK);
+		_persistence.countByFingerPrint("");
 
-		_persistence.countByFingerPrint(StringPool.NULL);
+		_persistence.countByFingerPrint("null");
 
 		_persistence.countByFingerPrint((String)null);
 	}
@@ -162,7 +155,8 @@ public class FileDataPersistenceTest {
 	public void testFindByPrimaryKeyExisting() throws Exception {
 		FileData newFileData = addFileData();
 
-		FileData existingFileData = _persistence.findByPrimaryKey(newFileData.getPrimaryKey());
+		FileData existingFileData = _persistence.findByPrimaryKey(
+			newFileData.getPrimaryKey());
 
 		Assert.assertEquals(existingFileData, newFileData);
 	}
@@ -176,21 +170,23 @@ public class FileDataPersistenceTest {
 
 	@Test
 	public void testFindAll() throws Exception {
-		_persistence.findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			getOrderByComparator());
+		_persistence.findAll(
+			QueryUtil.ALL_POS, QueryUtil.ALL_POS, getOrderByComparator());
 	}
 
 	protected OrderByComparator<FileData> getOrderByComparator() {
-		return OrderByComparatorFactoryUtil.create("bffss_FileData",
-			"fileDataId", true, "companyId", true, "createDate", true, "name",
-			true, "size", true, "fingerprint", true);
+		return OrderByComparatorFactoryUtil.create(
+			"bffss_FileData", "fileDataId", true, "companyId", true,
+			"createDate", true, "name", true, "size", true, "fingerprint",
+			true);
 	}
 
 	@Test
 	public void testFetchByPrimaryKeyExisting() throws Exception {
 		FileData newFileData = addFileData();
 
-		FileData existingFileData = _persistence.fetchByPrimaryKey(newFileData.getPrimaryKey());
+		FileData existingFileData = _persistence.fetchByPrimaryKey(
+			newFileData.getPrimaryKey());
 
 		Assert.assertEquals(existingFileData, newFileData);
 	}
@@ -207,6 +203,7 @@ public class FileDataPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereAllPrimaryKeysExist()
 		throws Exception {
+
 		FileData newFileData1 = addFileData();
 		FileData newFileData2 = addFileData();
 
@@ -215,18 +212,20 @@ public class FileDataPersistenceTest {
 		primaryKeys.add(newFileData1.getPrimaryKey());
 		primaryKeys.add(newFileData2.getPrimaryKey());
 
-		Map<Serializable, FileData> fileDatas = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, FileData> fileDatas = _persistence.fetchByPrimaryKeys(
+			primaryKeys);
 
 		Assert.assertEquals(2, fileDatas.size());
-		Assert.assertEquals(newFileData1,
-			fileDatas.get(newFileData1.getPrimaryKey()));
-		Assert.assertEquals(newFileData2,
-			fileDatas.get(newFileData2.getPrimaryKey()));
+		Assert.assertEquals(
+			newFileData1, fileDatas.get(newFileData1.getPrimaryKey()));
+		Assert.assertEquals(
+			newFileData2, fileDatas.get(newFileData2.getPrimaryKey()));
 	}
 
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
+
 		long pk1 = RandomTestUtil.nextLong();
 
 		long pk2 = RandomTestUtil.nextLong();
@@ -236,7 +235,8 @@ public class FileDataPersistenceTest {
 		primaryKeys.add(pk1);
 		primaryKeys.add(pk2);
 
-		Map<Serializable, FileData> fileDatas = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, FileData> fileDatas = _persistence.fetchByPrimaryKeys(
+			primaryKeys);
 
 		Assert.assertTrue(fileDatas.isEmpty());
 	}
@@ -244,6 +244,7 @@ public class FileDataPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereSomePrimaryKeysExist()
 		throws Exception {
+
 		FileData newFileData = addFileData();
 
 		long pk = RandomTestUtil.nextLong();
@@ -253,52 +254,57 @@ public class FileDataPersistenceTest {
 		primaryKeys.add(newFileData.getPrimaryKey());
 		primaryKeys.add(pk);
 
-		Map<Serializable, FileData> fileDatas = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, FileData> fileDatas = _persistence.fetchByPrimaryKeys(
+			primaryKeys);
 
 		Assert.assertEquals(1, fileDatas.size());
-		Assert.assertEquals(newFileData,
-			fileDatas.get(newFileData.getPrimaryKey()));
+		Assert.assertEquals(
+			newFileData, fileDatas.get(newFileData.getPrimaryKey()));
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithNoPrimaryKeys()
-		throws Exception {
+	public void testFetchByPrimaryKeysWithNoPrimaryKeys() throws Exception {
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
-		Map<Serializable, FileData> fileDatas = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, FileData> fileDatas = _persistence.fetchByPrimaryKeys(
+			primaryKeys);
 
 		Assert.assertTrue(fileDatas.isEmpty());
 	}
 
 	@Test
-	public void testFetchByPrimaryKeysWithOnePrimaryKey()
-		throws Exception {
+	public void testFetchByPrimaryKeysWithOnePrimaryKey() throws Exception {
 		FileData newFileData = addFileData();
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
 		primaryKeys.add(newFileData.getPrimaryKey());
 
-		Map<Serializable, FileData> fileDatas = _persistence.fetchByPrimaryKeys(primaryKeys);
+		Map<Serializable, FileData> fileDatas = _persistence.fetchByPrimaryKeys(
+			primaryKeys);
 
 		Assert.assertEquals(1, fileDatas.size());
-		Assert.assertEquals(newFileData,
-			fileDatas.get(newFileData.getPrimaryKey()));
+		Assert.assertEquals(
+			newFileData, fileDatas.get(newFileData.getPrimaryKey()));
 	}
 
 	@Test
 	public void testActionableDynamicQuery() throws Exception {
 		final IntegerWrapper count = new IntegerWrapper();
 
-		ActionableDynamicQuery actionableDynamicQuery = FileDataLocalServiceUtil.getActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery =
+			FileDataLocalServiceUtil.getActionableDynamicQuery();
 
-		actionableDynamicQuery.setPerformActionMethod(new ActionableDynamicQuery.PerformActionMethod<FileData>() {
+		actionableDynamicQuery.setPerformActionMethod(
+			new ActionableDynamicQuery.PerformActionMethod<FileData>() {
+
 				@Override
 				public void performAction(FileData fileData) {
 					Assert.assertNotNull(fileData);
 
 					count.increment();
 				}
+
 			});
 
 		actionableDynamicQuery.performActions();
@@ -307,15 +313,15 @@ public class FileDataPersistenceTest {
 	}
 
 	@Test
-	public void testDynamicQueryByPrimaryKeyExisting()
-		throws Exception {
+	public void testDynamicQueryByPrimaryKeyExisting() throws Exception {
 		FileData newFileData = addFileData();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(FileData.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			FileData.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.add(RestrictionsFactoryUtil.eq("fileDataId",
-				newFileData.getFileDataId()));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"fileDataId", newFileData.getFileDataId()));
 
 		List<FileData> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -328,11 +334,12 @@ public class FileDataPersistenceTest {
 
 	@Test
 	public void testDynamicQueryByPrimaryKeyMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(FileData.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			FileData.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.add(RestrictionsFactoryUtil.eq("fileDataId",
-				RandomTestUtil.nextLong()));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"fileDataId", RandomTestUtil.nextLong()));
 
 		List<FileData> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -340,19 +347,20 @@ public class FileDataPersistenceTest {
 	}
 
 	@Test
-	public void testDynamicQueryByProjectionExisting()
-		throws Exception {
+	public void testDynamicQueryByProjectionExisting() throws Exception {
 		FileData newFileData = addFileData();
 
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(FileData.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			FileData.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.setProjection(ProjectionFactoryUtil.property("fileDataId"));
+		dynamicQuery.setProjection(
+			ProjectionFactoryUtil.property("fileDataId"));
 
 		Object newFileDataId = newFileData.getFileDataId();
 
-		dynamicQuery.add(RestrictionsFactoryUtil.in("fileDataId",
-				new Object[] { newFileDataId }));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.in(
+				"fileDataId", new Object[] {newFileDataId}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -365,13 +373,15 @@ public class FileDataPersistenceTest {
 
 	@Test
 	public void testDynamicQueryByProjectionMissing() throws Exception {
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(FileData.class,
-				_dynamicQueryClassLoader);
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			FileData.class, _dynamicQueryClassLoader);
 
-		dynamicQuery.setProjection(ProjectionFactoryUtil.property("fileDataId"));
+		dynamicQuery.setProjection(
+			ProjectionFactoryUtil.property("fileDataId"));
 
-		dynamicQuery.add(RestrictionsFactoryUtil.in("fileDataId",
-				new Object[] { RandomTestUtil.nextLong() }));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.in(
+				"fileDataId", new Object[] {RandomTestUtil.nextLong()}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -401,4 +411,5 @@ public class FileDataPersistenceTest {
 	private List<FileData> _fileDatas = new ArrayList<FileData>();
 	private FileDataPersistence _persistence;
 	private ClassLoader _dynamicQueryClassLoader;
+
 }

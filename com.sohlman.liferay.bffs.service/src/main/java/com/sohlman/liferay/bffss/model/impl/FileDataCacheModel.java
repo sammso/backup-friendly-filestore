@@ -1,25 +1,13 @@
 /**
- * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * SPDX-FileCopyrightText: (c) 2026 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
 package com.sohlman.liferay.bffss.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
+import com.liferay.petra.lang.HashUtil;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.model.CacheModel;
-import com.liferay.portal.kernel.util.HashUtil;
-import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import com.sohlman.liferay.bffss.model.FileData;
 
@@ -34,22 +22,22 @@ import java.util.Date;
  * The cache model class for representing FileData in entity cache.
  *
  * @author Brian Wing Shun Chan
- * @see FileData
  * @generated
  */
-@ProviderType
-public class FileDataCacheModel implements CacheModel<FileData>, Externalizable {
+public class FileDataCacheModel
+	implements CacheModel<FileData>, Externalizable {
+
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof FileDataCacheModel)) {
+		if (!(object instanceof FileDataCacheModel)) {
 			return false;
 		}
 
-		FileDataCacheModel fileDataCacheModel = (FileDataCacheModel)obj;
+		FileDataCacheModel fileDataCacheModel = (FileDataCacheModel)object;
 
 		if (fileDataId == fileDataCacheModel.fileDataId) {
 			return true;
@@ -99,7 +87,7 @@ public class FileDataCacheModel implements CacheModel<FileData>, Externalizable 
 		}
 
 		if (name == null) {
-			fileDataImpl.setName(StringPool.BLANK);
+			fileDataImpl.setName("");
 		}
 		else {
 			fileDataImpl.setName(name);
@@ -108,7 +96,7 @@ public class FileDataCacheModel implements CacheModel<FileData>, Externalizable 
 		fileDataImpl.setSize(size);
 
 		if (fingerprint == null) {
-			fileDataImpl.setFingerprint(StringPool.BLANK);
+			fileDataImpl.setFingerprint("");
 		}
 		else {
 			fileDataImpl.setFingerprint(fingerprint);
@@ -132,15 +120,14 @@ public class FileDataCacheModel implements CacheModel<FileData>, Externalizable 
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(fileDataId);
 
 		objectOutput.writeLong(companyId);
 		objectOutput.writeLong(createDate);
 
 		if (name == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(name);
@@ -149,7 +136,7 @@ public class FileDataCacheModel implements CacheModel<FileData>, Externalizable 
 		objectOutput.writeLong(size);
 
 		if (fingerprint == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(fingerprint);
@@ -162,4 +149,5 @@ public class FileDataCacheModel implements CacheModel<FileData>, Externalizable 
 	public String name;
 	public long size;
 	public String fingerprint;
+
 }

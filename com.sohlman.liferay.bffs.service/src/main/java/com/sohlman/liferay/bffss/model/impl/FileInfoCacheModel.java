@@ -1,25 +1,13 @@
 /**
- * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * SPDX-FileCopyrightText: (c) 2026 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
 package com.sohlman.liferay.bffss.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
+import com.liferay.petra.lang.HashUtil;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.model.CacheModel;
-import com.liferay.portal.kernel.util.HashUtil;
-import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import com.sohlman.liferay.bffss.model.FileInfo;
 
@@ -32,22 +20,22 @@ import java.io.ObjectOutput;
  * The cache model class for representing FileInfo in entity cache.
  *
  * @author Brian Wing Shun Chan
- * @see FileInfo
  * @generated
  */
-@ProviderType
-public class FileInfoCacheModel implements CacheModel<FileInfo>, Externalizable {
+public class FileInfoCacheModel
+	implements CacheModel<FileInfo>, Externalizable {
+
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
+	public boolean equals(Object object) {
+		if (this == object) {
 			return true;
 		}
 
-		if (!(obj instanceof FileInfoCacheModel)) {
+		if (!(object instanceof FileInfoCacheModel)) {
 			return false;
 		}
 
-		FileInfoCacheModel fileInfoCacheModel = (FileInfoCacheModel)obj;
+		FileInfoCacheModel fileInfoCacheModel = (FileInfoCacheModel)object;
 
 		if (fileInfoId == fileInfoCacheModel.fileInfoId) {
 			return true;
@@ -91,14 +79,14 @@ public class FileInfoCacheModel implements CacheModel<FileInfo>, Externalizable 
 		fileInfoImpl.setRepositoryId(repositoryId);
 
 		if (path == null) {
-			fileInfoImpl.setPath(StringPool.BLANK);
+			fileInfoImpl.setPath("");
 		}
 		else {
 			fileInfoImpl.setPath(path);
 		}
 
 		if (version == null) {
-			fileInfoImpl.setVersion(StringPool.BLANK);
+			fileInfoImpl.setVersion("");
 		}
 		else {
 			fileInfoImpl.setVersion(version);
@@ -125,8 +113,7 @@ public class FileInfoCacheModel implements CacheModel<FileInfo>, Externalizable 
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(fileInfoId);
 
 		objectOutput.writeLong(companyId);
@@ -134,14 +121,14 @@ public class FileInfoCacheModel implements CacheModel<FileInfo>, Externalizable 
 		objectOutput.writeLong(repositoryId);
 
 		if (path == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(path);
 		}
 
 		if (version == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(version);
@@ -156,4 +143,5 @@ public class FileInfoCacheModel implements CacheModel<FileInfo>, Externalizable 
 	public String path;
 	public String version;
 	public long fileDataId;
+
 }
