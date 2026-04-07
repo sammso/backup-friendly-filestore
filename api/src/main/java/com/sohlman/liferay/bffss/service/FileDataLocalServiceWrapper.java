@@ -325,6 +325,16 @@ public class FileDataLocalServiceWrapper
 	}
 
 	/**
+	 * Called from {@link
+	 * com.sohlman.liferay.bffss.BackupFriendlyFileSystemStore} on
+	 * activation/modification to propagate the configured root directory.
+	 */
+	@Override
+	public void setRootDir(java.io.File rootDir) {
+		_fileDataLocalService.setRootDir(rootDir);
+	}
+
+	/**
 	 * Updates the file data in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
 	 * <p>

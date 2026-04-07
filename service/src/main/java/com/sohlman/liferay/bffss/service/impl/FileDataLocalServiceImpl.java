@@ -171,7 +171,7 @@ public class FileDataLocalServiceImpl extends FileDataLocalServiceBaseImpl {
 	 * com.sohlman.liferay.bffss.BackupFriendlyFileSystemStore} on
 	 * activation/modification to propagate the configured root directory.
 	 */
-	public static void setRootDir(File rootDir) {
+	public void setRootDir(File rootDir) {
 		_rootDir = rootDir;
 	}
 
@@ -251,7 +251,7 @@ public class FileDataLocalServiceImpl extends FileDataLocalServiceBaseImpl {
 		deleteFile(companyId, file.getParentFile());
 	}
 
-	private static volatile File _rootDir;
+	private volatile File _rootDir;
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		FileDataLocalServiceImpl.class);

@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 
 import com.sohlman.liferay.bffss.model.FileData;
 
+import java.io.File;
 import java.io.InputStream;
 import java.io.Serializable;
 
@@ -258,6 +259,13 @@ public interface FileDataLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException;
+
+	/**
+	 * Called from {@link
+	 * com.sohlman.liferay.bffss.BackupFriendlyFileSystemStore} on
+	 * activation/modification to propagate the configured root directory.
+	 */
+	public void setRootDir(File rootDir);
 
 	/**
 	 * Updates the file data in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
