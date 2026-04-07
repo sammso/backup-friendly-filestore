@@ -37,7 +37,6 @@ import com.sohlman.liferay.bffss.model.FileData;
 import com.sohlman.liferay.bffss.model.FileInfo;
 import com.sohlman.liferay.bffss.service.FileDataLocalService;
 import com.sohlman.liferay.bffss.service.FileInfoLocalService;
-import com.sohlman.liferay.bffss.service.impl.FileDataLocalServiceImpl;
 
 /**
  * @author Sampsa Sohlman
@@ -71,7 +70,7 @@ public class BackupFriendlyFileSystemStore implements Store {
 
 		FileUtil.mkdirs(rootDir);
 
-		FileDataLocalServiceImpl.setRootDir(rootDir);
+		_fileDataLocalService.setRootDir(rootDir);
 	}
 
 	@Override
