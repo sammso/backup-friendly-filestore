@@ -24,8 +24,8 @@
 		<liferay.app.server.portal.dir>${liferay.tomcat.home}/webapps/ROOT</liferay.app.server.portal.dir>
 	</properties>
 	<modules>
-		<module>com.sohlman.liferay.bffs.api</module>
-		<module>com.sohlman.liferay.bffs.service</module>
+		<module>api</module>
+		<module>service</module>
 	</modules>
 	<dependencyManagement>
 		<dependencies>

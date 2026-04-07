@@ -17,7 +17,7 @@
 				<artifactId>com.liferay.portal.tools.service.builder</artifactId>
 				<version>1.0.508</version>
 				<configuration>
-					<apiDirName>../com.sohlman.liferay.bffs.api/src/main/java</apiDirName>
+					<apiDirName>../api/src/main/java</apiDirName>
 					<autoImportDefaultReferences>true</autoImportDefaultReferences>
 					<autoNamespaceTables>true</autoNamespaceTables>
 					<buildNumberIncrement>true</buildNumberIncrement>

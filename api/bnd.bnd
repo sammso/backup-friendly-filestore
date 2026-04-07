@@ -5,5 +5,5 @@ Export-Package:\
 	com.sohlman.liferay.bffss.model,\
 	com.sohlman.liferay.bffss.service,\
 	com.sohlman.liferay.bffss.service.persistence
--includeresource: META-INF/service.xml=../com.sohlman.liferay.bffs.service/service.xml
+-includeresource: META-INF/service.xml=../service/service.xml
 -sources: true
