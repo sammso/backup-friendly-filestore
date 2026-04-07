@@ -7,23 +7,73 @@
 	<artifactId>com.sohlman.liferay.bffs</artifactId>
 	<packaging>pom</packaging>
 	<name>com.sohlman.liferay.bffs</name>
-	<version>1.0.0.0-SNAPSHOT</version>
+	<version>25.0.0-SNAPSHOT</version>
+	<properties>
+		<maven-compiler-plugin.version>3.15.0</maven-compiler-plugin.version>
+		<liferay.repository.url>https://repository-cdn.liferay.com/nexus/content/groups/public/</liferay.repository.url>
+		<java.version>17</java.version>
+		<maven.compiler.target>${java.version}</maven.compiler.target>
+		<maven.compiler.source>${java.version}</maven.compiler.source>
+		<release.portal.api.version>2025.q1.22</release.portal.api.version>
+
+		<liferay.home>../bundles</liferay.home>
+		<liferay.tomcat.home>${liferay.home}/tomcat</liferay.tomcat.home>
+		<liferay.auto.deploy.dir>${liferay.home}/deploy</liferay.auto.deploy.dir>
+		<liferay.app.server.deploy.dir>${liferay.tomcat.home}/webapps</liferay.app.server.deploy.dir>
+		<liferay.app.server.lib.global.dir>${liferay.tomcat.home}/lib/ext</liferay.app.server.lib.global.dir>
+		<liferay.app.server.portal.dir>${liferay.tomcat.home}/webapps/ROOT</liferay.app.server.portal.dir>
+	</properties>
+	<modules>
+		<module>com.sohlman.liferay.bffs.api</module>
+		<module>com.sohlman.liferay.bffs.service</module>
+	</modules>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.liferay.portal</groupId>
+				<artifactId>release.dxp.bom</artifactId>
+				<version>${release.portal.api.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.liferay.portal</groupId>
+				<artifactId>release.dxp.bom.compile.only</artifactId>
+				<version>${release.portal.api.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency><!--
+			<dependency>
+				<groupId>com.liferay.portal</groupId>
+				<artifactId>release.dxp.bom.third.party</artifactId>
+				<version>${release.portal.api.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			-->
+			<dependency>
+				<groupId>javax.servlet.jsp</groupId>
+				<artifactId>javax.servlet-api</artifactId>
+				<version>2.3.3</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 	<build>
 		<pluginManagement>
 			<plugins>
 				<plugin>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.1</version>
+					<version>${maven-compiler-plugin.version}</version>
 					<configuration>
-						<source>1.8</source>
-						<target>1.8</target>
+						<source>${java.version}</source>
+						<target>${java.version}</target>
 					</configuration>
 				</plugin>
-	
+
 				<plugin>
 					<groupId>biz.aQute.bnd</groupId>
 					<artifactId>bnd-maven-plugin</artifactId>
-					<version>3.1.0</version>
+					<version>7.1.0</version>
 					<executions>
 						<execution>
 							<id>default-bnd-process</id>
@@ -32,24 +82,24 @@
 							</goals>
 						</execution>
 					</executions>
-
 					<dependencies>
 						<dependency>
 							<groupId>biz.aQute.bnd</groupId>
 							<artifactId>biz.aQute.bndlib</artifactId>
-							<version>3.1.0</version>
+							<version>7.1.0</version>
 						</dependency>
 						<dependency>
 							<groupId>com.liferay</groupId>
 							<artifactId>com.liferay.ant.bnd</artifactId>
-							<version>2.0.20</version>
+							<version>3.2.15</version>
 						</dependency>
 					</dependencies>
 				</plugin>
+
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
-					<version>2.6</version>
+					<version>3.4.2</version>
 					<configuration>
 						<archive>
 							<manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
@@ -59,29 +109,17 @@
 			</plugins>
 		</pluginManagement>
 	</build>
-	<modules>
-		<module>com.sohlman.liferay.bffs.api</module>
-		<module>com.sohlman.liferay.bffs.service</module>
-	</modules>
-	<properties>
-		<liferay.home>../bundles</liferay.home>
-		<liferay.tomcat.home>${liferay.home}/tomcat-8.0.32</liferay.tomcat.home>
-		<liferay.auto.deploy.dir>${liferay.home}/deploy</liferay.auto.deploy.dir>
-		<liferay.app.server.deploy.dir>${liferay.tomcat.home}/webapps</liferay.app.server.deploy.dir>
-		<liferay.app.server.lib.global.dir>${liferay.tomcat.home}/lib/ext</liferay.app.server.lib.global.dir>
-		<liferay.app.server.portal.dir>${liferay.tomcat.home}/webapps/ROOT</liferay.app.server.portal.dir>
-	</properties>
 	<repositories>
 		<repository>
-			<id>liferay-ce</id>
-			<name>Liferay CE</name>
-			<url>https://repository.liferay.com/nexus/content/groups/liferay-ce/</url>
+			<id>liferay-public</id>
+			<name>Liferay Public</name>
+			<url>https://repository.liferay.com/nexus/content/groups/public/</url>
 		</repository>
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
-			<id>liferay-plugin</id>
-			<url>https://repository.liferay.com/nexus/content/groups/liferay-ce/</url>
+			<id>liferay-public-plugin</id>
+			<url>https://repository.liferay.com/nexus/content/groups/public/</url>
 		</pluginRepository>
 	</pluginRepositories>
 </project>
