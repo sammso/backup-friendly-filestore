@@ -7,7 +7,7 @@
 	<artifactId>com.sohlman.liferay.bffs</artifactId>
 	<packaging>pom</packaging>
 	<name>com.sohlman.liferay.bffs</name>
-	<version>25.0.0-SNAPSHOT</version>
+	<version>251.0.0-SNAPSHOT</version>
 	<properties>
 		<maven-compiler-plugin.version>3.15.0</maven-compiler-plugin.version>
 		<liferay.repository.url>https://repository-cdn.liferay.com/nexus/content/groups/public/</liferay.repository.url>
