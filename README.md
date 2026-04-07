@@ -35,7 +35,7 @@ java -version
 Run this after modifying `service.xml`:
 
 ```bash
-./mvnw com.liferay:com.liferay.portal.tools.service.builder:1.0.508:build -pl com.sohlman.liferay.bffs.service
+./mvnw com.liferay:com.liferay.portal.tools.service.builder:1.0.508:build -pl service
 ```
 
 Then rebuild:
