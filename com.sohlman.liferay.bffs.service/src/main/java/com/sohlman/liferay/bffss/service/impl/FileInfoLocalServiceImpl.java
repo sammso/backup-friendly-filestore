@@ -17,10 +17,12 @@ package com.sohlman.liferay.bffss.service.impl;
 import java.io.InputStream;
 import java.util.List;
 
+import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.StringPool;
 import com.sohlman.liferay.bffss.exception.NoSuchFileInfoException;
 import com.sohlman.liferay.bffss.model.FileData;
 import com.sohlman.liferay.bffss.model.FileInfo;
@@ -89,8 +91,21 @@ public class FileInfoLocalServiceImpl extends FileInfoLocalServiceBaseImpl {
 	}
 
 	@Override
+	public void deleteFileInfosByCompany(long companyId) throws PortalException {
+		DynamicQuery dq = dynamicQuery();
+
+		dq.add(RestrictionsFactoryUtil.eq("companyId", companyId));
+
+		List<FileInfo> fileInfos = dynamicQuery(dq);
+
+		for (FileInfo fileInfo : fileInfos) {
+			deleteFileInfo(fileInfo);
+		}
+	}
+
+	@Override
 	public void deleteFileInfo(
-			long companyId, long repositoryId, String path, String version) 
+			long companyId, long repositoryId, String path, String version)
 		throws PortalException, SystemException {
 
 		FileInfo fileInfo = fileInfoPersistence.findByC_R_P_V(

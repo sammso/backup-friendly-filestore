@@ -26,18 +26,12 @@ import java.util.Date;
 import java.util.List;
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.module.configuration.ConfigurationException;
-import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StreamUtil;
-import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.spring.extender.service.ServiceReference;
-import com.sohlman.liferay.bffss.configuration.BackupFriendlyFileSystemStoreConfiguration;
 import com.sohlman.liferay.bffss.model.FileData;
 import com.sohlman.liferay.bffss.service.base.FileDataLocalServiceBaseImpl;
 import com.sohlman.liferay.bffss.util.Util;
@@ -62,191 +56,183 @@ import com.sohlman.liferay.bffss.util.Util;
  * @see com.sohlman.liferay.bffss.service.FileDataLocalServiceUtil
  */
 public class FileDataLocalServiceImpl extends FileDataLocalServiceBaseImpl {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
-	 * 
+	 *
 	 * Never reference this interface directly. Always use {@link
 	 * com.sohlman.liferay.bffss.service.FileDataLocalServiceUtil} to access the
 	 * file data local service.
 	 */
-	public FileData addFileData(
-			long companyId, InputStream inputStream) 
-		throws SystemException {
 
+	public FileData addFileData(long companyId, InputStream inputStream) {
 		OutputStream outputStream = null;
 
-		MessageDigest messageDigest = null;
-
 		File file = null;
+
 		try {
 			FileData fileData = fileDataPersistence.create(0);
 
 			fileData.setCompanyId(companyId);
-
 			fileData.setName(Util.generateUniqName());
 			fileData.setCreateDate(new Date());
 
 			file = getFile(fileData);
 
-			// write the inputStream to a FileOutputStream
 			outputStream = new FileOutputStream(file);
 
 			int read = 0;
-			byte[] bytes = new byte[1024]; 
+			byte[] bytes = new byte[1024];
 			long size = 0;
 
 			// TODO: Make fingerprint algorithm configurable.
-			
-			messageDigest = MessageDigest.getInstance("MD5");
+
+			MessageDigest messageDigest = MessageDigest.getInstance("MD5");
 
 			while ((read = inputStream.read(bytes)) != -1) {
 				outputStream.write(bytes, 0, read);
+
 				if (read > 0) {
 					messageDigest.update(bytes, 0, read);
 					size = size + read;
 				}
 			}
 
-			StringBundler sb = new StringBundler(3);
-			
 			String fingerprint = "MD5.".concat(
 				Util.bytesToHexString(messageDigest.digest())).concat(".")
 					.concat(String.valueOf(size));
-			
-			// There is always a change that same file is added twice same time
-			// and two fingerprints exists. It is allowed condition. It is
-			// better to have two samefiles at Filesystem than we should
-			// do the file name change, which would cause problems to
-			// backup procedure
-			
+
+			// There is always a chance that same file is added twice at the same
+			// time and two fingerprints exist. It is an allowed condition. It is
+			// better to have two same files on the filesystem than to do a file
+			// name change, which would cause problems to the backup procedure.
+
 			List<FileData> list = fileDataPersistence.findByFingerPrint(
 				fingerprint);
 
-			if (list.size()==0) {
+			if (list.isEmpty()) {
 				long fileDataId = counterLocalService.increment(
 					FileData.class.getName());
-				
+
 				fileData.setFileDataId(fileDataId);
 				fileData.setFingerprint(fingerprint);
 				fileData = updateFileData(fileData);
-				
-				// When this is null then file won't be deleted
+
+				// Setting file to null prevents cleanup in finally block
 				file = null;
-				
+
 				return fileData;
 			}
 			else {
 				return list.get(0);
 			}
-		} catch (FileNotFoundException e) {
-			throw new SystemException(e);
-		} catch (IOException e) {
-			throw new SystemException(e);
-		} catch (NoSuchAlgorithmException e) {
-			throw new SystemException(e);
-		} finally {
-			StreamUtil.cleanUp(outputStream);
-			if (file!=null) {
+		}
+		catch (FileNotFoundException e) {
+			throw new RuntimeException(e);
+		}
+		catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		catch (NoSuchAlgorithmException e) {
+			throw new RuntimeException(e);
+		}
+		finally {
+			StreamUtil.cleanUp(false, outputStream);
+
+			if (file != null) {
 				deleteFile(companyId, file);
 			}
 		}
 	}
 
 	public InputStream getFileInputStream(long fileDataId)
-			throws PortalException, SystemException {
+		throws PortalException {
+
 		FileData fileData = getFileData(fileDataId);
+
 		return getFileInputStream(fileData);
 	}
 
 	public InputStream getFileInputStream(FileData fileData)
-			throws PortalException, SystemException {
+		throws PortalException {
+
 		try {
 			File file = getFile(fileData);
+
 			return new FileInputStream(file);
-		} catch (FileNotFoundException e) {
-			throw new SystemException(e);
 		}
+		catch (FileNotFoundException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	/**
+	 * Called from {@link
+	 * com.sohlman.liferay.bffss.BackupFriendlyFileSystemStore} on
+	 * activation/modification to propagate the configured root directory.
+	 */
+	public static void setRootDir(File rootDir) {
+		_rootDir = rootDir;
 	}
 
 	protected File getFile(FileData fileData) {
 		String path1 = fileData.getName().substring(0, 2);
 		String path2 = fileData.getName().substring(2, 4);
-		
+
 		File root = new File(getRootDir(fileData.getCompanyId()), path1);
 
 		if (!root.exists()) {
 			root.mkdirs();
 		}
-		
+
 		root = new File(root, path2);
 
 		if (!root.exists()) {
 			root.mkdirs();
 		}
-		
+
 		return new File(root, fileData.getName());
 	}
-	
-	protected BackupFriendlyFileSystemStoreConfiguration 
-			getBackupFriendlyFileSystemStoreConfiguration(long companyId)
-		throws ConfigurationException {
 
-		return configurationProvider.getCompanyConfiguration(
-				BackupFriendlyFileSystemStoreConfiguration.class, companyId);
-	}
- 
 	protected File getRootDir(long companyId) {
-		if (_rootDir!=null) {
+		if (_rootDir != null) {
 			return _rootDir;
 		}
-		return getRootDirFromConfiguration(companyId);
+
+		return initDefaultRootDir();
 	}
-	
-	protected synchronized File getRootDirFromConfiguration(long companyId) {
-		if (_rootDir!=null) {
+
+	private synchronized File initDefaultRootDir() {
+		if (_rootDir != null) {
 			return _rootDir;
 		}
-		try {
-			BackupFriendlyFileSystemStoreConfiguration 
-				backupFriendlyFileSystemStoreConfiguration = 
-					getBackupFriendlyFileSystemStoreConfiguration(companyId);
 
-			String rootDir = 
-				backupFriendlyFileSystemStoreConfiguration.rootDir();
-			
-			if ("".equals(rootDir)) {
-				rootDir = "data/document_library";
-			}
-			
-			_rootDir = new File(rootDir);
+		String rootDirPath = "data/document_library";
 
-			if (!_rootDir.isAbsolute()) {
-				_rootDir = new File(
-					PropsUtil.get(PropsKeys.LIFERAY_HOME), rootDir);
-			}
+		File rootDir = new File(rootDirPath);
 
-			FileUtil.mkdirs(_rootDir);
-
-			return _rootDir;
-		} 
-		catch (ConfigurationException e) {
-			throw new SystemException(e.getMessage());
+		if (!rootDir.isAbsolute()) {
+			rootDir = new File(PropsUtil.get(PropsKeys.LIFERAY_HOME), rootDirPath);
 		}
-		catch  (IOException ioe) {
-			throw new SystemException(ioe);
-		}
+
+		FileUtil.mkdirs(rootDir);
+
+		_rootDir = rootDir;
+
+		return _rootDir;
 	}
-	
-	protected void deleteFile(long companyId, File file) {	
+
+	protected void deleteFile(long companyId, File file) {
 		if (file.equals(getRootDir(companyId))) {
 			return;
 		}
-		
+
 		if (file.isDirectory()) {
-			if (file.list().length<=0) {
+			if (file.list().length <= 0) {
 				if (!file.delete()) {
 					_log.error(
 						"Could not delete directory " + file.getAbsolutePath());
+
 					return;
 				}
 			}
@@ -257,18 +243,17 @@ public class FileDataLocalServiceImpl extends FileDataLocalServiceBaseImpl {
 		else {
 			if (!file.delete()) {
 				_log.error("Could not delete file " + file.getAbsolutePath());
+
 				return;
 			}
 		}
+
 		deleteFile(companyId, file.getParentFile());
 	}
 
-	
-	private File _rootDir = null;
-	
-	@ServiceReference(type = ConfigurationProvider.class)
-	protected ConfigurationProvider configurationProvider;
+	private static volatile File _rootDir;
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		FileDataLocalServiceImpl.class);
+
 }
