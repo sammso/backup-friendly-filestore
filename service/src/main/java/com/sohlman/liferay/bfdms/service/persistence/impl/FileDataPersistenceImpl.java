@@ -614,6 +614,181 @@ public class FileDataPersistenceImpl
 	private static final String _FINDER_COLUMN_FINGERPRINT_FINGERPRINT_3 =
 		"(fileData.fingerprint IS NULL OR fileData.fingerprint = '')";
 
+	private FinderPath _finderPathFetchByName;
+
+	/**
+	 * Returns the file data where name = &#63; or throws a <code>NoSuchFileDataException</code> if it could not be found.
+	 *
+	 * @param name the name
+	 * @return the matching file data
+	 * @throws NoSuchFileDataException if a matching file data could not be found
+	 */
+	@Override
+	public FileData findByName(String name) throws NoSuchFileDataException {
+		FileData fileData = fetchByName(name);
+
+		if (fileData == null) {
+			StringBundler sb = new StringBundler(4);
+
+			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+			sb.append("name=");
+			sb.append(name);
+
+			sb.append("}");
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(sb.toString());
+			}
+
+			throw new NoSuchFileDataException(sb.toString());
+		}
+
+		return fileData;
+	}
+
+	/**
+	 * Returns the file data where name = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param name the name
+	 * @return the matching file data, or <code>null</code> if a matching file data could not be found
+	 */
+	@Override
+	public FileData fetchByName(String name) {
+		return fetchByName(name, true);
+	}
+
+	/**
+	 * Returns the file data where name = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param name the name
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the matching file data, or <code>null</code> if a matching file data could not be found
+	 */
+	@Override
+	public FileData fetchByName(String name, boolean useFinderCache) {
+		name = Objects.toString(name, "");
+
+		Object[] finderArgs = null;
+
+		if (useFinderCache) {
+			finderArgs = new Object[] {name};
+		}
+
+		Object result = null;
+
+		if (useFinderCache) {
+			result = finderCache.getResult(
+				_finderPathFetchByName, finderArgs, this);
+		}
+
+		if (result instanceof FileData) {
+			FileData fileData = (FileData)result;
+
+			if (!Objects.equals(name, fileData.getName())) {
+				result = null;
+			}
+		}
+
+		if (result == null) {
+			StringBundler sb = new StringBundler(3);
+
+			sb.append(_SQL_SELECT_FILEDATA_WHERE);
+
+			boolean bindName = false;
+
+			if (name.isEmpty()) {
+				sb.append(_FINDER_COLUMN_NAME_NAME_3);
+			}
+			else {
+				bindName = true;
+
+				sb.append(_FINDER_COLUMN_NAME_NAME_2);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				if (bindName) {
+					queryPos.add(name);
+				}
+
+				List<FileData> list = query.list();
+
+				if (list.isEmpty()) {
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathFetchByName, finderArgs, list);
+					}
+				}
+				else {
+					FileData fileData = list.get(0);
+
+					result = fileData;
+
+					cacheResult(fileData);
+				}
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		if (result instanceof List<?>) {
+			return null;
+		}
+		else {
+			return (FileData)result;
+		}
+	}
+
+	/**
+	 * Removes the file data where name = &#63; from the database.
+	 *
+	 * @param name the name
+	 * @return the file data that was removed
+	 */
+	@Override
+	public FileData removeByName(String name) throws NoSuchFileDataException {
+		FileData fileData = findByName(name);
+
+		return remove(fileData);
+	}
+
+	/**
+	 * Returns the number of file datas where name = &#63;.
+	 *
+	 * @param name the name
+	 * @return the number of matching file datas
+	 */
+	@Override
+	public int countByName(String name) {
+		FileData fileData = fetchByName(name);
+
+		if (fileData == null) {
+			return 0;
+		}
+
+		return 1;
+	}
+
+	private static final String _FINDER_COLUMN_NAME_NAME_2 =
+		"fileData.name = ?";
+
+	private static final String _FINDER_COLUMN_NAME_NAME_3 =
+		"(fileData.name IS NULL OR fileData.name = '')";
+
 	public FileDataPersistenceImpl() {
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
@@ -638,6 +813,10 @@ public class FileDataPersistenceImpl
 	public void cacheResult(FileData fileData) {
 		entityCache.putResult(
 			FileDataImpl.class, fileData.getPrimaryKey(), fileData);
+
+		finderCache.putResult(
+			_finderPathFetchByName, new Object[] {fileData.getName()},
+			fileData);
 	}
 
 	private int _valueObjectFinderCacheListThreshold;
@@ -705,6 +884,14 @@ public class FileDataPersistenceImpl
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(FileDataImpl.class, primaryKey);
 		}
+	}
+
+	protected void cacheUniqueFindersCache(
+		FileDataModelImpl fileDataModelImpl) {
+
+		Object[] args = new Object[] {fileDataModelImpl.getName()};
+
+		finderCache.putResult(_finderPathFetchByName, args, fileDataModelImpl);
 	}
 
 	/**
@@ -865,6 +1052,8 @@ public class FileDataPersistenceImpl
 
 		entityCache.putResult(
 			FileDataImpl.class, fileDataModelImpl, false, true);
+
+		cacheUniqueFindersCache(fileDataModelImpl);
 
 		if (isNew) {
 			fileData.setNew(false);
@@ -1165,6 +1354,10 @@ public class FileDataPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByFingerPrint",
 			new String[] {String.class.getName()}, new String[] {"fingerprint"},
 			false);
+
+		_finderPathFetchByName = new FinderPath(
+			FINDER_CLASS_NAME_ENTITY, "fetchByName",
+			new String[] {String.class.getName()}, new String[] {"name"}, true);
 
 		FileDataUtil.setPersistence(this);
 	}

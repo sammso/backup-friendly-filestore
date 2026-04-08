@@ -12,6 +12,8 @@ import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.Session;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
@@ -149,6 +151,15 @@ public class FileDataPersistenceTest {
 		_persistence.countByFingerPrint("null");
 
 		_persistence.countByFingerPrint((String)null);
+	}
+
+	@Test
+	public void testCountByName() throws Exception {
+		_persistence.countByName("");
+
+		_persistence.countByName("null");
+
+		_persistence.countByName((String)null);
 	}
 
 	@Test
@@ -386,6 +397,63 @@ public class FileDataPersistenceTest {
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
 		Assert.assertEquals(0, result.size());
+	}
+
+	@Test
+	public void testResetOriginalValues() throws Exception {
+		FileData newFileData = addFileData();
+
+		_persistence.clearCache();
+
+		_assertOriginalValues(
+			_persistence.findByPrimaryKey(newFileData.getPrimaryKey()));
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQueryLoadFromDatabase()
+		throws Exception {
+
+		_testResetOriginalValuesWithDynamicQuery(true);
+	}
+
+	@Test
+	public void testResetOriginalValuesWithDynamicQueryLoadFromSession()
+		throws Exception {
+
+		_testResetOriginalValuesWithDynamicQuery(false);
+	}
+
+	private void _testResetOriginalValuesWithDynamicQuery(boolean clearSession)
+		throws Exception {
+
+		FileData newFileData = addFileData();
+
+		if (clearSession) {
+			Session session = _persistence.openSession();
+
+			session.flush();
+
+			session.clear();
+		}
+
+		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+			FileData.class, _dynamicQueryClassLoader);
+
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"fileDataId", newFileData.getFileDataId()));
+
+		List<FileData> result = _persistence.findWithDynamicQuery(dynamicQuery);
+
+		_assertOriginalValues(result.get(0));
+	}
+
+	private void _assertOriginalValues(FileData fileData) {
+		Assert.assertEquals(
+			fileData.getName(),
+			ReflectionTestUtil.invoke(
+				fileData, "getColumnOriginalValue",
+				new Class<?>[] {String.class}, "name"));
 	}
 
 	protected FileData addFileData() throws Exception {

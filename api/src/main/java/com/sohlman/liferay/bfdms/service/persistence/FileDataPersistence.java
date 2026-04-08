@@ -176,6 +176,48 @@ public interface FileDataPersistence extends BasePersistence<FileData> {
 	public int countByFingerPrint(String fingerprint);
 
 	/**
+	 * Returns the file data where name = &#63; or throws a <code>NoSuchFileDataException</code> if it could not be found.
+	 *
+	 * @param name the name
+	 * @return the matching file data
+	 * @throws NoSuchFileDataException if a matching file data could not be found
+	 */
+	public FileData findByName(String name) throws NoSuchFileDataException;
+
+	/**
+	 * Returns the file data where name = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param name the name
+	 * @return the matching file data, or <code>null</code> if a matching file data could not be found
+	 */
+	public FileData fetchByName(String name);
+
+	/**
+	 * Returns the file data where name = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param name the name
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the matching file data, or <code>null</code> if a matching file data could not be found
+	 */
+	public FileData fetchByName(String name, boolean useFinderCache);
+
+	/**
+	 * Removes the file data where name = &#63; from the database.
+	 *
+	 * @param name the name
+	 * @return the file data that was removed
+	 */
+	public FileData removeByName(String name) throws NoSuchFileDataException;
+
+	/**
+	 * Returns the number of file datas where name = &#63;.
+	 *
+	 * @param name the name
+	 * @return the number of matching file datas
+	 */
+	public int countByName(String name);
+
+	/**
 	 * Caches the file data in the entity cache if it is enabled.
 	 *
 	 * @param fileData the file data
