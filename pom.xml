@@ -3,10 +3,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.sohlman.liferay.bffs</groupId>
-	<artifactId>com.sohlman.liferay.bffs</artifactId>
+	<groupId>com.sohlman.liferay.bfdms</groupId>
+	<artifactId>com.sohlman.liferay.bfdms</artifactId>
 	<packaging>pom</packaging>
-	<name>com.sohlman.liferay.bffs</name>
+	<name>com.sohlman.liferay.bfdms</name>
 	<version>251.0.0-SNAPSHOT</version>
 	<properties>
 		<maven-compiler-plugin.version>3.15.0</maven-compiler-plugin.version>

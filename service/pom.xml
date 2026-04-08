@@ -2,13 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
-		<groupId>com.sohlman.liferay.bffs</groupId>
-		<artifactId>com.sohlman.liferay.bffs</artifactId>
+		<groupId>com.sohlman.liferay.bfdms</groupId>
+		<artifactId>com.sohlman.liferay.bfdms</artifactId>
 		<version>251.0.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>com.sohlman.liferay.bffs.service</artifactId>
+	<artifactId>com.sohlman.liferay.bfdms.service</artifactId>
 	<packaging>jar</packaging>
 	<build>
 		<plugins>
@@ -26,7 +26,7 @@
 					<inputFileName>service.xml</inputFileName>
 					<modelHintsFileName>src/main/resources/META-INF/portlet-model-hints.xml</modelHintsFileName>
 					<osgiModule>true</osgiModule>
-					<propsUtil>com.sohlman.liferay.bffss.service.util.PropsUtil</propsUtil>
+					<propsUtil>com.sohlman.liferay.bfdms.service.util.PropsUtil</propsUtil>
 					<resourcesDirName>src/main/resources</resourcesDirName>
 					<springFileName>src/main/resources/META-INF/spring/module-spring.xml</springFileName>
 					<springNamespaces>beans,osgi</springNamespaces>
@@ -47,8 +47,8 @@
 	</build>
 	<dependencies>
 		<dependency>
-			<groupId>com.sohlman.liferay.bffs</groupId>
-			<artifactId>com.sohlman.liferay.bffs.api</artifactId>
+			<groupId>com.sohlman.liferay.bfdms</groupId>
+			<artifactId>com.sohlman.liferay.bfdms.api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>

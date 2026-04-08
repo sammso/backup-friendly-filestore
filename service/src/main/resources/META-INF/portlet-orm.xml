@@ -7,7 +7,7 @@
 			<access>PROPERTY</access>
 		</persistence-unit-defaults>
 	</persistence-unit-metadata>
-	<mapped-superclass class="com.sohlman.liferay.bffss.model.impl.FileDataModelImpl">
+	<mapped-superclass class="com.sohlman.liferay.bfdms.model.impl.FileDataModelImpl">
 		<attributes>
 			<id name="fileDataId" />
 			<basic name="companyId" />
@@ -24,7 +24,7 @@
 			<transient name="primaryKeyObj" />
 		</attributes>
 	</mapped-superclass>
-	<mapped-superclass class="com.sohlman.liferay.bffss.model.impl.FileInfoModelImpl">
+	<mapped-superclass class="com.sohlman.liferay.bfdms.model.impl.FileInfoModelImpl">
 		<attributes>
 			<id name="fileInfoId" />
 			<basic name="companyId" />
@@ -39,11 +39,11 @@
 			<transient name="primaryKeyObj" />
 		</attributes>
 	</mapped-superclass>
-	<entity class="com.sohlman.liferay.bffss.model.impl.FileDataImpl" name="FileData">
+	<entity class="com.sohlman.liferay.bfdms.model.impl.FileDataImpl" name="FileData">
 		<table name="bffss_FileData" />
 		<attributes />
 	</entity>
-	<entity class="com.sohlman.liferay.bffss.model.impl.FileInfoImpl" name="FileInfo">
+	<entity class="com.sohlman.liferay.bfdms.model.impl.FileInfoImpl" name="FileInfo">
 		<table name="bffss_FileInfo" />
 		<attributes />
 	</entity>

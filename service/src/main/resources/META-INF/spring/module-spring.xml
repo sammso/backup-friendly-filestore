@@ -8,10 +8,10 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd"
 >
-	<bean class="com.sohlman.liferay.bffss.service.impl.FileDataLocalServiceImpl" id="com.sohlman.liferay.bffss.service.FileDataLocalService" />
-	<bean class="com.sohlman.liferay.bffss.service.persistence.impl.FileDataModelArgumentsResolver" id="com.sohlman.liferay.bffss.service.persistence.impl.FileDataModelArgumentsResolver" />
-	<bean class="com.sohlman.liferay.bffss.service.persistence.impl.FileDataPersistenceImpl" id="com.sohlman.liferay.bffss.service.persistence.FileDataPersistence" />
-	<bean class="com.sohlman.liferay.bffss.service.impl.FileInfoLocalServiceImpl" id="com.sohlman.liferay.bffss.service.FileInfoLocalService" />
-	<bean class="com.sohlman.liferay.bffss.service.persistence.impl.FileInfoModelArgumentsResolver" id="com.sohlman.liferay.bffss.service.persistence.impl.FileInfoModelArgumentsResolver" />
-	<bean class="com.sohlman.liferay.bffss.service.persistence.impl.FileInfoPersistenceImpl" id="com.sohlman.liferay.bffss.service.persistence.FileInfoPersistence" />
+	<bean class="com.sohlman.liferay.bfdms.service.impl.FileDataLocalServiceImpl" id="com.sohlman.liferay.bfdms.service.FileDataLocalService" />
+	<bean class="com.sohlman.liferay.bfdms.service.persistence.impl.FileDataModelArgumentsResolver" id="com.sohlman.liferay.bfdms.service.persistence.impl.FileDataModelArgumentsResolver" />
+	<bean class="com.sohlman.liferay.bfdms.service.persistence.impl.FileDataPersistenceImpl" id="com.sohlman.liferay.bfdms.service.persistence.FileDataPersistence" />
+	<bean class="com.sohlman.liferay.bfdms.service.impl.FileInfoLocalServiceImpl" id="com.sohlman.liferay.bfdms.service.FileInfoLocalService" />
+	<bean class="com.sohlman.liferay.bfdms.service.persistence.impl.FileInfoModelArgumentsResolver" id="com.sohlman.liferay.bfdms.service.persistence.impl.FileInfoModelArgumentsResolver" />
+	<bean class="com.sohlman.liferay.bfdms.service.persistence.impl.FileInfoPersistenceImpl" id="com.sohlman.liferay.bfdms.service.persistence.FileInfoPersistence" />
 </beans>

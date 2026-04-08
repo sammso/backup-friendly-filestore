@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <model-hints>
-	<model name="com.sohlman.liferay.bffss.model.FileData">
+	<model name="com.sohlman.liferay.bfdms.model.FileData">
 		<field name="fileDataId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="createDate" type="Date" />
@@ -9,7 +9,7 @@
 		<field name="size" type="long" />
 		<field name="fingerprint" type="String" />
 	</model>
-	<model name="com.sohlman.liferay.bffss.model.FileInfo">
+	<model name="com.sohlman.liferay.bfdms.model.FileInfo">
 		<field name="fileInfoId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="repositoryId" type="long" />

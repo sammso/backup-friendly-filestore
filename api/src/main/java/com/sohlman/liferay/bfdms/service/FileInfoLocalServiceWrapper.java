@@ -1,0 +1,467 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2026 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+package com.sohlman.liferay.bfdms.service;
+
+import com.liferay.portal.kernel.service.ServiceWrapper;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
+
+/**
+ * Provides a wrapper for {@link FileInfoLocalService}.
+ *
+ * @author Brian Wing Shun Chan
+ * @see FileInfoLocalService
+ * @generated
+ */
+public class FileInfoLocalServiceWrapper
+	implements FileInfoLocalService, ServiceWrapper<FileInfoLocalService> {
+
+	public FileInfoLocalServiceWrapper() {
+		this(null);
+	}
+
+	public FileInfoLocalServiceWrapper(
+		FileInfoLocalService fileInfoLocalService) {
+
+		_fileInfoLocalService = fileInfoLocalService;
+	}
+
+	/**
+	 * Adds the file info to the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect FileInfoLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
+	 * @param fileInfo the file info
+	 * @return the file info that was added
+	 */
+	@Override
+	public com.sohlman.liferay.bfdms.model.FileInfo addFileInfo(
+		com.sohlman.liferay.bfdms.model.FileInfo fileInfo) {
+
+		return _fileInfoLocalService.addFileInfo(fileInfo);
+	}
+
+	@Override
+	public com.sohlman.liferay.bfdms.model.FileInfo addFileInfo(
+			long companyId, long repositoryId, String path, String version,
+			java.io.InputStream inputStream)
+		throws com.liferay.portal.kernel.exception.SystemException {
+
+		return _fileInfoLocalService.addFileInfo(
+			companyId, repositoryId, path, version, inputStream);
+	}
+
+	/**
+	 * Creates a new file info with the primary key. Does not add the file info to the database.
+	 *
+	 * @param fileInfoId the primary key for the new file info
+	 * @return the new file info
+	 */
+	@Override
+	public com.sohlman.liferay.bfdms.model.FileInfo createFileInfo(
+		long fileInfoId) {
+
+		return _fileInfoLocalService.createFileInfo(fileInfoId);
+	}
+
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _fileInfoLocalService.createPersistedModel(primaryKeyObj);
+	}
+
+	/**
+	 * Deletes the file info from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect FileInfoLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
+	 * @param fileInfo the file info
+	 * @return the file info that was removed
+	 */
+	@Override
+	public com.sohlman.liferay.bfdms.model.FileInfo deleteFileInfo(
+		com.sohlman.liferay.bfdms.model.FileInfo fileInfo) {
+
+		return _fileInfoLocalService.deleteFileInfo(fileInfo);
+	}
+
+	/**
+	 * Deletes the file info with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect FileInfoLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
+	 * @param fileInfoId the primary key of the file info
+	 * @return the file info that was removed
+	 * @throws PortalException if a file info with the primary key could not be found
+	 */
+	@Override
+	public com.sohlman.liferay.bfdms.model.FileInfo deleteFileInfo(
+			long fileInfoId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _fileInfoLocalService.deleteFileInfo(fileInfoId);
+	}
+
+	@Override
+	public void deleteFileInfo(
+			long companyId, long repositoryId, String path, String version)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			   com.liferay.portal.kernel.exception.SystemException {
+
+		_fileInfoLocalService.deleteFileInfo(
+			companyId, repositoryId, path, version);
+	}
+
+	@Override
+	public void deleteFileInfos(long companyId, long repositoryId, String path)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			   com.liferay.portal.kernel.exception.SystemException {
+
+		_fileInfoLocalService.deleteFileInfos(companyId, repositoryId, path);
+	}
+
+	@Override
+	public void deleteFileInfosByCompany(long companyId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		_fileInfoLocalService.deleteFileInfosByCompany(companyId);
+	}
+
+	@Override
+	public void deleteFileInfosByDirectory(
+			long companyId, long repositoryId, String dirName)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			   com.liferay.portal.kernel.exception.SystemException {
+
+		_fileInfoLocalService.deleteFileInfosByDirectory(
+			companyId, repositoryId, dirName);
+	}
+
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+			com.liferay.portal.kernel.model.PersistedModel persistedModel)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _fileInfoLocalService.deletePersistedModel(persistedModel);
+	}
+
+	@Override
+	public <T> T dslQuery(com.liferay.petra.sql.dsl.query.DSLQuery dslQuery) {
+		return _fileInfoLocalService.dslQuery(dslQuery);
+	}
+
+	@Override
+	public int dslQueryCount(
+		com.liferay.petra.sql.dsl.query.DSLQuery dslQuery) {
+
+		return _fileInfoLocalService.dslQueryCount(dslQuery);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+		return _fileInfoLocalService.dynamicQuery();
+	}
+
+	/**
+	 * Performs a dynamic query on the database and returns the matching rows.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @return the matching rows
+	 */
+	@Override
+	public <T> java.util.List<T> dynamicQuery(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
+
+		return _fileInfoLocalService.dynamicQuery(dynamicQuery);
+	}
+
+	/**
+	 * Performs a dynamic query on the database and returns a range of the matching rows.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.sohlman.liferay.bfdms.model.impl.FileInfoModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param start the lower bound of the range of model instances
+	 * @param end the upper bound of the range of model instances (not inclusive)
+	 * @return the range of matching rows
+	 */
+	@Override
+	public <T> java.util.List<T> dynamicQuery(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
+		int end) {
+
+		return _fileInfoLocalService.dynamicQuery(dynamicQuery, start, end);
+	}
+
+	/**
+	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.sohlman.liferay.bfdms.model.impl.FileInfoModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param start the lower bound of the range of model instances
+	 * @param end the upper bound of the range of model instances (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching rows
+	 */
+	@Override
+	public <T> java.util.List<T> dynamicQuery(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
+		int end,
+		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+
+		return _fileInfoLocalService.dynamicQuery(
+			dynamicQuery, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns the number of rows matching the dynamic query.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @return the number of rows matching the dynamic query
+	 */
+	@Override
+	public long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
+
+		return _fileInfoLocalService.dynamicQueryCount(dynamicQuery);
+	}
+
+	/**
+	 * Returns the number of rows matching the dynamic query.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param projection the projection to apply to the query
+	 * @return the number of rows matching the dynamic query
+	 */
+	@Override
+	public long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		com.liferay.portal.kernel.dao.orm.Projection projection) {
+
+		return _fileInfoLocalService.dynamicQueryCount(
+			dynamicQuery, projection);
+	}
+
+	@Override
+	public com.sohlman.liferay.bfdms.model.FileInfo fetchFileInfo(
+		long fileInfoId) {
+
+		return _fileInfoLocalService.fetchFileInfo(fileInfoId);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
+		getActionableDynamicQuery() {
+
+		return _fileInfoLocalService.getActionableDynamicQuery();
+	}
+
+	@Override
+	public java.io.InputStream getFileAsStream(
+			long companyId, long repositoryId, String fileName)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			   com.liferay.portal.kernel.exception.SystemException {
+
+		return _fileInfoLocalService.getFileAsStream(
+			companyId, repositoryId, fileName);
+	}
+
+	@Override
+	public java.io.InputStream getFileAsStream(
+			long companyId, long repositoryId, String fileName, String version)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			   com.liferay.portal.kernel.exception.SystemException {
+
+		return _fileInfoLocalService.getFileAsStream(
+			companyId, repositoryId, fileName, version);
+	}
+
+	/**
+	 * Returns the file info with the primary key.
+	 *
+	 * @param fileInfoId the primary key of the file info
+	 * @return the file info
+	 * @throws PortalException if a file info with the primary key could not be found
+	 */
+	@Override
+	public com.sohlman.liferay.bfdms.model.FileInfo getFileInfo(long fileInfoId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _fileInfoLocalService.getFileInfo(fileInfoId);
+	}
+
+	@Override
+	public com.sohlman.liferay.bfdms.model.FileInfo getFileInfo(
+			long companyId, long repositoryId, String path)
+		throws com.sohlman.liferay.bfdms.exception.NoSuchFileInfoException {
+
+		return _fileInfoLocalService.getFileInfo(companyId, repositoryId, path);
+	}
+
+	@Override
+	public com.sohlman.liferay.bfdms.model.FileInfo getFileInfo(
+			long companyId, long repositoryId, String path, String version)
+		throws com.sohlman.liferay.bfdms.exception.NoSuchFileInfoException {
+
+		return _fileInfoLocalService.getFileInfo(
+			companyId, repositoryId, path, version);
+	}
+
+	/**
+	 * Returns a range of all the file infos.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.sohlman.liferay.bfdms.model.impl.FileInfoModelImpl</code>.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of file infos
+	 * @param end the upper bound of the range of file infos (not inclusive)
+	 * @return the range of file infos
+	 */
+	@Override
+	public java.util.List<com.sohlman.liferay.bfdms.model.FileInfo>
+		getFileInfos(int start, int end) {
+
+		return _fileInfoLocalService.getFileInfos(start, end);
+	}
+
+	@Override
+	public java.util.List<com.sohlman.liferay.bfdms.model.FileInfo>
+			getFileInfos(long companyId, long repositoryId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+
+		return _fileInfoLocalService.getFileInfos(companyId, repositoryId);
+	}
+
+	@Override
+	public java.util.List<com.sohlman.liferay.bfdms.model.FileInfo>
+			getFileInfos(long companyId, long repositoryId, String path)
+		throws com.liferay.portal.kernel.exception.SystemException {
+
+		return _fileInfoLocalService.getFileInfos(
+			companyId, repositoryId, path);
+	}
+
+	@Override
+	public java.util.List<com.sohlman.liferay.bfdms.model.FileInfo>
+			getFileInfosByDirectory(
+				long companyId, long repositoryId, String dirName)
+		throws com.liferay.portal.kernel.exception.SystemException {
+
+		return _fileInfoLocalService.getFileInfosByDirectory(
+			companyId, repositoryId, dirName);
+	}
+
+	/**
+	 * Returns the number of file infos.
+	 *
+	 * @return the number of file infos
+	 */
+	@Override
+	public int getFileInfosCount() {
+		return _fileInfoLocalService.getFileInfosCount();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery
+		getIndexableActionableDynamicQuery() {
+
+		return _fileInfoLocalService.getIndexableActionableDynamicQuery();
+	}
+
+	/**
+	 * Returns the OSGi service identifier.
+	 *
+	 * @return the OSGi service identifier
+	 */
+	@Override
+	public String getOSGiServiceIdentifier() {
+		return _fileInfoLocalService.getOSGiServiceIdentifier();
+	}
+
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _fileInfoLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public boolean hasFileInfo(
+			long companyId, long repositoryId, String path, String version)
+		throws com.liferay.portal.kernel.exception.SystemException {
+
+		return _fileInfoLocalService.hasFileInfo(
+			companyId, repositoryId, path, version);
+	}
+
+	/**
+	 * Updates the file info in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect FileInfoLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
+	 * @param fileInfo the file info
+	 * @return the file info that was updated
+	 */
+	@Override
+	public com.sohlman.liferay.bfdms.model.FileInfo updateFileInfo(
+		com.sohlman.liferay.bfdms.model.FileInfo fileInfo) {
+
+		return _fileInfoLocalService.updateFileInfo(fileInfo);
+	}
+
+	@Override
+	public void updateFileInfo(
+			long companyId, long oldRepositoryId, long newRepositoryId,
+			String oldPath, String newPath)
+		throws com.liferay.portal.kernel.exception.SystemException {
+
+		_fileInfoLocalService.updateFileInfo(
+			companyId, oldRepositoryId, newRepositoryId, oldPath, newPath);
+	}
+
+	@Override
+	public BasePersistence<?> getBasePersistence() {
+		return _fileInfoLocalService.getBasePersistence();
+	}
+
+	@Override
+	public FileInfoLocalService getWrappedService() {
+		return _fileInfoLocalService;
+	}
+
+	@Override
+	public void setWrappedService(FileInfoLocalService fileInfoLocalService) {
+		_fileInfoLocalService = fileInfoLocalService;
+	}
+
+	private FileInfoLocalService _fileInfoLocalService;
+
+}
