@@ -63,5 +63,8 @@
 		<finder name="FingerPrint" return-type="Collection" unique="false">
 			<finder-column name="fingerprint" />
 		</finder>
+		<finder name="Name" return-type="FileData" unique="true">
+			<finder-column name="name" />
+		</finder>
 	</entity>
 </service-builder>
