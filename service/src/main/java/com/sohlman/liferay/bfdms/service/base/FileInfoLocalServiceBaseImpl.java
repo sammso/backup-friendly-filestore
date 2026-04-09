@@ -6,7 +6,7 @@
 package com.sohlman.liferay.bfdms.service.base;
 
 import com.liferay.petra.sql.dsl.query.DSLQuery;
-import com.liferay.portal.kernel.bean.BeanReference;
+import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.jdbc.CurrentConnectionUtil;
@@ -25,16 +25,13 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
+import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
-import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
-import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import com.sohlman.liferay.bfdms.model.FileInfo;
 import com.sohlman.liferay.bfdms.service.FileInfoLocalService;
-import com.sohlman.liferay.bfdms.service.FileInfoLocalServiceUtil;
 import com.sohlman.liferay.bfdms.service.persistence.FileDataPersistence;
 import com.sohlman.liferay.bfdms.service.persistence.FileInfoPersistence;
 
@@ -45,6 +42,9 @@ import java.sql.Connection;
 import java.util.List;
 
 import javax.sql.DataSource;
+
+import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * Provides the base implementation for the file info local service.
@@ -59,12 +59,12 @@ import javax.sql.DataSource;
  */
 public abstract class FileInfoLocalServiceBaseImpl
 	extends BaseLocalServiceImpl
-	implements FileInfoLocalService, IdentifiableOSGiService {
+	implements AopService, FileInfoLocalService, IdentifiableOSGiService {
 
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>FileInfoLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>FileInfoLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>FileInfoLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.sohlman.liferay.bfdms.service.FileInfoLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -369,224 +369,21 @@ public abstract class FileInfoLocalServiceBaseImpl
 		return fileInfoPersistence.update(fileInfo);
 	}
 
-	/**
-	 * Returns the file data local service.
-	 *
-	 * @return the file data local service
-	 */
-	public com.sohlman.liferay.bfdms.service.FileDataLocalService
-		getFileDataLocalService() {
-
-		return fileDataLocalService;
+	@Deactivate
+	protected void deactivate() {
 	}
 
-	/**
-	 * Sets the file data local service.
-	 *
-	 * @param fileDataLocalService the file data local service
-	 */
-	public void setFileDataLocalService(
-		com.sohlman.liferay.bfdms.service.FileDataLocalService
-			fileDataLocalService) {
-
-		this.fileDataLocalService = fileDataLocalService;
+	@Override
+	public Class<?>[] getAopInterfaces() {
+		return new Class<?>[] {
+			FileInfoLocalService.class, IdentifiableOSGiService.class,
+			PersistedModelLocalService.class
+		};
 	}
 
-	/**
-	 * Returns the file data persistence.
-	 *
-	 * @return the file data persistence
-	 */
-	public FileDataPersistence getFileDataPersistence() {
-		return fileDataPersistence;
-	}
-
-	/**
-	 * Sets the file data persistence.
-	 *
-	 * @param fileDataPersistence the file data persistence
-	 */
-	public void setFileDataPersistence(
-		FileDataPersistence fileDataPersistence) {
-
-		this.fileDataPersistence = fileDataPersistence;
-	}
-
-	/**
-	 * Returns the file info local service.
-	 *
-	 * @return the file info local service
-	 */
-	public FileInfoLocalService getFileInfoLocalService() {
-		return fileInfoLocalService;
-	}
-
-	/**
-	 * Sets the file info local service.
-	 *
-	 * @param fileInfoLocalService the file info local service
-	 */
-	public void setFileInfoLocalService(
-		FileInfoLocalService fileInfoLocalService) {
-
-		this.fileInfoLocalService = fileInfoLocalService;
-	}
-
-	/**
-	 * Returns the file info persistence.
-	 *
-	 * @return the file info persistence
-	 */
-	public FileInfoPersistence getFileInfoPersistence() {
-		return fileInfoPersistence;
-	}
-
-	/**
-	 * Sets the file info persistence.
-	 *
-	 * @param fileInfoPersistence the file info persistence
-	 */
-	public void setFileInfoPersistence(
-		FileInfoPersistence fileInfoPersistence) {
-
-		this.fileInfoPersistence = fileInfoPersistence;
-	}
-
-	/**
-	 * Returns the counter local service.
-	 *
-	 * @return the counter local service
-	 */
-	public com.liferay.counter.kernel.service.CounterLocalService
-		getCounterLocalService() {
-
-		return counterLocalService;
-	}
-
-	/**
-	 * Sets the counter local service.
-	 *
-	 * @param counterLocalService the counter local service
-	 */
-	public void setCounterLocalService(
-		com.liferay.counter.kernel.service.CounterLocalService
-			counterLocalService) {
-
-		this.counterLocalService = counterLocalService;
-	}
-
-	/**
-	 * Returns the class name local service.
-	 *
-	 * @return the class name local service
-	 */
-	public com.liferay.portal.kernel.service.ClassNameLocalService
-		getClassNameLocalService() {
-
-		return classNameLocalService;
-	}
-
-	/**
-	 * Sets the class name local service.
-	 *
-	 * @param classNameLocalService the class name local service
-	 */
-	public void setClassNameLocalService(
-		com.liferay.portal.kernel.service.ClassNameLocalService
-			classNameLocalService) {
-
-		this.classNameLocalService = classNameLocalService;
-	}
-
-	/**
-	 * Returns the class name persistence.
-	 *
-	 * @return the class name persistence
-	 */
-	public ClassNamePersistence getClassNamePersistence() {
-		return classNamePersistence;
-	}
-
-	/**
-	 * Sets the class name persistence.
-	 *
-	 * @param classNamePersistence the class name persistence
-	 */
-	public void setClassNamePersistence(
-		ClassNamePersistence classNamePersistence) {
-
-		this.classNamePersistence = classNamePersistence;
-	}
-
-	/**
-	 * Returns the resource local service.
-	 *
-	 * @return the resource local service
-	 */
-	public com.liferay.portal.kernel.service.ResourceLocalService
-		getResourceLocalService() {
-
-		return resourceLocalService;
-	}
-
-	/**
-	 * Sets the resource local service.
-	 *
-	 * @param resourceLocalService the resource local service
-	 */
-	public void setResourceLocalService(
-		com.liferay.portal.kernel.service.ResourceLocalService
-			resourceLocalService) {
-
-		this.resourceLocalService = resourceLocalService;
-	}
-
-	/**
-	 * Returns the user local service.
-	 *
-	 * @return the user local service
-	 */
-	public com.liferay.portal.kernel.service.UserLocalService
-		getUserLocalService() {
-
-		return userLocalService;
-	}
-
-	/**
-	 * Sets the user local service.
-	 *
-	 * @param userLocalService the user local service
-	 */
-	public void setUserLocalService(
-		com.liferay.portal.kernel.service.UserLocalService userLocalService) {
-
-		this.userLocalService = userLocalService;
-	}
-
-	/**
-	 * Returns the user persistence.
-	 *
-	 * @return the user persistence
-	 */
-	public UserPersistence getUserPersistence() {
-		return userPersistence;
-	}
-
-	/**
-	 * Sets the user persistence.
-	 *
-	 * @param userPersistence the user persistence
-	 */
-	public void setUserPersistence(UserPersistence userPersistence) {
-		this.userPersistence = userPersistence;
-	}
-
-	public void afterPropertiesSet() {
-		FileInfoLocalServiceUtil.setService(fileInfoLocalService);
-	}
-
-	public void destroy() {
-		FileInfoLocalServiceUtil.setService(null);
+	@Override
+	public void setAopProxy(Object aopProxy) {
+		fileInfoLocalService = (FileInfoLocalService)aopProxy;
 	}
 
 	/**
@@ -636,50 +433,29 @@ public abstract class FileInfoLocalServiceBaseImpl
 		}
 	}
 
-	@BeanReference(
-		type = com.sohlman.liferay.bfdms.service.FileDataLocalService.class
-	)
-	protected com.sohlman.liferay.bfdms.service.FileDataLocalService
-		fileDataLocalService;
-
-	@BeanReference(type = FileDataPersistence.class)
+	@Reference
 	protected FileDataPersistence fileDataPersistence;
 
-	@BeanReference(type = FileInfoLocalService.class)
 	protected FileInfoLocalService fileInfoLocalService;
 
-	@BeanReference(type = FileInfoPersistence.class)
+	@Reference
 	protected FileInfoPersistence fileInfoPersistence;
 
-	@ServiceReference(
-		type = com.liferay.counter.kernel.service.CounterLocalService.class
-	)
+	@Reference
 	protected com.liferay.counter.kernel.service.CounterLocalService
 		counterLocalService;
 
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.ClassNameLocalService.class
-	)
+	@Reference
 	protected com.liferay.portal.kernel.service.ClassNameLocalService
 		classNameLocalService;
 
-	@ServiceReference(type = ClassNamePersistence.class)
-	protected ClassNamePersistence classNamePersistence;
-
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.ResourceLocalService.class
-	)
+	@Reference
 	protected com.liferay.portal.kernel.service.ResourceLocalService
 		resourceLocalService;
 
-	@ServiceReference(
-		type = com.liferay.portal.kernel.service.UserLocalService.class
-	)
+	@Reference
 	protected com.liferay.portal.kernel.service.UserLocalService
 		userLocalService;
-
-	@ServiceReference(type = UserPersistence.class)
-	protected UserPersistence userPersistence;
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		FileInfoLocalServiceBaseImpl.class);

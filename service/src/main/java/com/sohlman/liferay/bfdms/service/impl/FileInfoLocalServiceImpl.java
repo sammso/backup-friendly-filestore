@@ -18,6 +18,7 @@ import java.io.InputStream;
 import java.util.List;
 
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -26,8 +27,12 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.sohlman.liferay.bfdms.exception.NoSuchFileInfoException;
 import com.sohlman.liferay.bfdms.model.FileData;
 import com.sohlman.liferay.bfdms.model.FileInfo;
+import com.sohlman.liferay.bfdms.service.FileDataLocalService;
 import com.sohlman.liferay.bfdms.service.base.FileInfoLocalServiceBaseImpl;
 import com.sohlman.liferay.bfdms.util.FileInfoVersionComparator;
+
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * The implementation of the file info local service.
@@ -50,6 +55,10 @@ import com.sohlman.liferay.bfdms.util.FileInfoVersionComparator;
  * @see com.sohlman.liferay.bfdms.service.base.FileInfoLocalServiceBaseImpl
  * @see com.sohlman.liferay.bfdms.service.FileInfoLocalServiceUtil
  */
+@Component(
+	property = "model.class.name=com.sohlman.liferay.bfdms.model.FileInfo",
+	service = AopService.class
+)
 public class FileInfoLocalServiceImpl extends FileInfoLocalServiceBaseImpl {
 	/*
 	 * NOTE FOR DEVELOPERS:
@@ -84,7 +93,7 @@ public class FileInfoLocalServiceImpl extends FileInfoLocalServiceBaseImpl {
 	protected void storeFileInfo(FileInfo fileInfo, InputStream inputStream) 
 			throws SystemException {
 
-		FileData fileData = fileDataLocalService.addFileData(
+		FileData fileData = _fileDataLocalService.addFileData(
 			fileInfo.getCompanyId(), inputStream);
 
 		fileInfo.setFileDataId(fileData.getFileDataId());
@@ -211,7 +220,7 @@ public class FileInfoLocalServiceImpl extends FileInfoLocalServiceBaseImpl {
 
 		FileInfo fileInfo = getFileInfo(companyId, repositoryId, fileName);
 		
-		return fileDataLocalService.getFileInputStream(
+		return _fileDataLocalService.getFileInputStream(
 			fileInfo.getFileDataId());
 	}
 
@@ -223,7 +232,7 @@ public class FileInfoLocalServiceImpl extends FileInfoLocalServiceBaseImpl {
 		FileInfo fileInfo = getFileInfo(
 			companyId, repositoryId, fileName, version);
 		
-		return fileDataLocalService.getFileInputStream(
+		return _fileDataLocalService.getFileInputStream(
 			fileInfo.getFileDataId());
 	}
 
@@ -240,6 +249,9 @@ public class FileInfoLocalServiceImpl extends FileInfoLocalServiceBaseImpl {
 			return false;
 		}
 	}
+
+	@Reference
+	private FileDataLocalService _fileDataLocalService;
 
 	@Override
 	public void updateFileInfo(long companyId, long oldRepositoryId,

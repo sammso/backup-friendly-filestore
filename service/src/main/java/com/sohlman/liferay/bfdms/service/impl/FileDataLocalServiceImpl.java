@@ -24,17 +24,25 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
+import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StreamUtil;
+import com.sohlman.liferay.bfdms.configuration.BackupFriendlyFileSystemStoreConfiguration;
 import com.sohlman.liferay.bfdms.model.FileData;
 import com.sohlman.liferay.bfdms.service.base.FileDataLocalServiceBaseImpl;
 import com.sohlman.liferay.bfdms.util.Util;
+
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Modified;
 
 /**
  * The implementation of the file data local service.
@@ -55,6 +63,11 @@ import com.sohlman.liferay.bfdms.util.Util;
  * @see com.sohlman.liferay.bfdms.service.base.FileDataLocalServiceBaseImpl
  * @see com.sohlman.liferay.bfdms.service.FileDataLocalServiceUtil
  */
+@Component(
+	configurationPid = "com.sohlman.liferay.bfdms.configuration.BackupFriendlyFileSystemStoreConfiguration",
+	property = "model.class.name=com.sohlman.liferay.bfdms.model.FileData",
+	service = AopService.class
+)
 public class FileDataLocalServiceImpl extends FileDataLocalServiceBaseImpl {
 
 	/*
@@ -64,6 +77,28 @@ public class FileDataLocalServiceImpl extends FileDataLocalServiceBaseImpl {
 	 * com.sohlman.liferay.bfdms.service.FileDataLocalServiceUtil} to access the
 	 * file data local service.
 	 */
+
+	@Activate
+	@Modified
+	protected void activate(Map<String, Object> properties) {
+		String rootDirPath = GetterUtil.getString(
+			properties.get("rootDir"), "data/document_library");
+
+		if (rootDirPath.isEmpty()) {
+			rootDirPath = "data/document_library";
+		}
+
+		File rootDir = new File(rootDirPath);
+
+		if (!rootDir.isAbsolute()) {
+			rootDir = new File(
+				PropsUtil.get(PropsKeys.LIFERAY_HOME), rootDirPath);
+		}
+
+		FileUtil.mkdirs(rootDir);
+
+		_rootDir = rootDir;
+	}
 
 	public FileData addFileData(long companyId, InputStream inputStream) {
 		OutputStream outputStream = null;
@@ -166,15 +201,6 @@ public class FileDataLocalServiceImpl extends FileDataLocalServiceBaseImpl {
 		}
 	}
 
-	/**
-	 * Called from {@link
-	 * com.sohlman.liferay.bfdms.BackupFriendlyFileSystemStore} on
-	 * activation/modification to propagate the configured root directory.
-	 */
-	public void setRootDir(File rootDir) {
-		_rootDir = rootDir;
-	}
-
 	protected File getFile(FileData fileData) {
 		String path1 = fileData.getName().substring(0, 2);
 		String path2 = fileData.getName().substring(2, 4);
@@ -199,10 +225,10 @@ public class FileDataLocalServiceImpl extends FileDataLocalServiceBaseImpl {
 			return _rootDir;
 		}
 
-		return initDefaultRootDir();
+		return _initDefaultRootDir();
 	}
 
-	private synchronized File initDefaultRootDir() {
+	private synchronized File _initDefaultRootDir() {
 		if (_rootDir != null) {
 			return _rootDir;
 		}

@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" default-destroy-method="destroy" default-init-method="afterPropertiesSet" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
-	<bean id="com.sohlman.liferay.bfdms.service.FileDataLocalService" class="com.sohlman.liferay.bfdms.service.impl.FileDataLocalServiceImpl" />
-	<bean id="com.sohlman.liferay.bfdms.service.persistence.FileDataPersistence" class="com.sohlman.liferay.bfdms.service.persistence.FileDataPersistenceImpl" parent="basePersistence" />
-	<bean id="com.sohlman.liferay.bfdms.service.FileInfoLocalService" class="com.sohlman.liferay.bfdms.service.impl.FileInfoLocalServiceImpl" />
-	<bean id="com.sohlman.liferay.bfdms.service.persistence.FileInfoPersistence" class="com.sohlman.liferay.bfdms.service.persistence.FileInfoPersistenceImpl" parent="basePersistence" />
-</beans>

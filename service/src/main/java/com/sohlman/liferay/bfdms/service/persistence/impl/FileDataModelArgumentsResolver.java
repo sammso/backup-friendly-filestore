@@ -8,7 +8,6 @@ package com.sohlman.liferay.bfdms.service.persistence.impl;
 import com.liferay.portal.kernel.dao.orm.ArgumentsResolver;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.model.BaseModel;
-import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
 
 import com.sohlman.liferay.bfdms.model.FileDataTable;
 import com.sohlman.liferay.bfdms.model.impl.FileDataImpl;
@@ -17,13 +16,15 @@ import com.sohlman.liferay.bfdms.model.impl.FileDataModelImpl;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.osgi.service.component.annotations.Component;
+
 /**
  * The arguments resolver class for retrieving value from FileData.
  *
  * @author Brian Wing Shun Chan
  * @generated
  */
-@OSGiBeanProperties(
+@Component(
 	property = {
 		"class.name=com.sohlman.liferay.bfdms.model.impl.FileDataImpl",
 		"table.name=bfdms_FileData"

@@ -9,6 +9,7 @@ import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import com.sohlman.liferay.bfdms.model.FileData;
@@ -287,15 +288,6 @@ public class FileDataLocalServiceUtil {
 	}
 
 	/**
-	 * Called from {@link
-	 * com.sohlman.liferay.bfdms.BackupFriendlyFileSystemStore} on
-	 * activation/modification to propagate the configured root directory.
-	 */
-	public static void setRootDir(java.io.File rootDir) {
-		getService().setRootDir(rootDir);
-	}
-
-	/**
 	 * Updates the file data in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
 	 * <p>
@@ -310,13 +302,11 @@ public class FileDataLocalServiceUtil {
 	}
 
 	public static FileDataLocalService getService() {
-		return _service;
+		return _serviceSnapshot.get();
 	}
 
-	public static void setService(FileDataLocalService service) {
-		_service = service;
-	}
-
-	private static volatile FileDataLocalService _service;
+	private static final Snapshot<FileDataLocalService> _serviceSnapshot =
+		new Snapshot<>(
+			FileDataLocalServiceUtil.class, FileDataLocalService.class);
 
 }

@@ -4,5 +4,5 @@ Liferay-Service: true
 
 -sources: true
 Bundle-SymbolicName: ${project.name}
+-dsannotations-options: inherit
 -plugin.service: com.liferay.ant.bnd.service.ServiceAnalyzerPlugin
--plugin.spring: com.liferay.ant.bnd.spring.SpringDependencyAnalyzerPlugin

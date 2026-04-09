@@ -13,14 +13,10 @@
  */
 package com.sohlman.liferay.bfdms;
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.List;
-import java.util.Map;
 
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
 import com.liferay.document.library.kernel.store.Store;
@@ -29,10 +25,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
-import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.kernel.util.PropsUtil;
 import com.sohlman.liferay.bfdms.model.FileData;
 import com.sohlman.liferay.bfdms.model.FileInfo;
 import com.sohlman.liferay.bfdms.service.FileDataLocalService;
@@ -42,7 +34,6 @@ import com.sohlman.liferay.bfdms.service.FileInfoLocalService;
  * @author Sampsa Sohlman
  */
 @Component(
-	configurationPid = "com.sohlman.liferay.bfdms.configuration.BackupFriendlyFileSystemStoreConfiguration",
 	property = {
 			"ct.aware=true",
 			"store.type=com.sohlman.liferay.bfdms.BackupFriendlyFileSystemStore"
@@ -50,28 +41,6 @@ import com.sohlman.liferay.bfdms.service.FileInfoLocalService;
 	service = Store.class
 )
 public class BackupFriendlyFileSystemStore implements Store {
-
-	@Activate
-	@Modified
-	protected void activate(Map<String, Object> properties) {
-		String rootDirPath = GetterUtil.getString(
-			properties.get("rootDir"), "data/document_library");
-
-		if (rootDirPath.isEmpty()) {
-			rootDirPath = "data/document_library";
-		}
-
-		File rootDir = new File(rootDirPath);
-
-		if (!rootDir.isAbsolute()) {
-			rootDir = new File(
-				PropsUtil.get(PropsKeys.LIFERAY_HOME), rootDirPath);
-		}
-
-		FileUtil.mkdirs(rootDir);
-
-		_fileDataLocalService.setRootDir(rootDir);
-	}
 
 	@Override
 	public void addFile(

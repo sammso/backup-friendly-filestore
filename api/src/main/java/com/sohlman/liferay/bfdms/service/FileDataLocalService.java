@@ -17,7 +17,6 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
-import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -25,7 +24,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 
 import com.sohlman.liferay.bfdms.model.FileData;
 
-import java.io.File;
 import java.io.InputStream;
 import java.io.Serializable;
 
@@ -43,9 +41,6 @@ import org.osgi.annotation.versioning.ProviderType;
  * @see FileDataLocalServiceUtil
  * @generated
  */
-@OSGiBeanProperties(
-	property = {"model.class.name=com.sohlman.liferay.bfdms.model.FileData"}
-)
 @ProviderType
 @Transactional(
 	isolation = Isolation.PORTAL,
@@ -259,13 +254,6 @@ public interface FileDataLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException;
-
-	/**
-	 * Called from {@link
-	 * com.sohlman.liferay.bfdms.BackupFriendlyFileSystemStore} on
-	 * activation/modification to propagate the configured root directory.
-	 */
-	public void setRootDir(File rootDir);
 
 	/**
 	 * Updates the file data in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
