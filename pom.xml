@@ -26,6 +26,7 @@
 	<modules>
 		<module>api</module>
 		<module>service</module>
+		<module>deploy</module>
 	</modules>
 	<dependencyManagement>
 		<dependencies>
