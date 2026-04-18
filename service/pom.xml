@@ -24,14 +24,22 @@
 					<hbmFileName>src/main/resources/META-INF/module-hbm.xml</hbmFileName>
 					<implDirName>src/main/java</implDirName>
 					<inputFileName>service.xml</inputFileName>
-					<modelHintsFileName>src/main/resources/META-INF/portlet-model-hints.xml</modelHintsFileName>
+					<!--
+						When modifying service.xml check
+						src/main/resources/META-INF/portlet-model-hints.xml
+					-->
+					<modelHintsFileName>terget/generated-src/main/resources/META-INF/portlet-model-hints.xml</modelHintsFileName>
+					<!--
+						When modifying service.xml check
+						src/main/resources/META-INF/sql
+					-->
+					<sqlDirName>terget/generated-src/main/resources/META-INF/sql</sqlDirName>
+					<sqlFileName>tables.sql</sqlFileName>
 					<osgiModule>true</osgiModule>
 					<propsUtil>com.sohlman.liferay.bfdms.service.util.PropsUtil</propsUtil>
 					<resourcesDirName>src/main/resources</resourcesDirName>
 					<springFileName>src/main/resources/META-INF/spring/module-spring.xml</springFileName>
 					<springNamespaces>beans,osgi</springNamespaces>
-					<sqlDirName>src/main/resources/META-INF/sql</sqlDirName>
-					<sqlFileName>tables.sql</sqlFileName>
 					<testDirName>src/main/test</testDirName>
 				</configuration>
 			</plugin>
@@ -55,6 +63,10 @@
 			<groupId>com.liferay.portal</groupId>
 			<artifactId>release.dxp.api</artifactId>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-jdk18on</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>

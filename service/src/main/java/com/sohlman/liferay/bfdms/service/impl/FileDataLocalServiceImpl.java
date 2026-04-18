@@ -20,8 +20,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +38,7 @@ import com.sohlman.liferay.bfdms.model.FileData;
 import com.sohlman.liferay.bfdms.service.base.FileDataLocalServiceBaseImpl;
 import com.sohlman.liferay.bfdms.util.Util;
 
+import org.bouncycastle.crypto.digests.Blake3Digest;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Modified;
@@ -120,22 +119,20 @@ public class FileDataLocalServiceImpl extends FileDataLocalServiceBaseImpl {
 			byte[] bytes = new byte[1024];
 			long size = 0;
 
-			// TODO: Make fingerprint algorithm configurable.
-
-			MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+			Blake3Digest digest = new Blake3Digest(32);
 
 			while ((read = inputStream.read(bytes)) != -1) {
 				outputStream.write(bytes, 0, read);
 
 				if (read > 0) {
-					messageDigest.update(bytes, 0, read);
+					digest.update(bytes, 0, read);
 					size = size + read;
 				}
 			}
 
-			String fingerprint = "MD5.".concat(
-				Util.bytesToHexString(messageDigest.digest())).concat(".")
-					.concat(String.valueOf(size));
+			byte[] hash = new byte[32];
+			digest.doFinal(hash, 0);
+			String fingerprint = "BLAKE3." + Util.bytesToHexString(hash) + "." + size;
 
 			// There is always a chance that same file is added twice at the same
 			// time and two fingerprints exist. It is an allowed condition. It is
@@ -166,9 +163,6 @@ public class FileDataLocalServiceImpl extends FileDataLocalServiceBaseImpl {
 			throw new RuntimeException(e);
 		}
 		catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-		catch (NoSuchAlgorithmException e) {
 			throw new RuntimeException(e);
 		}
 		finally {

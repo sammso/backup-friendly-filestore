@@ -1,5 +1,17 @@
 <!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.4.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_7_4_0.dtd">
+<!--
+    When modifying service.xml re-running it
 
+	Check differences of modified and generated one
+
+    src/main/resources/META-INF/portlet-model-hints.xml differences to
+    target/generated-src/main/resources/META-INF/portlet-model-hints.xml
+
+    and
+
+    src/main/resources/META-INF/sql to
+    target/generated-src/main/resources/META-INF/sql
+-->
 <service-builder dependency-injector="ds" package-path="com.sohlman.liferay.bfdms">
 	<namespace>bfdms</namespace>
 	<entity name="FileInfo" local-service="true" remote-service="false">
