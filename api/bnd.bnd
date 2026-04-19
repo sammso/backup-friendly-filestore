@@ -4,6 +4,7 @@ Export-Package:\
 	com.sohlman.liferay.bfdms.exception,\
 	com.sohlman.liferay.bfdms.model,\
 	com.sohlman.liferay.bfdms.service,\
-	com.sohlman.liferay.bfdms.service.persistence
+	com.sohlman.liferay.bfdms.service.persistence,\
+	com.sohlman.liferay.bfdms.store
 -includeresource: META-INF/service.xml=../service/service.xml
 -sources: true

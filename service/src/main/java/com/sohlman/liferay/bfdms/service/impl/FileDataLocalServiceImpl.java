@@ -15,152 +15,103 @@ package com.sohlman.liferay.bfdms.service.impl;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StreamUtil;
-import com.sohlman.liferay.bfdms.configuration.BackupFriendlyFileSystemStoreConfiguration;
 import com.sohlman.liferay.bfdms.model.FileData;
 import com.sohlman.liferay.bfdms.service.base.FileDataLocalServiceBaseImpl;
+import com.sohlman.liferay.bfdms.store.BinaryStore;
 import com.sohlman.liferay.bfdms.util.Util;
 
 import org.bouncycastle.crypto.digests.Blake3Digest;
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Modified;
+import org.osgi.service.component.annotations.Reference;
 
 /**
- * The implementation of the file data local service.
- *
- * <p>
- * All custom service methods should be put in this class. Whenever methods are
- * added, rerun ServiceBuilder to copy their definitions into the
- * {@link com.sohlman.liferay.bfdms.service.FileDataLocalService} interface.
- *
- * <p>
- * This is a local service. Methods of this service will not have security
- * checks based on the propagated JAAS credentials because this service can only
- * be accessed from within the same VM.
- * </p>
- *
  * @author Brian Wing Shun Chan
  * @author Sampsa Sohlman
  * @see com.sohlman.liferay.bfdms.service.base.FileDataLocalServiceBaseImpl
  * @see com.sohlman.liferay.bfdms.service.FileDataLocalServiceUtil
  */
 @Component(
-	configurationPid = "com.sohlman.liferay.bfdms.configuration.BackupFriendlyFileSystemStoreConfiguration",
 	property = "model.class.name=com.sohlman.liferay.bfdms.model.FileData",
 	service = AopService.class
 )
 public class FileDataLocalServiceImpl extends FileDataLocalServiceBaseImpl {
 
-	/*
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never reference this interface directly. Always use {@link
-	 * com.sohlman.liferay.bfdms.service.FileDataLocalServiceUtil} to access the
-	 * file data local service.
-	 */
-
-	@Activate
-	@Modified
-	protected void activate(Map<String, Object> properties) {
-		String rootDirPath = GetterUtil.getString(
-			properties.get("rootDir"), "data/document_library");
-
-		if (rootDirPath.isEmpty()) {
-			rootDirPath = "data/document_library";
-		}
-
-		File rootDir = new File(rootDirPath);
-
-		if (!rootDir.isAbsolute()) {
-			rootDir = new File(
-				PropsUtil.get(PropsKeys.LIFERAY_HOME), rootDirPath);
-		}
-
-		FileUtil.mkdirs(rootDir);
-
-		_rootDir = rootDir;
-	}
-
 	public FileData addFileData(long companyId, InputStream inputStream) {
+		File tempFile = null;
 		OutputStream outputStream = null;
 
-		File file = null;
-
 		try {
-			FileData fileData = fileDataPersistence.create(0);
-
-			fileData.setCompanyId(companyId);
-			fileData.setName(Util.generateUniqName());
-			fileData.setCreateDate(new Date());
-
-			file = getFile(fileData);
-
-			outputStream = new FileOutputStream(file);
+			tempFile = File.createTempFile("bfdms", null);
+			outputStream = new FileOutputStream(tempFile);
 
 			int read = 0;
-			byte[] bytes = new byte[1024];
+			byte[] bytes = new byte[8192];
 			long size = 0;
 
 			Blake3Digest digest = new Blake3Digest(32);
 
 			while ((read = inputStream.read(bytes)) != -1) {
 				outputStream.write(bytes, 0, read);
-
-				if (read > 0) {
-					digest.update(bytes, 0, read);
-					size = size + read;
-				}
+				digest.update(bytes, 0, read);
+				size += read;
 			}
+
+			StreamUtil.cleanUp(false, outputStream);
+			outputStream = null;
 
 			byte[] hash = new byte[32];
 			digest.doFinal(hash, 0);
-			String fingerprint = "BLAKE3." + Util.bytesToHexString(hash) + "." + size;
+			String fingerprint =
+				"BLAKE3." + Util.bytesToHexString(hash) + "." + size;
 
-			// There is always a chance that same file is added twice at the same
-			// time and two fingerprints exist. It is an allowed condition. It is
-			// better to have two same files on the filesystem than to do a file
-			// name change, which would cause problems to the backup procedure.
+			// There is always a chance that the same file is added twice at the
+			// same time and two fingerprints exist. It is an allowed condition.
+			// It is better to have two copies than to coordinate a rename, which
+			// would cause problems for the backup procedure.
 
 			List<FileData> list = fileDataPersistence.findByFingerPrint(
 				fingerprint);
 
-			if (list.isEmpty()) {
-				long fileDataId = counterLocalService.increment(
-					FileData.class.getName());
-
-				fileData.setFileDataId(fileDataId);
-				fileData.setFingerprint(fingerprint);
-				fileData = updateFileData(fileData);
-
-				// Setting file to null prevents cleanup in finally block
-				file = null;
-
-				return fileData;
-			}
-			else {
+			if (!list.isEmpty()) {
 				return list.get(0);
 			}
-		}
-		catch (FileNotFoundException e) {
-			throw new RuntimeException(e);
+
+			String name = Util.generateUniqName();
+			String path = _toStoragePath(name);
+
+			long fileDataId = counterLocalService.increment(
+				FileData.class.getName());
+
+			FileData fileData = fileDataPersistence.create(fileDataId);
+
+			fileData.setCompanyId(companyId);
+			fileData.setName(name);
+			fileData.setCreateDate(new Date());
+			fileData.setSize(size);
+			fileData.setFingerprint(fingerprint);
+
+			try (InputStream tempStream = new FileInputStream(tempFile)) {
+				_binaryStore.store(companyId, path, tempStream);
+			}
+
+			fileData = updateFileData(fileData);
+
+			tempFile.delete();
+			tempFile = null;
+
+			return fileData;
 		}
 		catch (IOException e) {
 			throw new RuntimeException(e);
@@ -168,8 +119,8 @@ public class FileDataLocalServiceImpl extends FileDataLocalServiceBaseImpl {
 		finally {
 			StreamUtil.cleanUp(false, outputStream);
 
-			if (file != null) {
-				deleteFile(companyId, file);
+			if (tempFile != null) {
+				tempFile.delete();
 			}
 		}
 	}
@@ -177,101 +128,27 @@ public class FileDataLocalServiceImpl extends FileDataLocalServiceBaseImpl {
 	public InputStream getFileInputStream(long fileDataId)
 		throws PortalException {
 
-		FileData fileData = getFileData(fileDataId);
-
-		return getFileInputStream(fileData);
+		return getFileInputStream(getFileData(fileDataId));
 	}
 
 	public InputStream getFileInputStream(FileData fileData)
 		throws PortalException {
 
 		try {
-			File file = getFile(fileData);
-
-			return new FileInputStream(file);
+			return _binaryStore.retrieve(
+				fileData.getCompanyId(), _toStoragePath(fileData.getName()));
 		}
-		catch (FileNotFoundException e) {
-			throw new RuntimeException(e);
+		catch (IOException e) {
+			throw new PortalException(e);
 		}
 	}
 
-	protected File getFile(FileData fileData) {
-		String path1 = fileData.getName().substring(0, 2);
-		String path2 = fileData.getName().substring(2, 4);
-
-		File root = new File(getRootDir(fileData.getCompanyId()), path1);
-
-		if (!root.exists()) {
-			root.mkdirs();
-		}
-
-		root = new File(root, path2);
-
-		if (!root.exists()) {
-			root.mkdirs();
-		}
-
-		return new File(root, fileData.getName());
+	private String _toStoragePath(String name) {
+		return name.substring(0, 2) + "/" + name.substring(2, 4) + "/" + name;
 	}
 
-	protected File getRootDir(long companyId) {
-		if (_rootDir != null) {
-			return _rootDir;
-		}
-
-		return _initDefaultRootDir();
-	}
-
-	private synchronized File _initDefaultRootDir() {
-		if (_rootDir != null) {
-			return _rootDir;
-		}
-
-		String rootDirPath = "data/document_library";
-
-		File rootDir = new File(rootDirPath);
-
-		if (!rootDir.isAbsolute()) {
-			rootDir = new File(PropsUtil.get(PropsKeys.LIFERAY_HOME), rootDirPath);
-		}
-
-		FileUtil.mkdirs(rootDir);
-
-		_rootDir = rootDir;
-
-		return _rootDir;
-	}
-
-	protected void deleteFile(long companyId, File file) {
-		if (file.equals(getRootDir(companyId))) {
-			return;
-		}
-
-		if (file.isDirectory()) {
-			if (file.list().length <= 0) {
-				if (!file.delete()) {
-					_log.error(
-						"Could not delete directory " + file.getAbsolutePath());
-
-					return;
-				}
-			}
-			else {
-				return;
-			}
-		}
-		else {
-			if (!file.delete()) {
-				_log.error("Could not delete file " + file.getAbsolutePath());
-
-				return;
-			}
-		}
-
-		deleteFile(companyId, file.getParentFile());
-	}
-
-	private volatile File _rootDir;
+	@Reference
+	private volatile BinaryStore _binaryStore;
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		FileDataLocalServiceImpl.class);

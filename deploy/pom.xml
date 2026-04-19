@@ -25,6 +25,12 @@
 			<version>${project.version}</version>
 			<type>jar</type>
 		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>com.sohlman.liferay.bfdms.store.filesystem</artifactId>
+			<version>${project.version}</version>
+			<type>jar</type>
+		</dependency>
 	</dependencies>
 	<build>
 		<resources>
