@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.util.StreamUtil;
 import com.sohlman.liferay.bfdms.model.FileData;
 import com.sohlman.liferay.bfdms.service.base.FileDataLocalServiceBaseImpl;
 import com.sohlman.liferay.bfdms.store.BinaryStore;
+import com.sohlman.liferay.bfdms.store.BinaryStoreCache;
 import com.sohlman.liferay.bfdms.util.Util;
 
 import org.bouncycastle.crypto.digests.Blake3Digest;
@@ -134,9 +135,18 @@ public class FileDataLocalServiceImpl extends FileDataLocalServiceBaseImpl {
 	public InputStream getFileInputStream(FileData fileData)
 		throws PortalException {
 
+		String path = _toStoragePath(fileData.getName());
+		long companyId = fileData.getCompanyId();
+
 		try {
-			return _binaryStore.retrieve(
-				fileData.getCompanyId(), _toStoragePath(fileData.getName()));
+			InputStream cached = _binaryStoreCache.get(companyId, path);
+
+			if (cached != null) {
+				return cached;
+			}
+
+			return _binaryStoreCache.wrap(
+				companyId, path, _binaryStore.retrieve(companyId, path));
 		}
 		catch (IOException e) {
 			throw new PortalException(e);
@@ -146,6 +156,9 @@ public class FileDataLocalServiceImpl extends FileDataLocalServiceBaseImpl {
 	private String _toStoragePath(String name) {
 		return name.substring(0, 2) + "/" + name.substring(2, 4) + "/" + name;
 	}
+
+	@Reference
+	private volatile BinaryStoreCache _binaryStoreCache;
 
 	@Reference
 	private volatile BinaryStore _binaryStore;

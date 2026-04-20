@@ -6,6 +6,9 @@ Liferay-Service: true
 Bundle-SymbolicName: ${project.name}
 -dsannotations-options: inherit
 -plugin.service: com.liferay.ant.bnd.service.ServiceAnalyzerPlugin
+-metatype: *
+-plugin.metatype: com.liferay.ant.bnd.metatype.MetatypePlugin
+-plugin.resourcebundle: com.liferay.ant.bnd.resource.bundle.ResourceBundleLoaderAnalyzerPlugin
 
 -includeresource: @bcprov-jdk18on-*.jar!/org/bouncycastle/**
 Private-Package: org.bouncycastle.*

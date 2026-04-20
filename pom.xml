@@ -27,6 +27,7 @@
 		<module>api</module>
 		<module>service</module>
 		<module>store-filesystem</module>
+		<module>cache-proxy</module>
 		<module>deploy</module>
 	</modules>
 	<dependencyManagement>
