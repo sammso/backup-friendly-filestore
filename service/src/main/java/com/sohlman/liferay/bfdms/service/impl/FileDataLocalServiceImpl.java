@@ -28,9 +28,12 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StreamUtil;
 import com.sohlman.liferay.bfdms.model.FileData;
+import com.sohlman.liferay.bfdms.model.FileInfo;
 import com.sohlman.liferay.bfdms.service.base.FileDataLocalServiceBaseImpl;
 import com.sohlman.liferay.bfdms.store.BinaryStore;
 import com.sohlman.liferay.bfdms.store.BinaryStoreCache;
+import com.sohlman.liferay.bfdms.store.FolderFile;
+import com.sohlman.liferay.bfdms.store.impl.StorageNamingStrategyRegistry;
 import com.sohlman.liferay.bfdms.util.Util;
 
 import org.bouncycastle.crypto.digests.Blake3Digest;
@@ -49,7 +52,9 @@ import org.osgi.service.component.annotations.Reference;
 )
 public class FileDataLocalServiceImpl extends FileDataLocalServiceBaseImpl {
 
-	public FileData addFileData(long companyId, InputStream inputStream) {
+	public FileData addFileData(FileInfo fileInfo, InputStream inputStream) {
+		long companyId = fileInfo.getCompanyId();
+
 		File tempFile = null;
 		OutputStream outputStream = null;
 
@@ -88,9 +93,8 @@ public class FileDataLocalServiceImpl extends FileDataLocalServiceBaseImpl {
 			if (!list.isEmpty()) {
 				return list.get(0);
 			}
-
-			String name = Util.generateUniqName();
-			String path = _toStoragePath(name);
+			FolderFile folderFile = _namingStrategyRegistry.generate(
+				fileInfo, fingerprint);
 
 			long fileDataId = counterLocalService.increment(
 				FileData.class.getName());
@@ -98,13 +102,13 @@ public class FileDataLocalServiceImpl extends FileDataLocalServiceBaseImpl {
 			FileData fileData = fileDataPersistence.create(fileDataId);
 
 			fileData.setCompanyId(companyId);
-			fileData.setName(name);
+			fileData.setName(folderFile.getName());
 			fileData.setCreateDate(new Date());
 			fileData.setSize(size);
 			fileData.setFingerprint(fingerprint);
 
 			try (InputStream tempStream = new FileInputStream(tempFile)) {
-				_binaryStore.store(companyId, path, tempStream);
+				_binaryStore.store(companyId, folderFile.getPath(), tempStream);
 			}
 
 			fileData = updateFileData(fileData);
@@ -135,7 +139,9 @@ public class FileDataLocalServiceImpl extends FileDataLocalServiceBaseImpl {
 	public InputStream getFileInputStream(FileData fileData)
 		throws PortalException {
 
-		String path = _toStoragePath(fileData.getName());
+		String path = _namingStrategyRegistry.resolvePath(
+			fileData.getName(), fileData.getFingerprint());
+
 		long companyId = fileData.getCompanyId();
 
 		try {
@@ -153,15 +159,14 @@ public class FileDataLocalServiceImpl extends FileDataLocalServiceBaseImpl {
 		}
 	}
 
-	private String _toStoragePath(String name) {
-		return name.substring(0, 2) + "/" + name.substring(2, 4) + "/" + name;
-	}
-
 	@Reference
 	private volatile BinaryStoreCache _binaryStoreCache;
 
 	@Reference
 	private volatile BinaryStore _binaryStore;
+
+	@Reference
+	private volatile StorageNamingStrategyRegistry _namingStrategyRegistry;
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		FileDataLocalServiceImpl.class);

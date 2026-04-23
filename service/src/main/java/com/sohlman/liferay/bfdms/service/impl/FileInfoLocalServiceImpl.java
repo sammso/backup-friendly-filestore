@@ -94,7 +94,7 @@ public class FileInfoLocalServiceImpl extends FileInfoLocalServiceBaseImpl {
 			throws SystemException {
 
 		FileData fileData = _fileDataLocalService.addFileData(
-			fileInfo.getCompanyId(), inputStream);
+			fileInfo, inputStream);
 
 		fileInfo.setFileDataId(fileData.getFileDataId());
 	}
@@ -120,7 +120,7 @@ public class FileInfoLocalServiceImpl extends FileInfoLocalServiceBaseImpl {
 		FileInfo fileInfo = fileInfoPersistence.findByC_R_P_V(
 			companyId, repositoryId, path, version);
 
-		fileInfoPersistence.update(fileInfo);
+		fileInfoPersistence.remove(fileInfo);
 	}
 
 	@Override

@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import com.sohlman.liferay.bfdms.model.FileData;
+import com.sohlman.liferay.bfdms.model.FileInfo;
 
 import java.io.InputStream;
 import java.io.Serializable;
@@ -68,7 +69,7 @@ public interface FileDataLocalService
 	@Indexable(type = IndexableType.REINDEX)
 	public FileData addFileData(FileData fileData);
 
-	public FileData addFileData(long companyId, InputStream inputStream);
+	public FileData addFileData(FileInfo fileInfo, InputStream inputStream);
 
 	/**
 	 * Creates a new file data with the primary key. Does not add the file data to the database.

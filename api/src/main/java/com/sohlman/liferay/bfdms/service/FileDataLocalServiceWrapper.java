@@ -47,9 +47,10 @@ public class FileDataLocalServiceWrapper
 
 	@Override
 	public com.sohlman.liferay.bfdms.model.FileData addFileData(
-		long companyId, java.io.InputStream inputStream) {
+		com.sohlman.liferay.bfdms.model.FileInfo fileInfo,
+		java.io.InputStream inputStream) {
 
-		return _fileDataLocalService.addFileData(companyId, inputStream);
+		return _fileDataLocalService.addFileData(fileInfo, inputStream);
 	}
 
 	/**

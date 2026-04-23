@@ -54,9 +54,10 @@ public class FileDataLocalServiceUtil {
 	}
 
 	public static FileData addFileData(
-		long companyId, InputStream inputStream) {
+		com.sohlman.liferay.bfdms.model.FileInfo fileInfo,
+		InputStream inputStream) {
 
-		return getService().addFileData(companyId, inputStream);
+		return getService().addFileData(fileInfo, inputStream);
 	}
 
 	/**
