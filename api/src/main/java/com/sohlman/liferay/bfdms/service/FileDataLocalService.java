@@ -231,11 +231,7 @@ public interface FileDataLocalService
 	public int getFileDatasCount();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public InputStream getFileInputStream(FileData fileData)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public InputStream getFileInputStream(long fileDataId)
+	public InputStream getFileInputStream(FileInfo fileInfo)
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

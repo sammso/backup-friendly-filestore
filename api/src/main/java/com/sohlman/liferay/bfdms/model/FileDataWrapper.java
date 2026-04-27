@@ -36,7 +36,8 @@ public class FileDataWrapper
 		attributes.put("fileDataId", getFileDataId());
 		attributes.put("companyId", getCompanyId());
 		attributes.put("createDate", getCreateDate());
-		attributes.put("name", getName());
+		attributes.put("dataFolder", getDataFolder());
+		attributes.put("dataName", getDataName());
 		attributes.put("size", getSize());
 		attributes.put("fingerprint", getFingerprint());
 
@@ -63,10 +64,16 @@ public class FileDataWrapper
 			setCreateDate(createDate);
 		}
 
-		String name = (String)attributes.get("name");
+		String dataFolder = (String)attributes.get("dataFolder");
 
-		if (name != null) {
-			setName(name);
+		if (dataFolder != null) {
+			setDataFolder(dataFolder);
+		}
+
+		String dataName = (String)attributes.get("dataName");
+
+		if (dataName != null) {
+			setDataName(dataName);
 		}
 
 		Long size = (Long)attributes.get("size");
@@ -108,6 +115,26 @@ public class FileDataWrapper
 	}
 
 	/**
+	 * Returns the data folder of this file data.
+	 *
+	 * @return the data folder of this file data
+	 */
+	@Override
+	public String getDataFolder() {
+		return model.getDataFolder();
+	}
+
+	/**
+	 * Returns the data name of this file data.
+	 *
+	 * @return the data name of this file data
+	 */
+	@Override
+	public String getDataName() {
+		return model.getDataName();
+	}
+
+	/**
 	 * Returns the file data ID of this file data.
 	 *
 	 * @return the file data ID of this file data
@@ -127,14 +154,9 @@ public class FileDataWrapper
 		return model.getFingerprint();
 	}
 
-	/**
-	 * Returns the name of this file data.
-	 *
-	 * @return the name of this file data
-	 */
 	@Override
-	public String getName() {
-		return model.getName();
+	public com.sohlman.liferay.bfdms.store.FolderFile getFolderFile() {
+		return model.getFolderFile();
 	}
 
 	/**
@@ -183,6 +205,26 @@ public class FileDataWrapper
 	}
 
 	/**
+	 * Sets the data folder of this file data.
+	 *
+	 * @param dataFolder the data folder of this file data
+	 */
+	@Override
+	public void setDataFolder(String dataFolder) {
+		model.setDataFolder(dataFolder);
+	}
+
+	/**
+	 * Sets the data name of this file data.
+	 *
+	 * @param dataName the data name of this file data
+	 */
+	@Override
+	public void setDataName(String dataName) {
+		model.setDataName(dataName);
+	}
+
+	/**
 	 * Sets the file data ID of this file data.
 	 *
 	 * @param fileDataId the file data ID of this file data
@@ -202,14 +244,11 @@ public class FileDataWrapper
 		model.setFingerprint(fingerprint);
 	}
 
-	/**
-	 * Sets the name of this file data.
-	 *
-	 * @param name the name of this file data
-	 */
 	@Override
-	public void setName(String name) {
-		model.setName(name);
+	public void setFolderFile(
+		com.sohlman.liferay.bfdms.store.FolderFile folderFile) {
+
+		model.setFolderFile(folderFile);
 	}
 
 	/**

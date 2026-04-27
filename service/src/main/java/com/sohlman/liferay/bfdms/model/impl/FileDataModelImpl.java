@@ -58,8 +58,9 @@ public class FileDataModelImpl
 
 	public static final Object[][] TABLE_COLUMNS = {
 		{"fileDataId", Types.BIGINT}, {"companyId", Types.BIGINT},
-		{"createDate", Types.TIMESTAMP}, {"name", Types.VARCHAR},
-		{"size_", Types.BIGINT}, {"fingerprint", Types.VARCHAR}
+		{"createDate", Types.TIMESTAMP}, {"dataFolder", Types.VARCHAR},
+		{"dataName", Types.VARCHAR}, {"size_", Types.BIGINT},
+		{"fingerprint", Types.VARCHAR}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -69,13 +70,14 @@ public class FileDataModelImpl
 		TABLE_COLUMNS_MAP.put("fileDataId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
-		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("dataFolder", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("dataName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("size_", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("fingerprint", Types.VARCHAR);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table bfdms_FileData (fileDataId LONG not null primary key,companyId LONG,createDate DATE null,name VARCHAR(75) null,size_ LONG,fingerprint VARCHAR(75) null)";
+		"create table bfdms_FileData (fileDataId LONG not null primary key,companyId LONG,createDate DATE null,dataFolder VARCHAR(75) null,dataName VARCHAR(75) null,size_ LONG,fingerprint VARCHAR(75) null)";
 
 	public static final String TABLE_SQL_DROP = "drop table bfdms_FileData";
 
@@ -98,17 +100,11 @@ public class FileDataModelImpl
 	public static final long FINGERPRINT_COLUMN_BITMASK = 1L;
 
 	/**
-	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
-	 */
-	@Deprecated
-	public static final long NAME_COLUMN_BITMASK = 2L;
-
-	/**
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
 	 *		#getColumnBitmask(String)}
 	 */
 	@Deprecated
-	public static final long FILEDATAID_COLUMN_BITMASK = 4L;
+	public static final long FILEDATAID_COLUMN_BITMASK = 2L;
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
@@ -220,7 +216,8 @@ public class FileDataModelImpl
 			attributeGetterFunctions.put("fileDataId", FileData::getFileDataId);
 			attributeGetterFunctions.put("companyId", FileData::getCompanyId);
 			attributeGetterFunctions.put("createDate", FileData::getCreateDate);
-			attributeGetterFunctions.put("name", FileData::getName);
+			attributeGetterFunctions.put("dataFolder", FileData::getDataFolder);
+			attributeGetterFunctions.put("dataName", FileData::getDataName);
 			attributeGetterFunctions.put("size", FileData::getSize);
 			attributeGetterFunctions.put(
 				"fingerprint", FileData::getFingerprint);
@@ -250,7 +247,11 @@ public class FileDataModelImpl
 				"createDate",
 				(BiConsumer<FileData, Date>)FileData::setCreateDate);
 			attributeSetterBiConsumers.put(
-				"name", (BiConsumer<FileData, String>)FileData::setName);
+				"dataFolder",
+				(BiConsumer<FileData, String>)FileData::setDataFolder);
+			attributeSetterBiConsumers.put(
+				"dataName",
+				(BiConsumer<FileData, String>)FileData::setDataName);
 			attributeSetterBiConsumers.put(
 				"size", (BiConsumer<FileData, Long>)FileData::setSize);
 			attributeSetterBiConsumers.put(
@@ -306,31 +307,41 @@ public class FileDataModelImpl
 	}
 
 	@Override
-	public String getName() {
-		if (_name == null) {
+	public String getDataFolder() {
+		if (_dataFolder == null) {
 			return "";
 		}
 		else {
-			return _name;
+			return _dataFolder;
 		}
 	}
 
 	@Override
-	public void setName(String name) {
+	public void setDataFolder(String dataFolder) {
 		if (_columnOriginalValues == Collections.EMPTY_MAP) {
 			_setColumnOriginalValues();
 		}
 
-		_name = name;
+		_dataFolder = dataFolder;
 	}
 
-	/**
-	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
-	 *             #getColumnOriginalValue(String)}
-	 */
-	@Deprecated
-	public String getOriginalName() {
-		return getColumnOriginalValue("name");
+	@Override
+	public String getDataName() {
+		if (_dataName == null) {
+			return "";
+		}
+		else {
+			return _dataName;
+		}
+	}
+
+	@Override
+	public void setDataName(String dataName) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_dataName = dataName;
 	}
 
 	@Override
@@ -434,7 +445,8 @@ public class FileDataModelImpl
 		fileDataImpl.setFileDataId(getFileDataId());
 		fileDataImpl.setCompanyId(getCompanyId());
 		fileDataImpl.setCreateDate(getCreateDate());
-		fileDataImpl.setName(getName());
+		fileDataImpl.setDataFolder(getDataFolder());
+		fileDataImpl.setDataName(getDataName());
 		fileDataImpl.setSize(getSize());
 		fileDataImpl.setFingerprint(getFingerprint());
 
@@ -453,7 +465,10 @@ public class FileDataModelImpl
 			this.<Long>getColumnOriginalValue("companyId"));
 		fileDataImpl.setCreateDate(
 			this.<Date>getColumnOriginalValue("createDate"));
-		fileDataImpl.setName(this.<String>getColumnOriginalValue("name"));
+		fileDataImpl.setDataFolder(
+			this.<String>getColumnOriginalValue("dataFolder"));
+		fileDataImpl.setDataName(
+			this.<String>getColumnOriginalValue("dataName"));
 		fileDataImpl.setSize(this.<Long>getColumnOriginalValue("size_"));
 		fileDataImpl.setFingerprint(
 			this.<String>getColumnOriginalValue("fingerprint"));
@@ -545,12 +560,20 @@ public class FileDataModelImpl
 			fileDataCacheModel.createDate = Long.MIN_VALUE;
 		}
 
-		fileDataCacheModel.name = getName();
+		fileDataCacheModel.dataFolder = getDataFolder();
 
-		String name = fileDataCacheModel.name;
+		String dataFolder = fileDataCacheModel.dataFolder;
 
-		if ((name != null) && (name.length() == 0)) {
-			fileDataCacheModel.name = null;
+		if ((dataFolder != null) && (dataFolder.length() == 0)) {
+			fileDataCacheModel.dataFolder = null;
+		}
+
+		fileDataCacheModel.dataName = getDataName();
+
+		String dataName = fileDataCacheModel.dataName;
+
+		if ((dataName != null) && (dataName.length() == 0)) {
+			fileDataCacheModel.dataName = null;
 		}
 
 		fileDataCacheModel.size = getSize();
@@ -627,7 +650,8 @@ public class FileDataModelImpl
 	private long _fileDataId;
 	private long _companyId;
 	private Date _createDate;
-	private String _name;
+	private String _dataFolder;
+	private String _dataName;
 	private long _size;
 	private String _fingerprint;
 
@@ -664,7 +688,8 @@ public class FileDataModelImpl
 		_columnOriginalValues.put("fileDataId", _fileDataId);
 		_columnOriginalValues.put("companyId", _companyId);
 		_columnOriginalValues.put("createDate", _createDate);
-		_columnOriginalValues.put("name", _name);
+		_columnOriginalValues.put("dataFolder", _dataFolder);
+		_columnOriginalValues.put("dataName", _dataName);
 		_columnOriginalValues.put("size_", _size);
 		_columnOriginalValues.put("fingerprint", _fingerprint);
 	}
@@ -696,11 +721,13 @@ public class FileDataModelImpl
 
 		columnBitmasks.put("createDate", 4L);
 
-		columnBitmasks.put("name", 8L);
+		columnBitmasks.put("dataFolder", 8L);
 
-		columnBitmasks.put("size_", 16L);
+		columnBitmasks.put("dataName", 16L);
 
-		columnBitmasks.put("fingerprint", 32L);
+		columnBitmasks.put("size_", 32L);
+
+		columnBitmasks.put("fingerprint", 64L);
 
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}

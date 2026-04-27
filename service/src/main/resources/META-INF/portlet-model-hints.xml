@@ -5,7 +5,10 @@
 		<field name="fileDataId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="createDate" type="Date" />
-		<field name="name" type="String">
+		<field name="dataFolder" type="String">
+			<hint name="max-length">255</hint>
+		</field>
+		<field name="dataName" type="String">
 			<hint name="max-length">255</hint>
 		</field>
 		<field name="size" type="long" />

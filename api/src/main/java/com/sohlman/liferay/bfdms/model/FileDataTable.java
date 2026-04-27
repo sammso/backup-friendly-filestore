@@ -29,8 +29,10 @@ public class FileDataTable extends BaseTable<FileDataTable> {
 		"companyId", Long.class, Types.BIGINT, Column.FLAG_DEFAULT);
 	public final Column<FileDataTable, Date> createDate = createColumn(
 		"createDate", Date.class, Types.TIMESTAMP, Column.FLAG_DEFAULT);
-	public final Column<FileDataTable, String> name = createColumn(
-		"name", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
+	public final Column<FileDataTable, String> dataFolder = createColumn(
+		"dataFolder", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
+	public final Column<FileDataTable, String> dataName = createColumn(
+		"dataName", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
 	public final Column<FileDataTable, Long> size = createColumn(
 		"size_", Long.class, Types.BIGINT, Column.FLAG_DEFAULT);
 	public final Column<FileDataTable, String> fingerprint = createColumn(

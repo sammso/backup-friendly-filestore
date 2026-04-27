@@ -69,14 +69,12 @@
 		<column name="fileDataId" type="long" primary="true" />
 		<column name="companyId" type="long" />
 		<column name="createDate" type="Date" />
-		<column name="name" type="String" />
+		<column name="dataFolder" type="String" />
+		<column name="dataName" type="String" />
 		<column name="size" type="long" />
 		<column name="fingerprint" type="String" />
 		<finder name="FingerPrint" return-type="Collection" unique="false">
 			<finder-column name="fingerprint" />
-		</finder>
-		<finder name="Name" return-type="FileData" unique="true">
-			<finder-column name="name" />
 		</finder>
 	</entity>
 </service-builder>

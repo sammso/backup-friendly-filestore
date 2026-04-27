@@ -220,8 +220,7 @@ public class FileInfoLocalServiceImpl extends FileInfoLocalServiceBaseImpl {
 
 		FileInfo fileInfo = getFileInfo(companyId, repositoryId, fileName);
 		
-		return _fileDataLocalService.getFileInputStream(
-			fileInfo.getFileDataId());
+		return _fileDataLocalService.getFileInputStream(fileInfo);
 	}
 
 	@Override
@@ -232,8 +231,7 @@ public class FileInfoLocalServiceImpl extends FileInfoLocalServiceBaseImpl {
 		FileInfo fileInfo = getFileInfo(
 			companyId, repositoryId, fileName, version);
 		
-		return _fileDataLocalService.getFileInputStream(
-			fileInfo.getFileDataId());
+		return _fileDataLocalService.getFileInputStream(fileInfo);
 	}
 
 	@Override

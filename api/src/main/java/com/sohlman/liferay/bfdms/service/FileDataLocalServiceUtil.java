@@ -251,16 +251,11 @@ public class FileDataLocalServiceUtil {
 		return getService().getFileDatasCount();
 	}
 
-	public static InputStream getFileInputStream(FileData fileData)
+	public static InputStream getFileInputStream(
+			com.sohlman.liferay.bfdms.model.FileInfo fileInfo)
 		throws PortalException {
 
-		return getService().getFileInputStream(fileData);
-	}
-
-	public static InputStream getFileInputStream(long fileDataId)
-		throws PortalException {
-
-		return getService().getFileInputStream(fileDataId);
+		return getService().getFileInputStream(fileInfo);
 	}
 
 	public static

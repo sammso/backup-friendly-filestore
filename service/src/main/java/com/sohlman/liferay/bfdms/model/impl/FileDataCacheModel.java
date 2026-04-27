@@ -53,7 +53,7 @@ public class FileDataCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(13);
+		StringBundler sb = new StringBundler(15);
 
 		sb.append("{fileDataId=");
 		sb.append(fileDataId);
@@ -61,8 +61,10 @@ public class FileDataCacheModel
 		sb.append(companyId);
 		sb.append(", createDate=");
 		sb.append(createDate);
-		sb.append(", name=");
-		sb.append(name);
+		sb.append(", dataFolder=");
+		sb.append(dataFolder);
+		sb.append(", dataName=");
+		sb.append(dataName);
 		sb.append(", size=");
 		sb.append(size);
 		sb.append(", fingerprint=");
@@ -86,11 +88,18 @@ public class FileDataCacheModel
 			fileDataImpl.setCreateDate(new Date(createDate));
 		}
 
-		if (name == null) {
-			fileDataImpl.setName("");
+		if (dataFolder == null) {
+			fileDataImpl.setDataFolder("");
 		}
 		else {
-			fileDataImpl.setName(name);
+			fileDataImpl.setDataFolder(dataFolder);
+		}
+
+		if (dataName == null) {
+			fileDataImpl.setDataName("");
+		}
+		else {
+			fileDataImpl.setDataName(dataName);
 		}
 
 		fileDataImpl.setSize(size);
@@ -113,7 +122,8 @@ public class FileDataCacheModel
 
 		companyId = objectInput.readLong();
 		createDate = objectInput.readLong();
-		name = objectInput.readUTF();
+		dataFolder = objectInput.readUTF();
+		dataName = objectInput.readUTF();
 
 		size = objectInput.readLong();
 		fingerprint = objectInput.readUTF();
@@ -126,11 +136,18 @@ public class FileDataCacheModel
 		objectOutput.writeLong(companyId);
 		objectOutput.writeLong(createDate);
 
-		if (name == null) {
+		if (dataFolder == null) {
 			objectOutput.writeUTF("");
 		}
 		else {
-			objectOutput.writeUTF(name);
+			objectOutput.writeUTF(dataFolder);
+		}
+
+		if (dataName == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(dataName);
 		}
 
 		objectOutput.writeLong(size);
@@ -146,7 +163,8 @@ public class FileDataCacheModel
 	public long fileDataId;
 	public long companyId;
 	public long createDate;
-	public String name;
+	public String dataFolder;
+	public String dataName;
 	public long size;
 	public String fingerprint;
 

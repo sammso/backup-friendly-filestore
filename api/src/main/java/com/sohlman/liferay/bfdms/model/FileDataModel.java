@@ -92,19 +92,34 @@ public interface FileDataModel extends BaseModel<FileData>, ShardedModel {
 	public void setCreateDate(Date createDate);
 
 	/**
-	 * Returns the name of this file data.
+	 * Returns the data folder of this file data.
 	 *
-	 * @return the name of this file data
+	 * @return the data folder of this file data
 	 */
 	@AutoEscape
-	public String getName();
+	public String getDataFolder();
 
 	/**
-	 * Sets the name of this file data.
+	 * Sets the data folder of this file data.
 	 *
-	 * @param name the name of this file data
+	 * @param dataFolder the data folder of this file data
 	 */
-	public void setName(String name);
+	public void setDataFolder(String dataFolder);
+
+	/**
+	 * Returns the data name of this file data.
+	 *
+	 * @return the data name of this file data
+	 */
+	@AutoEscape
+	public String getDataName();
+
+	/**
+	 * Sets the data name of this file data.
+	 *
+	 * @param dataName the data name of this file data
+	 */
+	public void setDataName(String dataName);
 
 	/**
 	 * Returns the size of this file data.

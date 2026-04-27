@@ -47,4 +47,9 @@ public interface FileData extends FileDataModel, PersistedModel {
 
 		};
 
+	public com.sohlman.liferay.bfdms.store.FolderFile getFolderFile();
+
+	public void setFolderFile(
+		com.sohlman.liferay.bfdms.store.FolderFile folderFile);
+
 }

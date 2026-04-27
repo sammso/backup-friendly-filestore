@@ -33,7 +33,7 @@
 						When modifying service.xml check
 						src/main/resources/META-INF/sql
 					-->
-					<sqlDirName>terget/generated-src/main/resources/META-INF/sql</sqlDirName>
+					<sqlDirName>target/generated-src/main/resources/META-INF/sql</sqlDirName>
 					<sqlFileName>tables.sql</sqlFileName>
 					<osgiModule>true</osgiModule>
 					<propsUtil>com.sohlman.liferay.bfdms.service.util.PropsUtil</propsUtil>

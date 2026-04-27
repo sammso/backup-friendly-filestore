@@ -91,8 +91,20 @@ public class FileDataLocalServiceImpl extends FileDataLocalServiceBaseImpl {
 				fingerprint);
 
 			if (!list.isEmpty()) {
-				return list.get(0);
+				FileData fileData = list.get(0);
+				if (_log.isInfoEnabled()) {
+					_log.info(
+							String.format(
+									"Store: type: DeduplicationHite fingerPrint: %s, storePathWithName: %s, fileInfo: %s, deduplicationAmout: %d",
+									fingerprint, fileData.getFolderFile().getPath(), String.valueOf(fileInfo), list.size()));
+					_log.info(String.format(
+						"DeduplicationHit: fingerprint=%s, fileInfo: %s, size: %d",
+							fingerprint, fileInfo, list.size()));
+				}
+
+				return fileData;
 			}
+
 			FolderFile folderFile = _namingStrategyRegistry.generate(
 				fileInfo, fingerprint);
 
@@ -101,8 +113,8 @@ public class FileDataLocalServiceImpl extends FileDataLocalServiceBaseImpl {
 
 			FileData fileData = fileDataPersistence.create(fileDataId);
 
-			fileData.setCompanyId(companyId);
-			fileData.setName(folderFile.getName());
+			fileData.setCompanyId(companyId);;
+			fileData.setFolderFile(folderFile);
 			fileData.setCreateDate(new Date());
 			fileData.setSize(size);
 			fileData.setFingerprint(fingerprint);
@@ -112,6 +124,14 @@ public class FileDataLocalServiceImpl extends FileDataLocalServiceBaseImpl {
 			}
 
 			fileData = updateFileData(fileData);
+
+			if (_log.isInfoEnabled()) {
+				_log.info(
+					String.format(
+							"Store: fingerPrint: %s, storePathWithName: %s, fileInfo: %s",
+								fingerprint,
+								folderFile.getPath(), fileInfo));
+			}
 
 			tempFile.delete();
 			tempFile = null;
@@ -130,25 +150,28 @@ public class FileDataLocalServiceImpl extends FileDataLocalServiceBaseImpl {
 		}
 	}
 
-	public InputStream getFileInputStream(long fileDataId)
+	public InputStream getFileInputStream(FileInfo fileInfo)
 		throws PortalException {
 
-		return getFileInputStream(getFileData(fileDataId));
-	}
+		FileData fileData = getFileData(fileInfo.getFileDataId());
 
-	public InputStream getFileInputStream(FileData fileData)
-		throws PortalException {
+		String path = fileData.getFolderFile().getPath();
 
-		String path = _namingStrategyRegistry.resolvePath(
-			fileData.getName(), fileData.getFingerprint());
-
-		long companyId = fileData.getCompanyId();
+		long companyId = fileInfo.getCompanyId();
 
 		try {
 			InputStream cached = _binaryStoreCache.get(companyId, path);
 
 			if (cached != null) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(String.format("Cache FileInfo: %s, path=%s", fileInfo, path));
+				}
+
 				return cached;
+			}
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(String.format("Cache miss FileInfo: %s, path=%s", fileInfo, path));
 			}
 
 			return _binaryStoreCache.wrap(

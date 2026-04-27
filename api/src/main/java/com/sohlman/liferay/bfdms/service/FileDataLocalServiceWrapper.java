@@ -284,17 +284,10 @@ public class FileDataLocalServiceWrapper
 
 	@Override
 	public java.io.InputStream getFileInputStream(
-			com.sohlman.liferay.bfdms.model.FileData fileData)
+			com.sohlman.liferay.bfdms.model.FileInfo fileInfo)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
-		return _fileDataLocalService.getFileInputStream(fileData);
-	}
-
-	@Override
-	public java.io.InputStream getFileInputStream(long fileDataId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _fileDataLocalService.getFileInputStream(fileDataId);
+		return _fileDataLocalService.getFileInputStream(fileInfo);
 	}
 
 	@Override

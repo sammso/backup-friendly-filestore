@@ -50,7 +50,10 @@ public class FileSystemBinaryStore implements BinaryStore {
 		FileUtil.mkdirs(rootDir);
 
 		_rootDir = rootDir;
-		_log.info(String.format("FileSystemBinaryStore  FileSystemBinaryStoreConfiguration: %s, rootDirectory: %s", (fileSystemBinaryStoreConfiguration==null?"'Not found'" : fileSystemBinaryStoreConfiguration.toString()), rootDirPath));
+
+		if (_log.isInfoEnabled()) {
+			_log.info("FileSystemBinaryStore activated: rootDir=" + rootDir.getAbsolutePath());
+		}
 	}
 
 	@Override
@@ -64,6 +67,10 @@ public class FileSystemBinaryStore implements BinaryStore {
 		try (FileOutputStream out = new FileOutputStream(file)) {
 			inputStream.transferTo(out);
 		}
+
+		if (_log.isInfoEnabled()) {
+			_log.info("Stored binary: companyId=" + companyId + " path=" + path);
+		}
 	}
 
 	@Override
@@ -73,6 +80,10 @@ public class FileSystemBinaryStore implements BinaryStore {
 
 	@Override
 	public void delete(long companyId, String path) throws IOException {
+		if (_log.isInfoEnabled()) {
+			_log.info("Deleting binary: companyId=" + companyId + " path=" + path);
+		}
+
 		_deleteRecursive(_getFile(path));
 	}
 
@@ -156,6 +167,10 @@ public class FileSystemBinaryStore implements BinaryStore {
 			_log.error("Could not delete " + file.getAbsolutePath());
 
 			return;
+		}
+
+		if (file.isDirectory() && _log.isInfoEnabled()) {
+			_log.info("Removed empty directory: " + file.getAbsolutePath());
 		}
 
 		_deleteRecursive(file.getParentFile());

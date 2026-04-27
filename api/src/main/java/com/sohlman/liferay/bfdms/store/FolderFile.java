@@ -1,5 +1,7 @@
 package com.sohlman.liferay.bfdms.store;
 
+import com.liferay.petra.string.StringBundler;
+
 public final class FolderFile {
 
     public FolderFile(String folder, String name) {
@@ -16,7 +18,7 @@ public final class FolderFile {
     }
 
     public String getPath() {
-        return _folder + "/" + _name;
+        return StringBundler.concat(_folder ,"/" , _name);
     }
 
     private final String _folder;
