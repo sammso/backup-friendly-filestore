@@ -28,6 +28,7 @@
 		<module>service</module>
 		<module>store-filesystem</module>
 		<module>store-minio</module>
+		<module>store-proxy</module>
 		<module>cache-proxy</module>
 		<module>deploy</module>
 	</modules>

@@ -1,0 +1,5 @@
+Bundle-Version: ${project.version}
+Bundle-SymbolicName: ${project.artifactId}
+-metatype: *
+-plugin.metatype: com.liferay.ant.bnd.metatype.MetatypePlugin
+-plugin.resourcebundle: com.liferay.ant.bnd.resource.bundle.ResourceBundleLoaderAnalyzerPlugin
