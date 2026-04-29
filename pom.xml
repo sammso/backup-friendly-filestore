@@ -27,6 +27,7 @@
 		<module>api</module>
 		<module>service</module>
 		<module>store-filesystem</module>
+		<module>store-minio</module>
 		<module>cache-proxy</module>
 		<module>deploy</module>
 	</modules>
@@ -55,6 +56,11 @@
 				<groupId>org.bouncycastle</groupId>
 				<artifactId>bcprov-jdk18on</artifactId>
 				<version>1.84</version>
+			</dependency>
+			<dependency>
+				<groupId>io.minio</groupId>
+				<artifactId>minio</artifactId>
+				<version>8.5.17</version>
 			</dependency>
 			<dependency>
 				<groupId>javax.servlet.jsp</groupId>

@@ -32,6 +32,18 @@
 			<type>jar</type>
 		</dependency>
 		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>com.sohlman.liferay.bfdms.store.minio</artifactId>
+			<version>${project.version}</version>
+			<type>jar</type>
+			<exclusions>
+				<exclusion>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
 			<groupId>com.sohlman.liferay.bfdms</groupId>
 			<artifactId>com.sohlman.liferay.bfdms.cache.proxy</artifactId>
 			<version>${project.version}</version>
