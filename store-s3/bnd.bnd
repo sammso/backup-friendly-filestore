@@ -1,0 +1,60 @@
+Bundle-Version: ${project.version}
+Bundle-SymbolicName: ${project.artifactId}
+-metatype: *
+-plugin.metatype: com.liferay.ant.bnd.metatype.MetatypePlugin
+-plugin.resourcebundle: com.liferay.ant.bnd.resource.bundle.ResourceBundleLoaderAnalyzerPlugin
+
+-includeresource:\
+    @s3-*.jar,\
+    @aws-xml-protocol-*.jar,\
+    @aws-query-protocol-*.jar,\
+    @protocol-core-*.jar,\
+    @arns-*.jar,\
+    @profiles-*.jar,\
+    @crt-core-*.jar,\
+    @http-auth-*.jar,\
+    @http-auth-spi-*.jar,\
+    @http-auth-aws-*.jar,\
+    @http-auth-aws-eventstream-*.jar,\
+    @identity-spi-*.jar,\
+    @checksums-*.jar,\
+    @checksums-spi-*.jar,\
+    @retries-spi-*.jar,\
+    @retries-*.jar,\
+    @sdk-core-*.jar,\
+    @auth-*.jar,\
+    @http-client-spi-*.jar,\
+    @regions-*.jar,\
+    @annotations-*.jar,\
+    @utils-*.jar,\
+    @aws-core-*.jar,\
+    @metrics-spi-*.jar,\
+    @endpoints-spi-*.jar,\
+    @json-utils-*.jar,\
+    @third-party-jackson-core-*.jar,\
+    @eventstream-*.jar,\
+    @reactive-streams-*.jar,\
+    @url-connection-client-*.jar
+
+Private-Package:\
+    software.amazon.awssdk.*,\
+    software.amazon.eventstream.*,\
+    org.reactivestreams.*
+
+Import-Package:\
+    !software.amazon.awssdk.*,\
+    !software.amazon.ion.*,\
+    !software.amazon.eventstream.*,\
+    !com.amazon.ion.*,\
+    !org.reactivestreams.*,\
+    !io.netty.*,\
+    !org.apache.http.*,\
+    !org.apache.commons.logging.*,\
+    !scala.*,\
+    !kotlin,\
+    !kotlin.*,\
+    !android.*,\
+    !sun.*,\
+    org.slf4j.*;resolution:=optional,\
+    org.slf4j.event.*;resolution:=optional,\
+    *
